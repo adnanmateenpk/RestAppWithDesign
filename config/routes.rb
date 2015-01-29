@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  
+  
+  get 'admin' => 'admin#index'
+
+  scope :admin do
+    resources :pages do
+      member do
+        get 'delete'
+      end
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

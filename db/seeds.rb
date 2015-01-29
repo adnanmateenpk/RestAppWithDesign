@@ -5,3 +5,10 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+	
+	Layout.create(:layout => "_gallery")
+	Layout.create(:layout => "_blog")
+	Layout.create(:layout => "_contact")
+	Layout.create(:layout => "_featured")
+	Layout.create(:layout => "_slider")
+
