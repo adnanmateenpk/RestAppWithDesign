@@ -1,0 +1,9 @@
+<%= link_to("Posts",{:controller=>'posts',:action=>'index'},:class=>'action posts index')%>
+<h1>New Post</h1>
+
+<%= form_for(:post, :url=>{:action=>'create'},:multipart=>true) do |f| %>
+<%= render(:partial => "form",:locals=>{:f=>f})%>
+<div class="form-buttons">
+  <%= submit_tag("Create Post")%>
+</div>
+<% end %>

@@ -1,5 +1,5 @@
-<%= error_messages_for(@page) %>
-<table summary="Page form fields">
+<%= error_messages_for(@post) %>
+<table summary="Post form fields">
   <tr>
     <th><%= f.label(:title,"Title")%></th>
     <td><%= f.text_field(:title)%></td>
@@ -10,15 +10,11 @@
   </tr>
   <tr>
     <th><%= f.label(:position,"Position")%></th>
-    <td><%= f.select(:position, 1..@page_count)%></td>
+    <td><%= f.select(:position, 1..@post_count)%></td>
   </tr>
   <tr>
     <th><%= f.label(:status, "Status") %></th>
-    <td><%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@page.status ? 1 : 0))) %></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:layout_id, "Layout") %></th>
-    <td><%= f.select(:layout_id, options_for_select(@layouts,@page.layout_id)) %></td>
+    <td><%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@post.status ? 1 : 0))) %></td>
   </tr>
   <tr>
     <th><%= f.label(:featured_image) %></th>

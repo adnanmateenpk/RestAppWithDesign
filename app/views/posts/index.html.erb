@@ -1,0 +1,28 @@
+
+<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action admin index')%> | 
+<%= link_to("Add Post",{:action=>'new'},:class=>'action post new') %>
+<h1>Posts</h1>
+<table class="listing" summary="Post list">
+  <tr class="header">
+    <th>&nbsp;</th>
+    <th>Title</th>
+    
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  <% @posts.each do |post| %>
+  <tr class="">
+    <td class="position"><%= post.position %></td>
+    <td><%= post.title %></td>
+    
+    
+    <td><%= post.status ? "Published" : "Unpublished" %></td>
+  
+    <td class="actions">
+      <%= link_to("Edit", {:action => 'edit', :slug => post.slug}, :class => 'action edit') %>
+      <%= link_to 'Delete' , {:action => 'destroy' , :slug => post.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_post' %>
+      
+    </td>
+  </tr>
+  <% end %>
+</table>

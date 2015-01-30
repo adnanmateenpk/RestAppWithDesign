@@ -50,7 +50,12 @@ class PagesController < ApplicationController
       render('edit')
     end 
   end
-
+  def remove_image
+    @page = Page.where(["slug = ?",params[:slug]]).first
+    @page.featured_image = ""
+    @page.save
+    render json: { "gst": "deleted" } 
+  end
   def destroy
     Page.where(["slug = ?",params[:slug]]).first.destroy
     render json: { "gst": "deleted" } 
@@ -58,12 +63,17 @@ class PagesController < ApplicationController
 
   private
   def page_params
+    if !params[:page][:featured_image].blank?
+      params[:page][:featured_image]= upload_files_custom(params[:page][:featured_image],"pages")
+    else 
+      params[:page][:featured_image] = ""  
+    end
     if params[:page][:slug].blank?
        params[:page][:slug] = params[:page][:title].parameterize
     else
         params[:page][:slug] = params[:page][:slug].parameterize
     end
-    params.require(:page).permit(:title,:slug,:status,:position,:html,:layout_id)
+    params.require(:page).permit(:title,:slug,:status,:position,:html,:layout_id,:featured_image)
   end
 
 end

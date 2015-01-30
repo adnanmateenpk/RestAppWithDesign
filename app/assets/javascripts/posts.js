@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('.delete_page').on('ajax:success', function() {  
+	$('.delete_post').on('ajax:success', function() {  
 	        $(this).closest('tr').fadeOut("slow",function(){
 	        	$(this).remove();
 	        	i=1;
@@ -11,12 +11,5 @@ $(document).ready(function(){
 	        })
 
 	}); 
-	$('.remove_image').on('ajax:success', function() {  
-		
-	        $("#featured_image").fadeOut("slow",function(){
-	        	$(this).remove();
-	        	
-	        })
-
-	});
+	
 });

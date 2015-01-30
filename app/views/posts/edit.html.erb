@@ -1,0 +1,14 @@
+<%= link_to("Posts",{:controller=>'posts',:action=>'index'},:class=>'action posts index')%>
+<h1>Edit Post</h1>
+
+<%= form_for(:post, :url=>{:action => 'update', :slug => @post.slug},:method=>"patch",:multipart=>true) do |f| %>
+<%= render(:partial => "form",:locals=>{:f=>f})%>
+<% if !(@post.featured_image.blank?) %>
+<img src='/assets/uploads/posts/<%= @post.featured_image %>' id="featured_image"/>
+<% end %>
+<div class="form-buttons">
+  <%= submit_tag("Update Post")%>
+  <%= link_to 'Remove Featured Image' , {:action => 'remove_image' , :slug => @post.slug}, method: :patch, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'remove_image' %>
+      
+</div>
+<% end %>

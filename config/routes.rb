@@ -1,10 +1,16 @@
 Rails.application.routes.draw do
   
-  
-  get 'admin' => 'admin#index'
-
+  get "admin" => 'admin#index'
   scope :admin do
     resources :pages,:param => :slug do
+      member do
+          patch 'remove_image'
+      end
+    end
+    resources :posts,:param => :slug do
+      member do
+          patch 'remove_image'
+      end
     end
   end
 

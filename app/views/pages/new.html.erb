@@ -1,7 +1,7 @@
 <%= link_to("Pages",{:controller=>'pages',:action=>'index'},:class=>'action pages index')%>
 <h1>New Page</h1>
 
-<%= form_for(:page, :url=>{:action=>'create'}) do |f| %>
+<%= form_for(:page, :url=>{:action=>'create'},:multipart=>true) do |f| %>
 <%= render(:partial => "form",:locals=>{:f=>f})%>
 <div class="form-buttons">
   <%= submit_tag("Create Page")%>
