@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150129210822) do
+ActiveRecord::Schema.define(version: 20150130182523) do
 
   create_table "layouts", force: :cascade do |t|
     t.string   "layout",     limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "title",      limit: 255
   end
 
   create_table "pages", force: :cascade do |t|
@@ -32,5 +33,9 @@ ActiveRecord::Schema.define(version: 20150129210822) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
   end
+
+  add_index "pages", ["layout_id"], name: "index_pages_on_layout_id", using: :btree
+  add_index "pages", ["position"], name: "index_pages_on_position", using: :btree
+  add_index "pages", ["slug"], name: "index_pages_on_slug", using: :btree
 
 end

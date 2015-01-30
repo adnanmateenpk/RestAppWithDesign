@@ -1,2 +1,28 @@
-<h1>Pages#index</h1>
-<p>Find me in app/views/pages/index.html.erb</p>
+
+<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action admin index')%> | 
+<%= link_to("Add Page",{:action=>'new'},:class=>'action pages new') %>
+<h1>Pages</h1>
+<table class="listing" summary="Product list">
+  <tr class="header">
+    <th>&nbsp;</th>
+    <th>Title</th>
+    <th>Layout</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  <% @pages.each do |page| %>
+  <tr class="">
+    <td class="position"><%= page.position %></td>
+    <td><%= page.title %></td>
+    <td><%= page.layout.title %></td>
+    
+    <td><%= page.status ? "Published" : "Unpublished" %></td>
+  
+    <td class="actions">
+      <%= link_to("Edit", {:action => 'edit', :slug => page.slug}, :class => 'action edit') %>
+      <%= link_to 'Delete' , {:action => 'destroy' , :slug => page.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_page' %>
+      
+    </td>
+  </tr>
+  <% end %>
+</table>

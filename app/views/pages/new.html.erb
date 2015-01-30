@@ -1,9 +1,9 @@
 <%= link_to("Pages",{:controller=>'pages',:action=>'index'},:class=>'action pages index')%>
-<h1>Edit Page</h1>
+<h1>New Page</h1>
 
-<%= form_for(:page, :url=>{:action => 'update', :slug => @page.slug},:method=>"patch") do |f| %>
+<%= form_for(:page, :url=>{:action=>'create'}) do |f| %>
 <%= render(:partial => "form",:locals=>{:f=>f})%>
 <div class="form-buttons">
-  <%= submit_tag("Update Page")%>
+  <%= submit_tag("Create Page")%>
 </div>
 <% end %>

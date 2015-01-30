@@ -1,2 +1,27 @@
-<h1>Pages#show</h1>
-<p>Find me in app/views/pages/show.html.erb</p>
+<%= link_to("Back to Pages",{:action=>'index'},:class=>'action index')%>
+<table summary="Pages form fields">
+  <tr>
+    <th>Title</th>
+    <td><%= @page.title %></td>
+  </tr>
+  <tr>
+    <th>Slug</th>
+    <td><%= @page.slug %></td>
+  </tr>
+  <tr>
+    <th>Position</th>
+    <td><%= @page.position %></td>
+  </tr>
+  <tr>
+    <th>Status</th>
+    <td><%= @page.status ? "Published" : "Unpublished" %></td>
+  </tr>
+  <tr>
+    <th>Layout</th>
+    <td><%= @page.layout.title %></td>
+  </tr>
+  <tr>
+    <th>Content</th>
+    <td><%= @page.html %></td>
+  </tr>
+</table>

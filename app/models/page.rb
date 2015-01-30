@@ -14,11 +14,11 @@ class Page < ActiveRecord::Base
 							:presence => true,
 							:length => { :maximum => 25 }
 
-	validates :position, 	:numericality =>{:only_integer => true,:greater_than => 0},
-							:presence => true,
+	validates :position, 	:numericality => { :only_integer => true , :greater_than => 0 },
+							:presence => true
 
 
-	validates :layout_id, 	:numericality =>{:only_integer => true,:greater_than => 0},
+	validates :layout_id, 	:numericality => { :only_integer => true , :greater_than => 0 },
 							:presence => true
 
 	

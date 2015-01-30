@@ -4,10 +4,7 @@ Rails.application.routes.draw do
   get 'admin' => 'admin#index'
 
   scope :admin do
-    resources :pages do
-      member do
-        get 'delete'
-      end
+    resources :pages,:param => :slug do
     end
   end
 
