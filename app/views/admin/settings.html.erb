@@ -1,0 +1,51 @@
+<%= link_to("Dashboard",{:action=>'index'},:class=>'action index')%>
+<h1>Settings</h1>
+<%= form_for(:setting, :url=>{:action => 'settings_save'},:method=>"patch",:multipart=>true) do |f| %>
+	<%= error_messages_for(@setting) %>
+	<table summary="Page form fields">
+	  <tr>
+	    <th><%= f.label(:title,"Title")%></th>
+	    <td><%= f.text_field(:title)%></td>
+	  </tr>
+	  <tr>
+	    <th><%= f.label(:company_name,"Company Name")%></th>
+	    <td><%= f.text_field(:company_name)%></td>
+	  </tr>
+	  <tr>
+	    <th><%= f.label(:address,"Address")%></th>
+	    <td><%= f.text_field(:address) %></td>
+	  </tr>
+	  <tr>
+	    <th><%= f.label(:email,"Email")%></th>
+	    <td><%= f.text_field(:email)%></td>
+	  </tr>
+	  <tr>
+	    <th><%= f.label(:phone,"Phone No.")%></th>
+	    <td><%= f.text_field(:phone) %></td>
+	  </tr>
+	  <tr>
+	    <th><%= f.label(:fax,"Fax No.")%></th>
+	    <td><%= f.text_field(:fax) %></td>
+	  </tr>
+	  <tr>
+	    <th><%= f.label(:logo,"Logo") %></th>
+	    <td><%= f.file_field(:logo) %></td>
+	  </tr>
+	  <tr>
+   		<th><%= f.label(:meta_keywords,"Meta Keywords")%></th>
+    	<td><%= f.text_field(:meta_keywords)%></td>
+  	  </tr>
+  	  <tr>
+    	<th><%= f.label(:meta_description,"Meta Description")%></th>
+    	<td><%= f.text_field(:meta_description)%></td>
+  	  </tr>
+	 
+	</table>
+	<% if !(@setting.logo.blank?) %>
+	<img src='/assets/uploads/logo/<%= @setting.logo%>' id="featured_image"/>
+	<% end %>
+	<div class="form-buttons">
+	<%= submit_tag("Update Settings")%>
+	<%= link_to 'Remove logo' , {:action => 'remove_logo'}, method: :patch, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'remove_image' %>
+    </div>
+<% end %>

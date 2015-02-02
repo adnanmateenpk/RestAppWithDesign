@@ -19,7 +19,7 @@ class PagesController < ApplicationController
   end
 
   def create 
-    @page = Page.new(page_params)
+    @page = Page.new(page_params(Page.new(:featured_image => "test")))
     if @page.save
       flash[:notice]="Page created successfully"
       redirect_to(:action=>'index')
@@ -46,12 +46,15 @@ class PagesController < ApplicationController
       flash[:notice]="Page update successfully"
       redirect_to(:action=>'index')
     else
-      @page_count = Page.count + 1
+      @page_count = Page.count
       render('edit')
     end 
   end
   def remove_image
     @page = Page.where(["slug = ?",params[:slug]]).first
+    directory = File.join("vendor","assets","images","uploads","pages")
+    old_path = File.join(directory,@page.featured_image)
+    File.delete(old_path) if File.exist?(old_path)
     @page.featured_image = ""
     @page.save
     render json: { "gst": "deleted" } 
@@ -62,9 +65,12 @@ class PagesController < ApplicationController
   end
 
   private
-  def page_params
+  def page_params(page)
+    if page.featured_image.blank?
+      page.featured_image = "test"
+    end
     if !params[:page][:featured_image].blank?
-      params[:page][:featured_image]= upload_files_custom(params[:page][:featured_image],"pages")
+      params[:page][:featured_image]= upload_files_custom(params[:page][:featured_image],"pages",page.featured_image)
     else 
       params[:page][:featured_image] = ""  
     end
@@ -73,7 +79,7 @@ class PagesController < ApplicationController
     else
         params[:page][:slug] = params[:page][:slug].parameterize
     end
-    params.require(:page).permit(:title,:slug,:status,:position,:html,:layout_id,:featured_image)
+    params.require(:page).permit(:title,:slug,:status,:position,:html,:layout_id,:featured_image,:meta_description,:meta_keywords)
   end
 
 end

@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   
   get "admin" => 'admin#index'
+
   scope :admin do
+    get "settings" => 'admin#settings'
+    patch "settings/save" => 'admin#settings_save'
+    patch "settings/logo" => 'admin#remove_logo'
     resources :pages,:param => :slug do
       member do
           patch 'remove_image'
@@ -12,6 +16,7 @@ Rails.application.routes.draw do
           patch 'remove_image'
       end
     end
+    
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

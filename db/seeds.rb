@@ -12,3 +12,7 @@
 	Layout.create(:layout => "_featured",:title => "Content with Fixed Image")
 	Layout.create(:layout => "_reservations",:title => "Reservations")
 	Layout.create(:layout => "_slider",:title => "Content with Slider")
+
+	Setting.delete_all
+
+	Setting.create(:title => "Restaurants App", :email => "test@test.com",:logo => "")

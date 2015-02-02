@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150130205255) do
+ActiveRecord::Schema.define(version: 20150202150924) do
 
   create_table "layouts", force: :cascade do |t|
     t.string   "layout",     limit: 255
@@ -55,5 +55,19 @@ ActiveRecord::Schema.define(version: 20150130205255) do
   add_index "posts", ["position"], name: "index_posts_on_position", using: :btree
   add_index "posts", ["slug"], name: "index_posts_on_slug", using: :btree
   add_index "posts", ["status"], name: "index_posts_on_status", using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.string   "title",            limit: 255
+    t.string   "logo",             limit: 255
+    t.string   "email",            limit: 255
+    t.string   "company_name",     limit: 255
+    t.string   "phone",            limit: 255
+    t.string   "fax",              limit: 255
+    t.string   "address",          limit: 255
+    t.string   "meta_keywords",    limit: 255
+    t.text     "meta_description", limit: 65535
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
 
 end
