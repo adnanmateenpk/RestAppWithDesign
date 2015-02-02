@@ -1,0 +1,27 @@
+<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action admin index')%> | 
+<%= link_to("Add Restaurant",{:action=>'new'},:class=>'action restaurant new') %>
+<h1>Posts</h1>
+<table class="listing" summary="Restaurant list">
+  <tr class="header">
+    <th>&nbsp;</th>
+    <th>Title</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  <% @restaurants.each_with_index do |d,i| %>
+  <tr class="">
+    <td class="position"><%= i+1 %></td>
+    <td><%= d.title %></td>
+    
+    
+    <td><%= d.status ? "Published" : "Unpublished" %></td>
+  
+    <td class="actions">
+     	  <%= link_to("Branches", restaurant_branches_path(d.slug), :class => 'action branches') %>
+      	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit') %>
+      	<%= link_to 'Delete' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' %>
+      
+    </td>
+  </tr>
+  <% end %>
+</table>

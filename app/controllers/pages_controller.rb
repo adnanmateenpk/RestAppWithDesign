@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   def index
-    @pages = Page.all.sorted
+    @pages = Page.sorted
   end
 
   def show
@@ -42,7 +42,7 @@ class PagesController < ApplicationController
 
   def update
     @page = Page.where(["slug = ?",params[:slug]]).first
-    if @page.update_attributes(page_params)
+    if @page.update_attributes(page_params(@page))
       flash[:notice]="Page update successfully"
       redirect_to(:action=>'index')
     else
@@ -51,16 +51,20 @@ class PagesController < ApplicationController
     end 
   end
   def remove_image
-    @page = Page.where(["slug = ?",params[:slug]]).first
+    page = Page.where(["slug = ?",params[:slug]]).first
     directory = File.join("vendor","assets","images","uploads","pages")
-    old_path = File.join(directory,@page.featured_image)
+    old_path = File.join(directory,page.featured_image)
     File.delete(old_path) if File.exist?(old_path)
-    @page.featured_image = ""
-    @page.save
+    page.featured_image = ""
+    page.save
     render json: { "gst": "deleted" } 
   end
   def destroy
-    Page.where(["slug = ?",params[:slug]]).first.destroy
+    page = Page.where(["slug = ?",params[:slug]]).first
+    directory = File.join("vendor","assets","images","uploads","pages")
+    old_path = File.join(directory,page.featured_image)
+    File.delete(old_path) if File.exist?(old_path)
+    page.destroy
     render json: { "gst": "deleted" } 
   end
 
@@ -71,8 +75,6 @@ class PagesController < ApplicationController
     end
     if !params[:page][:featured_image].blank?
       params[:page][:featured_image]= upload_files_custom(params[:page][:featured_image],"pages",page.featured_image)
-    else 
-      params[:page][:featured_image] = ""  
     end
     if params[:page][:slug].blank?
        params[:page][:slug] = params[:page][:title].parameterize

@@ -1,0 +1,25 @@
+<%= error_messages_for(@restaurant) %>
+<table summary="Restaurant form fields">
+  <tr>
+    <th><%= f.label(:title,"Title")%></th>
+    <td><%= f.text_field(:title)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:slug,"Slug")%></th>
+    <td><%= f.text_field(:slug)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:status, "Status") %></th>
+    <td><%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@restaurant.status ? 1 : 0))) %></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:featured_image) %></th>
+    <td><%= f.file_field(:featured_image) %></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:description,"Description") %></th>
+    <td><%= f.text_area(:description, :size => '40x10') %></td>
+  </tr>
+  
+ 
+</table>

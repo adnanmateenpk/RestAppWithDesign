@@ -1,7 +1,23 @@
 Rails.application.routes.draw do
   
-  get "admin" => 'admin#index'
+  
 
+  get "admin" => 'admin#index'
+  resources :restaurants , :param => :slug do
+    member do
+      patch 'remove_image'
+    end
+    resources :branches , :param => :slug do
+      member do
+        patch 'remove_image'
+      end
+      resources :tables , :param => :slug do
+        member do
+          patch 'remove_image'
+        end
+      end
+    end
+  end
   scope :admin do
     get "settings" => 'admin#settings'
     patch "settings/save" => 'admin#settings_save'

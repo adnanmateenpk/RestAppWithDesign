@@ -6,6 +6,7 @@ class CreateRestaurants < ActiveRecord::Migration
     	t.string :featured_image
     	t.integer :user_id
     	t.text 	 :description
+      t.boolean :status
       	t.timestamps null: false
     end
     add_index "restaurants", "slug"

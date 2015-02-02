@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20150202171209) do
     t.string   "email",          limit: 255
     t.string   "featured_image", limit: 255
     t.integer  "position",       limit: 4
+    t.boolean  "status",         limit: 1
     t.integer  "restaurant_id",  limit: 4
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
@@ -80,6 +81,7 @@ ActiveRecord::Schema.define(version: 20150202171209) do
     t.string   "featured_image", limit: 255
     t.integer  "user_id",        limit: 4
     t.text     "description",    limit: 65535
+    t.boolean  "status",         limit: 1
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
   end
@@ -107,6 +109,7 @@ ActiveRecord::Schema.define(version: 20150202171209) do
     t.integer  "branch_id",      limit: 4
     t.string   "featured_image", limit: 255
     t.integer  "position",       limit: 4
+    t.boolean  "status",         limit: 1
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
   end

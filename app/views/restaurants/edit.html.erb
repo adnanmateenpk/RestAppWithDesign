@@ -1,0 +1,14 @@
+<%= link_to("Restaurants",{:controller=>'restaurants',:action=>'index'},:class=>'action index')%>
+<h1>Edit Restaurant</h1>
+
+<%= form_for(:restaurant, :url=>{:action => 'update', :slug => @restaurant.slug},:method=>"patch",:multipart=>true) do |f| %>
+<%= render(:partial => "form",:locals=>{:f=>f})%>
+<% if !(@restaurant.featured_image.blank?) %>
+<img src='/assets/uploads/restaurants/<%= @restaurant.featured_image%>' id="featured_image"/>
+<% end %>
+<div class="form-buttons">
+  <%= submit_tag("Update Restaurant")%>
+  <%= link_to 'Remove Featured Image' , {:action => 'remove_image' , :slug => @restaurant.slug}, method: :patch, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'remove_image' %>
+      
+</div>
+<% end %>

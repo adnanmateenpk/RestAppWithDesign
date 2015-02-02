@@ -1,0 +1,9 @@
+
+<%= link_to("Tables",{:controller=>'tables',:action=>'index'},:class=>'action index')%>
+
+<%= form_for(:table, :url=>{:action=>'create'},:multipart=>true) do |f| %>
+<%= render(:partial => "form",:locals=>{:f=>f})%>
+<div class="form-buttons">
+  <%= submit_tag("Create Branch")%>
+</div>
+<% end %>

@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.all.sorted
+    @posts = Post.sorted
   end
 
   def show
@@ -41,16 +41,20 @@ class PostsController < ApplicationController
     end 
   end
   def remove_image
-    @post = Post.where(["slug = ?",params[:slug]]).first
+    post = Post.where(["slug = ?",params[:slug]]).first
     directory = File.join("vendor","assets","images","uploads","posts")
-    old_path = File.join(directory,@post.featured_image)
+    old_path = File.join(directory,post.featured_image)
     File.delete(old_path) if File.exist?(old_path)
-    @post.featured_image = ""
-    @post.save
+    post.featured_image = ""
+    post.save
     render json: { "gst": "deleted" } 
   end
   def destroy
-    Post.where(["slug = ?",params[:slug]]).first.destroy
+    post = Post.where(["slug = ?",params[:slug]]).first
+    directory = File.join("vendor","assets","images","uploads","posts")
+    old_path = File.join(directory,post.featured_image)
+    File.delete(old_path) if File.exist?(old_path)
+    post.destroy
     render json: { "gst": "deleted" } 
   end
 
@@ -61,8 +65,6 @@ class PostsController < ApplicationController
     end
   	if !params[:post][:featured_image].blank?
       params[:post][:featured_image]= upload_files_custom(params[:post][:featured_image],"posts",post.featured_image)
-    else 
-      params[:post][:featured_image] = ""  
     end
     if params[:post][:slug].blank?
        params[:post][:slug] = params[:post][:title].parameterize

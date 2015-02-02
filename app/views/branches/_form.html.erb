@@ -1,0 +1,42 @@
+<%= error_messages_for(@branch) %>
+<table summary="Branch form fields">
+  <tr>
+    <th><%= f.label(:title,"Title")%></th>
+    <td><%= f.text_field(:title)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:slug,"Slug")%></th>
+    <td><%= f.text_field(:slug)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:email,"Email")%></th>
+    <td><%= f.text_field(:email)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:address,"Address")%></th>
+    <td><%= f.text_field(:address)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:phone,"Phone No.")%></th>
+    <td><%= f.text_field(:phone)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:fax,"Fax No.")%></th>
+    <td><%= f.text_field(:fax)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:status, "Status") %></th>
+    <td><%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@branch.status ? 1 : 0))) %></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:position,"Position")%></th>
+    <td><%= f.select(:position, 1..@branch_count)%></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:featured_image) %></th>
+    <td><%= f.file_field(:featured_image) %></td>
+  </tr>
+  
+  
+ 
+</table>

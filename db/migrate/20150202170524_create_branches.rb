@@ -9,6 +9,7 @@ class CreateBranches < ActiveRecord::Migration
     	t.string :email
     	t.string :featured_image
     	t.integer :position
+        t.boolean :status
     	t.integer :restaurant_id
       	t.timestamps null: false
     end

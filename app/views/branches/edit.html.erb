@@ -1,0 +1,14 @@
+<%= link_to("Branches",{:controller=>'branches',:action=>'index'},:class=>'action index')%>
+<h1>Edit Branch</h1>
+
+<%= form_for(:branch, :url=>{:action => 'update', :slug => @branch.slug},:method=>"patch",:multipart=>true) do |f| %>
+<%= render(:partial => "form",:locals=>{:f=>f})%>
+<% if !(@branch.featured_image.blank?) %>
+<img src='/assets/uploads/branches/<%= @branch.featured_image%>' id="featured_image"/>
+<% end %>
+<div class="form-buttons">
+  <%= submit_tag("Update Branch")%>
+  <%= link_to 'Remove Featured Image' , {:action => 'remove_image' , :slug => @branch.slug}, method: :patch, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'remove_image' %>
+      
+</div>
+<% end %>
