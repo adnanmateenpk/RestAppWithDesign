@@ -11,7 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202150924) do
+ActiveRecord::Schema.define(version: 20150202171209) do
+
+  create_table "branches", force: :cascade do |t|
+    t.string   "title",          limit: 255
+    t.string   "slug",           limit: 255
+    t.string   "address",        limit: 255
+    t.string   "phone",          limit: 255
+    t.string   "fax",            limit: 255
+    t.string   "email",          limit: 255
+    t.string   "featured_image", limit: 255
+    t.integer  "position",       limit: 4
+    t.integer  "restaurant_id",  limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "branches", ["position"], name: "index_branches_on_position", using: :btree
+  add_index "branches", ["restaurant_id"], name: "index_branches_on_restaurant_id", using: :btree
+  add_index "branches", ["slug"], name: "index_branches_on_slug", using: :btree
 
   create_table "layouts", force: :cascade do |t|
     t.string   "layout",     limit: 255
@@ -56,6 +74,18 @@ ActiveRecord::Schema.define(version: 20150202150924) do
   add_index "posts", ["slug"], name: "index_posts_on_slug", using: :btree
   add_index "posts", ["status"], name: "index_posts_on_status", using: :btree
 
+  create_table "restaurants", force: :cascade do |t|
+    t.string   "title",          limit: 255
+    t.string   "slug",           limit: 255
+    t.string   "featured_image", limit: 255
+    t.integer  "user_id",        limit: 4
+    t.text     "description",    limit: 65535
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "restaurants", ["slug"], name: "index_restaurants_on_slug", using: :btree
+
   create_table "settings", force: :cascade do |t|
     t.string   "title",            limit: 255
     t.string   "logo",             limit: 255
@@ -69,5 +99,20 @@ ActiveRecord::Schema.define(version: 20150202150924) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
   end
+
+  create_table "tables", force: :cascade do |t|
+    t.string   "title",          limit: 255
+    t.string   "slug",           limit: 255
+    t.integer  "chairs",         limit: 4
+    t.integer  "branch_id",      limit: 4
+    t.string   "featured_image", limit: 255
+    t.integer  "position",       limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "tables", ["branch_id"], name: "index_tables_on_branch_id", using: :btree
+  add_index "tables", ["position"], name: "index_tables_on_position", using: :btree
+  add_index "tables", ["slug"], name: "index_tables_on_slug", using: :btree
 
 end
