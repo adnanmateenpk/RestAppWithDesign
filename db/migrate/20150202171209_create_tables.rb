@@ -8,7 +8,7 @@ class CreateTables < ActiveRecord::Migration
     	t.string :featured_image
     	t.integer :position
       t.boolean :status
-      	t.timestamps null: false
+      t.timestamps null: false
     end
     add_index "tables" , "slug"
     add_index "tables" , "position"

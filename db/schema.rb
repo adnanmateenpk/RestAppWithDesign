@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202171209) do
+ActiveRecord::Schema.define(version: 20150203145919) do
 
   create_table "branches", force: :cascade do |t|
     t.string   "title",          limit: 255
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(version: 20150202171209) do
   add_index "branches", ["position"], name: "index_branches_on_position", using: :btree
   add_index "branches", ["restaurant_id"], name: "index_branches_on_restaurant_id", using: :btree
   add_index "branches", ["slug"], name: "index_branches_on_slug", using: :btree
+
+  create_table "ips", force: :cascade do |t|
+    t.string   "address",    limit: 255
+    t.integer  "visits",     limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "ips", ["visits"], name: "index_ips_on_visits", using: :btree
 
   create_table "layouts", force: :cascade do |t|
     t.string   "layout",     limit: 255
@@ -100,6 +109,12 @@ ActiveRecord::Schema.define(version: 20150202171209) do
     t.text     "meta_description", limit: 65535
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+  end
+
+  create_table "subscribers", force: :cascade do |t|
+    t.string   "email",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "tables", force: :cascade do |t|

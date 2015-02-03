@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   
   
 
+  root to: 'main#index'
+
   get "admin" => 'admin#index'
   resources :restaurants , :param => :slug do
     member do
