@@ -17,6 +17,8 @@ class Table < ActiveRecord::Base
 
 	validates :position, 	:numericality => { :only_integer => true , :greater_than => 0 },
 							:presence => true
+	validates :hours, 	:numericality => { :greater_than => 0 },
+							:presence => true
 	validates :chairs, 		:numericality => { :only_integer => true , :greater_than => 0 },
 							:presence => true						
 end

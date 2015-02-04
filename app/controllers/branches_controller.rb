@@ -1,11 +1,14 @@
 class BranchesController < ApplicationController
+  before_action :authenticate_user!
+  layout 'admin'
   def index
     @branches = Branch.sorted
   end
 
   def edit
+    @branch = Branch.where(["slug = ?",params[:slug]]).first 
     @branch_count = Branch.count
-    @branch = Branch.where(["slug = ?",params[:slug]]).first
+    
   end
 
   def new
@@ -26,7 +29,11 @@ class BranchesController < ApplicationController
   end
 
   def destroy
-    branch = Branch.where(["slug = ?",params[:slug]]).first
+    branch = Branch.where(["slug = ?",params[:slug]]).first 
+    
+    if branch.featured_image.blank?
+      branch.featured_image = "test"
+    end
     directory = File.join("vendor","assets","images","uploads","branches")
     old_path = File.join(directory,branch.featured_image)
     File.delete(old_path) if File.exist?(old_path)
@@ -35,7 +42,7 @@ class BranchesController < ApplicationController
   end
 
   def remove_image
-    branch = Branch.where(["slug = ?",params[:slug]]).first
+    branch = Branch.where(["slug = ?",params[:slug]]).first 
     directory = File.join("vendor","assets","images","uploads","branches")
     old_path = File.join(directory,branch.featured_image)
     File.delete(old_path) if File.exist?(old_path)
@@ -46,7 +53,7 @@ class BranchesController < ApplicationController
 
   def update
 
-    @branch = Branch.where(["slug = ?",params[:slug]]).first
+    @branch = Branch.where(["slug = ?",params[:slug]]).first 
     if @branch.update_attributes(branch_params(@branch.featured_image))
       flash[:notice] = "Branch saved"
       redirect_to(:action=>'index')

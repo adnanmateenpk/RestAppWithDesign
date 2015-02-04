@@ -5,9 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-	Layout.delete_all
-	
-    ActiveRecord::Base.connection.execute("TRUNCATE layouts; ")
+	ActiveRecord::Base.connection.execute("TRUNCATE layouts; ")
 	Layout.create(:layout => "_gallery",:title => "Gallery")
 	Layout.create(:layout => "_blog",:title => "Blog")
 	Layout.create(:layout => "_contact",:title => "Contact")
@@ -15,6 +13,10 @@
 	Layout.create(:layout => "_reservations",:title => "Reservations")
 	Layout.create(:layout => "_slider",:title => "Content with Slider")
 
-	Setting.delete_all
 	ActiveRecord::Base.connection.execute("TRUNCATE settings;")
 	Setting.create(:title => "Restaurants App", :email => "test@test.com",:logo => "")
+
+	ActiveRecord::Base.connection.execute("TRUNCATE roles; ")
+	Role.create(:role => "admin" , :title => "Admin")
+	Role.create(:role => "restaurant", :title => "Restaurant Owner")
+	Role.create(:role => "user", :title => "Customer")

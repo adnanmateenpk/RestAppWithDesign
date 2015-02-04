@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   def upload_files_custom(file,path,old)
+  		
     	name = Time.now.to_i.to_s+"_"+sanitize_filename(file.original_filename)
 		directory = File.join("vendor","assets","images","uploads",path)
 		FileUtils.mkdir_p(directory) unless File.directory?(directory)
@@ -20,5 +21,8 @@ class ApplicationController < ActionController::Base
 		# with underscore
 		just_filename.sub(/[^\w\.\-]/,'-')
 
+	end
+	def not_found
+  		render :status => 404
 	end
 end

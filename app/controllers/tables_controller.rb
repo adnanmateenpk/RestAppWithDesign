@@ -1,11 +1,16 @@
 class TablesController < ApplicationController
- def index
+  before_action :authenticate_user!
+  layout 'admin'
+  def index
     @tables = Table.sorted
   end
 
   def edit
     @table_count = Table.count
-    @table = Table.where(["slug = ?",params[:slug]]).first
+    @table = Table.where(["slug = ?",params[:slug]]).first or not_found
+    if(@table.branch.restaurant.user_id != current_user.id)
+      not_found
+    end
   end
 
   def new
@@ -26,8 +31,14 @@ class TablesController < ApplicationController
   end
 
   def destroy
-    table = Table.where(["slug = ?",params[:slug]]).first
+    table = Table.where(["slug = ?",params[:slug]]).first or not_found
+    if(@table.branch.restaurant.user_id != current_user.id)
+      not_found
+    end
     directory = File.join("vendor","assets","images","uploads","tables")
+    if table.featured_image.blank?
+      table.featured_image = "test"
+    end
     old_path = File.join(directory,table.featured_image)
     File.delete(old_path) if File.exist?(old_path)
     table.destroy
@@ -35,7 +46,10 @@ class TablesController < ApplicationController
   end
 
   def remove_image
-    table = Table.where(["slug = ?",params[:slug]]).first
+    table = Table.where(["slug = ?",params[:slug]]).first or not_found
+    if(@table.branch.restaurant.user_id != current_user.id)
+      not_found
+    end
     directory = File.join("vendor","assets","images","uploads","tables")
     old_path = File.join(directory,table.featured_image)
     File.delete(old_path) if File.exist?(old_path)
@@ -46,7 +60,10 @@ class TablesController < ApplicationController
 
   def update
 
-    @table = Table.where(["slug = ?",params[:slug]]).first
+    @table = Table.where(["slug = ?",params[:slug]]).first or not_found
+    if(@table.branch.restaurant.user_id != current_user.id)
+      not_found
+    end
     if @table.update_attributes(table_params(@table.featured_image))
       flash[:notice] = "Table saved"
       redirect_to(:action=>'index')
@@ -69,6 +86,6 @@ class TablesController < ApplicationController
     else
         params[:table][:slug] = params[:table][:slug].parameterize
     end
-    params.require(:table).permit(:title,:slug,:status,:position,:chairs,:featured_image)
+    params.require(:table).permit(:title,:slug,:status,:position,:chairs,:featured_image,:hours)
   end
 end

@@ -1,8 +1,8 @@
 class Restaurant < ActiveRecord::Base
 	
 	#relations
-	has_many :branches
-	
+	has_many :branches , dependent: :destroy
+	belongs_to :user 
 	
 	#validations
 	validates :title,		:presence => true,

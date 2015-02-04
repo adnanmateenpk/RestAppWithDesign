@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!
+  layout 'admin'
   def index
     @posts = Post.sorted
   end
@@ -26,12 +28,12 @@ class PostsController < ApplicationController
 
   def edit
     @post_count = Post.count
-    @post = Post.where(["slug = ?",params[:slug]]).first
+    @post = Post.where(["slug = ?",params[:slug]]).first or not_found
     
   end
 
   def update
-    @post = Post.where(["slug = ?",params[:slug]]).first
+    @post = Post.where(["slug = ?",params[:slug]]).first or not_found
     if @post.update_attributes(post_params(@post))
       flash[:notice]="Post update successfully"
       redirect_to(:action=>'index')
@@ -41,7 +43,7 @@ class PostsController < ApplicationController
     end 
   end
   def remove_image
-    post = Post.where(["slug = ?",params[:slug]]).first
+    post = Post.where(["slug = ?",params[:slug]]).first or not_found
     directory = File.join("vendor","assets","images","uploads","posts")
     old_path = File.join(directory,post.featured_image)
     File.delete(old_path) if File.exist?(old_path)
@@ -50,8 +52,11 @@ class PostsController < ApplicationController
     render json: { "gst": "deleted" } 
   end
   def destroy
-    post = Post.where(["slug = ?",params[:slug]]).first
+    post = Post.where(["slug = ?",params[:slug]]).first or not_found
     directory = File.join("vendor","assets","images","uploads","posts")
+    if post.featured_image.blank?
+      post.featured_image = "test"
+    end
     old_path = File.join(directory,post.featured_image)
     File.delete(old_path) if File.exist?(old_path)
     post.destroy

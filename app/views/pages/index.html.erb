@@ -20,7 +20,7 @@
   
     <td class="actions">
       <%= link_to("Edit", {:action => 'edit', :slug => page.slug}, :class => 'action edit') %>
-      <%= link_to 'Delete' , {:action => 'destroy' , :slug => page.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_page' %>
+      <%= link_to 'Delete' , {:action => 'destroy' , :slug => page.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' %>
       
     </td>
   </tr>

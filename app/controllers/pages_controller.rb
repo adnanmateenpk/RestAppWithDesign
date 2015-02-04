@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  before_action :authenticate_user!
+  layout 'admin'
   def index
     @pages = Page.sorted
   end
@@ -24,6 +26,12 @@ class PagesController < ApplicationController
       flash[:notice]="Page created successfully"
       redirect_to(:action=>'index')
     else
+      layouts = Layout.all
+      @layouts = Array.new
+      layouts.each_with_index do |l,i|
+        @layouts[i] = Array.new
+        @layouts[i] = [l.title,l.id] 
+      end
       @page_count = Page.count + 1
       render('new')
     end 	
@@ -31,7 +39,7 @@ class PagesController < ApplicationController
 
   def edit
     @page_count = Page.count
-    @page = Page.where(["slug = ?",params[:slug]]).first
+    @page = Page.where(["slug = ?",params[:slug]]).first or not_found
     layouts = Layout.all
     @layouts = Array.new
     layouts.each_with_index do |l,i|
@@ -41,17 +49,23 @@ class PagesController < ApplicationController
   end
 
   def update
-    @page = Page.where(["slug = ?",params[:slug]]).first
+    @page = Page.where(["slug = ?",params[:slug]]).first or not_found
     if @page.update_attributes(page_params(@page))
       flash[:notice]="Page update successfully"
       redirect_to(:action=>'index')
     else
+      layouts = Layout.all
+      @layouts = Array.new
+      layouts.each_with_index do |l,i|
+        @layouts[i] = Array.new
+        @layouts[i] = [l.title,l.id] 
+      end
       @page_count = Page.count
       render('edit')
     end 
   end
   def remove_image
-    page = Page.where(["slug = ?",params[:slug]]).first
+    page = Page.where(["slug = ?",params[:slug]]).first or not_found
     directory = File.join("vendor","assets","images","uploads","pages")
     old_path = File.join(directory,page.featured_image)
     File.delete(old_path) if File.exist?(old_path)
@@ -60,7 +74,10 @@ class PagesController < ApplicationController
     render json: { "gst": "deleted" } 
   end
   def destroy
-    page = Page.where(["slug = ?",params[:slug]]).first
+    page = Page.where(["slug = ?",params[:slug]]).first or not_found
+    if page.featured_image.blank?
+      page.featured_image = "test"
+    end
     directory = File.join("vendor","assets","images","uploads","pages")
     old_path = File.join(directory,page.featured_image)
     File.delete(old_path) if File.exist?(old_path)

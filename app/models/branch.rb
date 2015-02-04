@@ -2,7 +2,7 @@ class Branch < ActiveRecord::Base
 	#sorting
 	acts_as_list
 	#relations
-	has_many :tables
+	has_many :tables , dependent: :destroy
 	belongs_to :restaurant
 	#scopes
 	scope :sorted, lambda { order("branches.position ASC") }

@@ -12,6 +12,12 @@
     <th><%= f.label(:status, "Status") %></th>
     <td><%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@restaurant.status ? 1 : 0))) %></td>
   </tr>
+  <% if current_user.role.role == "admin" %>
+  <tr>
+    <th><%= f.label(:user_id, "Users") %></th>
+    <td><%= f.select(:user_id, options_for_select(@users,@restaurant.user_id)) %></td>
+  </tr>
+   <%   end %>
   <tr>
     <th><%= f.label(:featured_image) %></th>
     <td><%= f.file_field(:featured_image) %></td>
