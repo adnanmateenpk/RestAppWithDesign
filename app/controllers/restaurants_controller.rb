@@ -1,9 +1,10 @@
 class RestaurantsController < ApplicationController
   before_action :authenticate_user!
   layout 'admin'
+  authorize_resource :class => false
  def index
-    if current_user.role.role != "admin"
-      @restaurants = Restaurant.where(["user_id = ?",current_user.id]).first
+    if current_user.role_id != 1
+      @restaurants = Restaurant.where(["user_id = ?",current_user.id])
     else
       @restaurants = Restaurant.all
     end
@@ -11,29 +12,30 @@ class RestaurantsController < ApplicationController
   end
 
   def edit
-    if current_user.role.role != "admin"
-      @restaurant = Restaurant.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
-      users = User.where(["role_id = ?",1])
+    if current_user.role_id == 1
+      @restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
+     
+      users = User.where(["role_id = ?",2])
 
         @users = Array.new
         users.each_with_index do |u,i|
           @users[i] = Array.new
-          @users[i] = [u.title,u.id] 
+          @users[i] = [u.name,u.id] 
         end
     else
-      @restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
+       @restaurant = Restaurant.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     end
   end
 
   def new
     @restaurant = Restaurant.new
-    if current_user.role.role != "admin"
-        users = User.where(["role_id = ?",1])
+    if current_user.role_id == 1
+        users = User.where(["role_id = ?",2])
 
         @users = Array.new
         users.each_with_index do |u,i|
           @users[i] = Array.new
-          @users[i] = [u.title,u.id] 
+          @users[i] = [u.name,u.id] 
         end
       end
   end
@@ -45,13 +47,13 @@ class RestaurantsController < ApplicationController
       flash[:notice] = "Restaurant saved"
       redirect_to(:action=>'index')
     else
-      if current_user.role.role != "admin"
-        users = User.where(["role_id = ?",1])
+      if current_user.role_id == 1
+        users = User.where(["role_id = ?",2])
 
         @users = Array.new
         users.each_with_index do |u,i|
           @users[i] = Array.new
-          @users[i] = [u.title,u.id] 
+          @users[i] = [u.name,u.id] 
         end
       end
       render("new")
@@ -60,7 +62,7 @@ class RestaurantsController < ApplicationController
   end
 
   def destroy
-    if current_user.role.role != "admin"
+    if current_user.role_id != 1
       restaurant = Restaurant.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     else
       restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
@@ -77,7 +79,7 @@ class RestaurantsController < ApplicationController
   end
 
   def remove_image
-  	if current_user.role.role != "admin"
+  	if current_user.role_id != 1
       restaurant = Restaurant.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     else
       restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
@@ -91,7 +93,7 @@ class RestaurantsController < ApplicationController
   end
 
   def update
-    if current_user.role.role != "admin"
+    if current_user.role_id != 1
       @restaurant = Restaurant.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     else
       @restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
@@ -100,13 +102,13 @@ class RestaurantsController < ApplicationController
       flash[:notice] = "Restaurant saved"
       redirect_to(:action=>'index')
     else
-      if current_user.role.role != "admin"
-        users = User.where(["role_id = ?",1])
+      if current_user.role_id == 1
+        users = User.where(["role_id = ?",2])
 
         @users = Array.new
         users.each_with_index do |u,i|
           @users[i] = Array.new
-          @users[i] = [u.title,u.id] 
+          @users[i] = [u.name,u.id] 
         end
       end
       render("new")
@@ -126,7 +128,7 @@ class RestaurantsController < ApplicationController
     else
         params[:restaurant][:slug] = params[:restaurant][:slug].parameterize
     end
-    if current_user.role.role == "restaurant"
+    if current_user.role_id == 2
       params[:restaurant][:user_id] = current_user.id 
     end
     params.require(:restaurant).permit(:title,:slug,:status,:description,:featured_image,:user_id)

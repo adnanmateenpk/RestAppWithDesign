@@ -1,4 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
+  layout "devise_sessions"
 # before_filter :configure_sign_up_params, only: [:create]
 # before_filter :configure_account_update_params, only: [:update]
 
@@ -40,19 +41,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # You can put the params you want to permit in the empty array.
   def sign_up_params
-    
-    if params[:user][:role_id] == "1"
-      params[:user][:role_id] = "3"
-    end
-    puts params
+    params[:user][:role_id] = "3"
     params.require(:user).permit(:name, :role_id , :email, :password, :password_confirmation)
   end
 
   # You can put the params you want to permit in the empty array.
   def account_update_params
-    if params[:user][:role_id] == "1"
-      params[:user][:role_id] = "3"
-    end
+    params[:user][:role_id] = "3"
     params.require(:user).permit(:name,:role_id , :email, :password, :password_confirmation)
   end
 

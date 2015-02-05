@@ -4,8 +4,9 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions" }
   root to: 'main#index'
-
-  get "admin" => 'admin#index'
+  patch "change-subscription" => 'main#convert_user'
+  get "change-subscription" => 'main#subscription'
+  get "dashboard" => 'admin#index'
   resources :restaurants , :param => :slug do
     member do
       patch 'remove_image'
@@ -21,7 +22,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  scope :admin do
+  scope :dashboard do
     get "settings" => 'admin#settings'
     patch "settings/save" => 'admin#settings_save'
     patch "settings/logo" => 'admin#remove_logo'

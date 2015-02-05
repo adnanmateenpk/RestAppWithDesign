@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
   before_action :authenticate_user!
   layout 'admin'
+  authorize_resource :class => false
   def index
   end
 

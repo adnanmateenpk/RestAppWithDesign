@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204201133) do
+ActiveRecord::Schema.define(version: 20150205145116) do
 
   create_table "branches", force: :cascade do |t|
     t.string   "title",          limit: 255
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20150204201133) do
     t.integer  "restaurant_id",  limit: 4
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.integer  "user_id",        limit: 4
   end
 
   add_index "branches", ["position"], name: "index_branches_on_position", using: :btree
@@ -133,6 +134,7 @@ ActiveRecord::Schema.define(version: 20150204201133) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.float    "hours",          limit: 24
+    t.integer  "user_id",        limit: 4
   end
 
   add_index "tables", ["branch_id"], name: "index_tables_on_branch_id", using: :btree
@@ -141,7 +143,7 @@ ActiveRecord::Schema.define(version: 20150204201133) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
-    t.string   "role_id",                limit: 255
+    t.integer  "role_id",                limit: 4
     t.string   "email",                  limit: 255, default: "", null: false
     t.string   "encrypted_password",     limit: 255, default: "", null: false
     t.string   "reset_password_token",   limit: 255

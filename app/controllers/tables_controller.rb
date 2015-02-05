@@ -1,16 +1,23 @@
 class TablesController < ApplicationController
   before_action :authenticate_user!
   layout 'admin'
+  authorize_resource :class => false
   def index
-    @tables = Table.sorted
+    if current_user.role_id == 1
+      @tables = Table.where(["branch_id = ?",Branch.where(["slug = ?",params[:branch_slug]]).first.id]).all
+    else
+      @tables = Table.where(["branch_id = ? AND user_id = ?",Branch.where(["slug = ?",params[:branch_slug]]).first.id,current_user.id]).sorted
+    end
   end
 
   def edit
     @table_count = Table.count
-    @table = Table.where(["slug = ?",params[:slug]]).first or not_found
-    if(@table.branch.restaurant.user_id != current_user.id)
-      not_found
+    if current_user.role_id == 1
+      @table = Table.where(["slug = ?",params[:slug]]).first
+    else
+      @table = Table.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     end
+    
   end
 
   def new
@@ -21,6 +28,9 @@ class TablesController < ApplicationController
   def create
     @table_count = Table.count + 1
     @table = Table.new(table_params("test"))
+    branch =  Branch.where(["slug = ?",params[:branch_slug]]).first
+    @table.branch_id = branch.id 
+    @table.user_id = branch.user_id
     if @table.save
       flash[:notice] = "Table saved"
       redirect_to(:action=>'index')
@@ -31,10 +41,12 @@ class TablesController < ApplicationController
   end
 
   def destroy
-    table = Table.where(["slug = ?",params[:slug]]).first or not_found
-    if(@table.branch.restaurant.user_id != current_user.id)
-      not_found
+    if current_user.role_id == 1
+      table = Table.where(["slug = ?",params[:slug]]).first
+    else
+      table = Table.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     end
+    
     directory = File.join("vendor","assets","images","uploads","tables")
     if table.featured_image.blank?
       table.featured_image = "test"
@@ -46,10 +58,12 @@ class TablesController < ApplicationController
   end
 
   def remove_image
-    table = Table.where(["slug = ?",params[:slug]]).first or not_found
-    if(@table.branch.restaurant.user_id != current_user.id)
-      not_found
+    if current_user.role_id == 1
+      table = Table.where(["slug = ?",params[:slug]]).first
+    else
+      table = Table.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     end
+    
     directory = File.join("vendor","assets","images","uploads","tables")
     old_path = File.join(directory,table.featured_image)
     File.delete(old_path) if File.exist?(old_path)
@@ -59,11 +73,12 @@ class TablesController < ApplicationController
   end
 
   def update
-
-    @table = Table.where(["slug = ?",params[:slug]]).first or not_found
-    if(@table.branch.restaurant.user_id != current_user.id)
-      not_found
+    if current_user.role_id == 1
+      @table = Table.where(["slug = ?",params[:slug]]).first
+    else
+      @table = Table.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     end
+    
     if @table.update_attributes(table_params(@table.featured_image))
       flash[:notice] = "Table saved"
       redirect_to(:action=>'index')
@@ -82,7 +97,7 @@ class TablesController < ApplicationController
       params[:table][:featured_image]= upload_files_custom(params[:table][:featured_image],"tables",old_image)
     end
     if params[:table][:slug].blank?
-       params[:table][:slug] = params[:table][:title].parameterize
+       params[:table][:slug] = (params[:table][:title]+Time.now.to_i.to_s).parameterize
     else
         params[:table][:slug] = params[:table][:slug].parameterize
     end

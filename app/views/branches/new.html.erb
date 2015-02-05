@@ -1,4 +1,4 @@
-<%= link_to("Branches",{:controller=>'Branches',:action=>'index'},:class=>'action index')%>
+<%= link_to("Branches",{:controller=>'branches',:action=>'index'},:class=>'action index')%>
 <h1>New Branch</h1>
 
 <%= form_for(:branch, :url=>{:action=>'create'},:multipart=>true) do |f| %>

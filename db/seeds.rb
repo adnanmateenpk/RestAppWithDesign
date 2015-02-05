@@ -20,3 +20,10 @@
 	Role.create(:role => "admin" , :title => "Admin")
 	Role.create(:role => "restaurant", :title => "Restaurant Owner")
 	Role.create(:role => "user", :title => "Customer")
+
+	User.destroy_all
+	ActiveRecord::Base.connection.execute("TRUNCATE users;")
+	User.create(email: 'admin@restapp.com', password: 'adminpassword', :role_id => 1 , :name => "Super Admin")
+	User.create(email: 'restaurant1@restapp.com', password: 'password', :role_id => 2 , :name => "Restaurant Owner 1")
+	User.create(email: 'restaurant2@restapp.com', password: 'password', :role_id => 2 , :name => "Restaurant Owner 2")
+	User.create(email: 'customer@restapp.com', password: 'password', :role_id => 3 , :name => "Customer")

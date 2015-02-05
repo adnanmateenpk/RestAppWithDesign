@@ -1,2 +1,7 @@
-<h1>Main#index</h1>
-<p>Find me in app/views/main/index.html.erb</p>
+<h1>Home Page</h1>
+
+<% if can? :index,:admin %>
+	<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action index')%> 
+<% else %>
+	<%= link_to("Change Subscription",{:action=>'subscription'},:class=>'action index') %>
+<% end %>

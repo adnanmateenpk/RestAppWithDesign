@@ -1,6 +1,7 @@
 class PagesController < ApplicationController
   before_action :authenticate_user!
   layout 'admin'
+  authorize_resource :class => false
   def index
     @pages = Page.sorted
   end
@@ -21,7 +22,7 @@ class PagesController < ApplicationController
   end
 
   def create 
-    @page = Page.new(page_params(Page.new(:featured_image => "test")))
+    @page = Page.new(page_params("test"))
     if @page.save
       flash[:notice]="Page created successfully"
       redirect_to(:action=>'index')
@@ -39,7 +40,7 @@ class PagesController < ApplicationController
 
   def edit
     @page_count = Page.count
-    @page = Page.where(["slug = ?",params[:slug]]).first or not_found
+    @page = Page.where(["slug = ?",params[:slug]]).first 
     layouts = Layout.all
     @layouts = Array.new
     layouts.each_with_index do |l,i|
@@ -49,8 +50,8 @@ class PagesController < ApplicationController
   end
 
   def update
-    @page = Page.where(["slug = ?",params[:slug]]).first or not_found
-    if @page.update_attributes(page_params(@page))
+    @page = Page.where(["slug = ?",params[:slug]]).first 
+    if @page.update_attributes(page_params(@page.featured_image))
       flash[:notice]="Page update successfully"
       redirect_to(:action=>'index')
     else
@@ -65,7 +66,7 @@ class PagesController < ApplicationController
     end 
   end
   def remove_image
-    page = Page.where(["slug = ?",params[:slug]]).first or not_found
+    page = Page.where(["slug = ?",params[:slug]]).first 
     directory = File.join("vendor","assets","images","uploads","pages")
     old_path = File.join(directory,page.featured_image)
     File.delete(old_path) if File.exist?(old_path)
@@ -74,7 +75,7 @@ class PagesController < ApplicationController
     render json: { "gst": "deleted" } 
   end
   def destroy
-    page = Page.where(["slug = ?",params[:slug]]).first or not_found
+    page = Page.where(["slug = ?",params[:slug]]).first 
     if page.featured_image.blank?
       page.featured_image = "test"
     end
@@ -86,12 +87,12 @@ class PagesController < ApplicationController
   end
 
   private
-  def page_params(page)
-    if page.featured_image.blank?
-      page.featured_image = "test"
+  def page_params(old)
+    if old.blank?
+      old = "test"
     end
     if !params[:page][:featured_image].blank?
-      params[:page][:featured_image]= upload_files_custom(params[:page][:featured_image],"pages",page.featured_image)
+      params[:page][:featured_image]= upload_files_custom(params[:page][:featured_image],"pages",old)
     end
     if params[:page][:slug].blank?
        params[:page][:slug] = params[:page][:title].parameterize
