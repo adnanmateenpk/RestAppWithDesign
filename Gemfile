@@ -28,6 +28,7 @@ gem 'therubyracer'
 gem 'acts_as_list'
 gem 'devise'
 gem "cancan"
+gem 'whenever', '~> 0.9.4'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

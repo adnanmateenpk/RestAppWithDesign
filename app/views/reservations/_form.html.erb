@@ -1,0 +1,50 @@
+<%= error_messages_for(@reservation) %>
+<table summary="Reservation form fields">
+  <tr>
+    <th><%= f.label(:reservation_name,"Reservation Name")%></th>
+    <td><%= f.text_field(:reservation_name,:readonly=>@reservation.id.blank? ? false : true )%></td>
+  </tr>
+  <tr>
+    <th><%= label_tag(:date,"Reservation Date")%></th>
+    <td><%= text_field_tag(:date,@date ,:placeholder=>@date) %></td>
+  </tr>
+  <tr>
+    <th><%= label_tag(:time,"Reservation Time")%></th>
+    <td><%= text_field_tag(:time, @time ,:placeholder=>@time) %></td>
+  </tr>
+  <tr>
+    <th><%= label_tag(:restaurant_id, "Restaurants") %></th>
+    <% if @reservation.id.blank? %>
+    <td><%= select_tag(:restaurant_id, options_for_select(@restaurants), :id => "restaurant_id", :onchange => "populateBranches(this.value);") %></td>
+    <% else %>
+    <td><%= @reservation.branch.restaurant.title %></td>
+    <% end %>
+  </tr>
+  <tr>
+    <th><%= f.label(:branch_id, "Branches") %></th>
+    <% if @reservation.id.blank? %>
+    <td><%= select_tag(:branch_id, options_for_select([]),:onchange => "assignBranchValue(this.value);") %>
+    <%= f.hidden_field(:branch_id) %>
+    </td><% else %>
+    <td><%= @reservation.branch.title %>
+    <%= f.hidden_field(:branch_id) %>
+    </td>
+    <% end %>
+    
+  </tr>
+  <% if !@reservation.id.blank? %>
+  <tr>
+    <th><%= f.label(:status, "Status") %></th>
+    <td><%= f.select(:status, options_for_select([['Active',1],['Expire',0]],(@reservation.status ? 1 : 0))) %></td>
+  </tr>
+  <% end %>
+  <tr>
+    <th><%= f.label(:people, "No. of People") %></th>
+    <td><%= f.select(:people, options_for_select((1..20),@reservation.people)) %></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:user_id, "Membership No.") %></th>
+
+    <td><%= f.text_field(:user_id,:readonly=>@reservation.id.blank? ? false : true )  %></td>
+  </tr>
+</table>

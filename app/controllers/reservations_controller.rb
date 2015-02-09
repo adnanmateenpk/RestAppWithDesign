@@ -8,24 +8,24 @@ class ReservationsController < ApplicationController
     @reservation = Reservation.new()
     restaurants = Restaurant.by_user(current_user.id).published
     @restaurants = Array.new
-    @restaurants[0] = ["Select One" , 0]
+    
     restaurants.each_with_index do |u,i|
-      @restaurants[i+1] = Array.new
-      @restaurants[i+1] = [u.title,u.id.to_s+"|"+u.slug] 
+      @restaurants[i] = Array.new
+      @restaurants[i] = [u.title,u.id.to_s+"|"+u.slug] 
     end
   end
   def create
     @reservation = Reservation.new(reservation_params)
     if @reservation.save 
-      flash[:notice] = "Reservation Created With for '#{@reservation.user.name}' Reservation Code #{@reservation.reservation_code}"
+      flash[:notice] = "Reservation Created With for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
       redirect_to :action => :index
     else 
       restaurants = Restaurant.by_user(current_user.id).published
       @restaurants = Array.new
-      @restaurants[0] = ["Select One" , 0]
+      
       restaurants.each_with_index do |u,i|
-        @restaurants[i+1] = Array.new
-        @restaurants[i+1] = [u.title,u.id.to_s+"|"+u.slug] 
+        @restaurants[i] = Array.new
+        @restaurants[i] = [u.title,u.id.to_s+"|"+u.slug] 
       end
       @date = @reservation.booking.strftime("%m-%d-%Y")
       @time = @reservation.booking.strftime("%H:%M:%S")
@@ -33,8 +33,27 @@ class ReservationsController < ApplicationController
     end
   end
   def edit
+    @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
+    @date = @reservation.booking.strftime("%m-%d-%Y")
+    @time = @reservation.booking.strftime("%H:%M:%S")
   end
-
+  def destroy
+    @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
+    @reservation.status = 0
+    
+    render :json => {"cancelled" => @reservation.save}
+  end
+  def update 
+    @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
+    if @reservation.update_attributes(reservation_params) 
+      flash[:notice] = "Reservation Updated for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
+      redirect_to :action => :index
+    else 
+      @date = @reservation.booking.strftime("%m-%d-%Y")
+      @time = @reservation.booking.strftime("%H:%M:%S")
+      render "edit"
+    end
+  end
   def index
   	if current_user.role_id == 1 
   		@reservations = Reservation.sorted
@@ -51,7 +70,7 @@ class ReservationsController < ApplicationController
   end
   private
   def reservation_params
-    params[:reservation][:status] = 1
+    params[:reservation][:status] = params[:reservation][:status].blank? ? 1 : params[:reservation][:status]
     date = params[:date].split('-')
     params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     params[:reservation][:booking] = params[:date]+ " " + params[:time]

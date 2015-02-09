@@ -12,3 +12,6 @@ Commands to run before rails s
 
 * rake assets:precompile
 
+* whenever --update-crontab
+
+* sudo service cron restart

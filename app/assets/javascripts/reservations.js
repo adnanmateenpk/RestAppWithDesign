@@ -1,6 +1,15 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-
+$(document).ready(function(){
+	$('.reservation_row').on('ajax:success', function() {  
+	        $(this).closest('td').prevAll('td.status').html("Cancelled")
+	        $(this).fadeOut("slow",function(){
+	        	$(this).remove();
+	        	
+	        })
+	});
+	
+});
 function populateBranches(val){
 	if(val==0){
 		$("#branch_id").html("");
@@ -24,7 +33,7 @@ function assignBranchValue(val){
 	val = val.split("|");
 	$("#reservation_branch_id").val(val[0]);
 }
-function checkAvailability(object){
+function checkAvailability(object,id=0){
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
 	date = $("#date").val();
@@ -39,18 +48,22 @@ function checkAvailability(object){
 		$.ajax({	
 				url: "/availability_restaurant",
 				type: "POST",
-				data:{"customer":user,"branch" : val,"time":time,"date":date,"people" : people },
+				data:{"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id },
 				done: function(){
 
 				},
 				success: function(result){
 					if(result.found){
-			            $(".form-buttons").html($(".form-buttons").html()+'<input type="submit" value="Create Reservation" name="commit" id="submit-button" style="display:none;">');
-						$("#notice").html("Table Available!!!").show();
+			            if(id==0)
+			            	$(".form-buttons").html($(".form-buttons").html()+'<input type="submit" value="Create Reservation" name="commit" id="submit-button" style="display:none;">');
+						else 
+							$(".form-buttons").html($(".form-buttons").html()+'<input type="submit" value="Update Reservation" name="commit" id="submit-button" style="display:none;">');
+						
+						$("#notice").html(result.message).show();
 						$("#submit-button").fadeIn();
 		        	}
 		        	else {
-		        		$("#notice").html("Table Not Available!!!").show();
+		        		$("#notice").html(result.message).show();
 		        		$("#submit-button").remove();
 		        	}
 		        	
