@@ -1,7 +1,7 @@
 <%= link_to("Branches",{:controller=>'branches',:action=>'index'},:class=>'action index')%>
 <h1>New Branch</h1>
 
-<%= form_for(:branch, :url=>{:action=>'create'},:multipart=>true) do |f| %>
+<%= form_for(:branch, :url=>{:action=>'create'},:multipart=>true ,html: {:id=>"branch-form"}) do |f| %>
 <%= render(:partial => "form",:locals=>{:f=>f})%>
 <div class="form-buttons">
   <%= submit_tag("Create Branch")%>

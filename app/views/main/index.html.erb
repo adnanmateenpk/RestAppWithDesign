@@ -2,6 +2,6 @@
 
 <% if can? :index,:admin %>
 	<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action index')%> 
-<% else %>
+<% elsif user_signed_in? %>
 	<%= link_to("Change Subscription",{:action=>'subscription'},:class=>'action index') %>
 <% end %>

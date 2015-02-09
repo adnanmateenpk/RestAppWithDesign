@@ -1,5 +1,5 @@
 class RestaurantsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user! , :except => [:list]
   layout 'admin'
   authorize_resource :class => false
  def index
@@ -10,18 +10,16 @@ class RestaurantsController < ApplicationController
     end
   	
   end
-
+def list
+    render json: Restaurant.published
+end
   def edit
     if current_user.role_id == 1
       @restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
      
-      users = User.where(["role_id = ?",2])
+      @users = User.where(["role_id = ?",2])
 
-        @users = Array.new
-        users.each_with_index do |u,i|
-          @users[i] = Array.new
-          @users[i] = [u.name,u.id] 
-        end
+        
     else
        @restaurant = Restaurant.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     end
@@ -30,13 +28,9 @@ class RestaurantsController < ApplicationController
   def new
     @restaurant = Restaurant.new
     if current_user.role_id == 1
-        users = User.where(["role_id = ?",2])
+        @users = User.where(["role_id = ?",2])
 
-        @users = Array.new
-        users.each_with_index do |u,i|
-          @users[i] = Array.new
-          @users[i] = [u.name,u.id] 
-        end
+        
       end
   end
   
@@ -48,13 +42,9 @@ class RestaurantsController < ApplicationController
       redirect_to(:action=>'index')
     else
       if current_user.role_id == 1
-        users = User.where(["role_id = ?",2])
+        @users = User.where(["role_id = ?",2])
 
-        @users = Array.new
-        users.each_with_index do |u,i|
-          @users[i] = Array.new
-          @users[i] = [u.name,u.id] 
-        end
+        
       end
       render("new")
     end
@@ -103,13 +93,9 @@ class RestaurantsController < ApplicationController
       redirect_to(:action=>'index')
     else
       if current_user.role_id == 1
-        users = User.where(["role_id = ?",2])
+        @users = User.where(["role_id = ?",2])
 
-        @users = Array.new
-        users.each_with_index do |u,i|
-          @users[i] = Array.new
-          @users[i] = [u.name,u.id] 
-        end
+        
       end
       render("new")
     end
@@ -124,7 +110,7 @@ class RestaurantsController < ApplicationController
       params[:restaurant][:featured_image]= upload_files_custom(params[:restaurant][:featured_image],"restaurants",old_image)
     end
     if params[:restaurant][:slug].blank?
-       params[:restaurant][:slug] = params[:restaurant][:title].parameterize
+       params[:restaurant][:slug] = (current_user.membership+" "+params[:restaurant][:title]).parameterize
     else
         params[:restaurant][:slug] = params[:restaurant][:slug].parameterize
     end

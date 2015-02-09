@@ -13,12 +13,8 @@ class PagesController < ApplicationController
   def new
     @page_count = Page.count+1
     @page = Page.new
-    layouts = Layout.all
-    @layouts = Array.new
-    layouts.each_with_index do |l,i|
-      @layouts[i] = Array.new
-      @layouts[i] = [l.title,l.id] 
-    end
+    @layouts = Layout.all
+    
   end
 
   def create 
@@ -27,12 +23,8 @@ class PagesController < ApplicationController
       flash[:notice]="Page created successfully"
       redirect_to(:action=>'index')
     else
-      layouts = Layout.all
-      @layouts = Array.new
-      layouts.each_with_index do |l,i|
-        @layouts[i] = Array.new
-        @layouts[i] = [l.title,l.id] 
-      end
+      @layouts = Layout.all
+      
       @page_count = Page.count + 1
       render('new')
     end 	
@@ -41,12 +33,8 @@ class PagesController < ApplicationController
   def edit
     @page_count = Page.count
     @page = Page.where(["slug = ?",params[:slug]]).first 
-    layouts = Layout.all
-    @layouts = Array.new
-    layouts.each_with_index do |l,i|
-      @layouts[i] = Array.new
-      @layouts[i] = [l.title,l.id] 
-    end
+    @layouts = Layout.all
+    
   end
 
   def update
@@ -55,12 +43,8 @@ class PagesController < ApplicationController
       flash[:notice]="Page update successfully"
       redirect_to(:action=>'index')
     else
-      layouts = Layout.all
-      @layouts = Array.new
-      layouts.each_with_index do |l,i|
-        @layouts[i] = Array.new
-        @layouts[i] = [l.title,l.id] 
-      end
+      @layouts = Layout.all
+      
       @page_count = Page.count
       render('edit')
     end 

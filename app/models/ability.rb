@@ -11,8 +11,16 @@ class Ability
       elsif user.role_id == 2
         can :manage, :restaurant
         can :manage, :branch
-        can :manage, :table
+        can :manage , :reservation
         can [:index] , :admin
+        can [:index,:filtered] , :user
+      elsif user.role_id == 3
+        can [:list] , :restaurant
+        can [:list] , :branch
+        can [:create], :reservation
+      else 
+        can [:list] , :restaurant
+        can [:list] , :branch
       end
     #
     # The first argument to `can` is the action you are giving the user 

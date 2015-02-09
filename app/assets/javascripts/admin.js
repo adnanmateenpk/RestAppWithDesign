@@ -19,4 +19,11 @@ $(document).ready(function(){
 	        })
 
 	});
+	$('#branch-form').submit(function(){
+		if($("#hours_open").val()==$("#hours_close").val() && $("#mins_open").val()==$("#mins_close").val() && $("#meri_open").val()==$("#meri_close").val()){
+			$("p.alert").html("Opening And Closing Time Cannot be equal");
+			return false;
+		}
+		
+	})
 });

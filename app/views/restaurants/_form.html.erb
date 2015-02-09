@@ -15,7 +15,7 @@
   <% if current_user.role.role == "admin" %>
   <tr>
     <th><%= f.label(:user_id, "Users") %></th>
-    <td><%= f.select(:user_id, options_for_select(@users,@restaurant.user_id)) %></td>
+    <td><%= f.select(:user_id, options_from_collection_for_select(@users,"id","name",@restaurant.user_id)) %></td>
   </tr>
    <%   end %>
   <tr>

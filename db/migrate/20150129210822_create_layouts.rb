@@ -1,7 +1,8 @@
 class CreateLayouts < ActiveRecord::Migration
   def change
     create_table :layouts do |t|
-    	t.string 	:layout
+    	t.string :layout
+    	t.string :title
       	t.timestamps null: false
     end
   end

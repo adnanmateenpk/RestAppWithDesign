@@ -24,9 +24,9 @@ class ApplicationController < ActionController::Base
 	end
 	rescue_from CanCan::AccessDenied do |exception|
 		flash[:alert]  =  "You are not authorized to access this page"
-		if current_user.role_id == 2
+		if user_signed_in? && current_user.role_id == 2
 			redirect_to :controller => "admin" , :action => "index"
-		else
+		else 
 			redirect_to :controller => "main" , :action => "index"
 		end
 

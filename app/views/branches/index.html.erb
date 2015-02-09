@@ -18,8 +18,7 @@
     <td><%= d.status ? "Published" : "Unpublished" %></td>
   
     <td class="actions">
-     	  <%= link_to("Tables", restaurant_branch_tables_path(params[:restaurant_slug],d.slug), :class => 'action branches') %>
-      	<%= link_to("Edit", {:action => "edit" , :slug => d.slug}, :class => 'action edit') %>
+     	  <%= link_to("Edit", {:action => "edit" , :slug => d.slug}, :class => 'action edit') %>
       	<%= link_to 'Delete' , {:action => "destroy" , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' %>
       
     </td>

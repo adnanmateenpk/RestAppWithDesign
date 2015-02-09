@@ -1,15 +1,17 @@
 class BranchesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user! , :except => [:list]
   layout 'admin'
   authorize_resource :class => false
   def index
     if current_user.role_id == 1
-      @branches = Branch.where(["restaurant_id = ?",Restaurant.where(["slug = ?",params[:restaurant_slug]]).first.id]).all
+      @branches = Branch.where(["restaurant_id = ?",Restaurant.where(["slug = ?",params[:restaurant_slug]]).first.id]).sorted
     else 
       @branches = Branch.where(["restaurant_id = ? AND user_id = ?",Restaurant.where(["slug = ?",params[:restaurant_slug]]).first.id,current_user.id]).sorted
     end
   end
-
+  def list
+    render json: Branch.where(["restaurant_id = ?",Restaurant.where(["slug = ?",params[:restaurant_slug]]).first.id]).published
+  end
   def edit
     if current_user.role_id == 1
       @branch = Branch.where(["slug = ?",params[:slug]]).first 
@@ -23,7 +25,7 @@ class BranchesController < ApplicationController
 
   def new
     @branch_count = Branch.count + 1
-    @branch = Branch.new
+    @branch = Branch.new(:open=> "12 pm" , :close => "12 am")
   end
   
   def create
@@ -97,10 +99,17 @@ class BranchesController < ApplicationController
       params[:branch][:featured_image]= upload_files_custom(params[:branch][:featured_image],"branches",old_image)
     end
     if params[:branch][:slug].blank?
-       params[:branch][:slug] = (params[:branch][:title]+Time.now.to_i.to_s).parameterize
+       params[:branch][:slug] = (current_user.membership+" "+params[:branch][:title]).parameterize
     else
         params[:branch][:slug] = params[:branch][:slug].parameterize
     end
-    params.require(:branch).permit(:title,:slug,:status,:address,:email,:position,:phone,:fax,:featured_image)
+    params[:branch][:open] = DateTime.strptime(params[:hours_open]+":"+params[:mins_open]+" "+params[:meri_open],"%I:%M %p")
+    params[:branch][:close] = DateTime.strptime(params[:hours_close]+":"+params[:mins_close]+" "+params[:meri_close],"%I:%M %p")
+    if params[:branch][:close] < params[:branch][:open]
+      params[:branch][:close] = params[:branch][:close] + 1
+    end
+    puts params
+    params.require(:branch).permit(:title,:slug,:status,:address,:email,:position,:phone,:fax,:featured_image,:open,:close,:expiry,:seating_capacity)
   end
+  
 end

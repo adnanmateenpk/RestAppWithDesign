@@ -12,5 +12,8 @@ class CreatePages < ActiveRecord::Migration
     	t.string 	:meta_description
     	t.timestamps null: false
     end
+    add_index "pages","slug"
+    add_index "pages","position"
+    add_index "pages","layout_id"
   end
 end

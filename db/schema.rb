@@ -11,27 +11,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205145116) do
+ActiveRecord::Schema.define(version: 20150209175522) do
 
   create_table "branches", force: :cascade do |t|
-    t.string   "title",          limit: 255
-    t.string   "slug",           limit: 255
-    t.string   "address",        limit: 255
-    t.string   "phone",          limit: 255
-    t.string   "fax",            limit: 255
-    t.string   "email",          limit: 255
-    t.string   "featured_image", limit: 255
-    t.integer  "position",       limit: 4
-    t.boolean  "status",         limit: 1
-    t.integer  "restaurant_id",  limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.integer  "user_id",        limit: 4
+    t.string   "title",            limit: 255
+    t.string   "slug",             limit: 255
+    t.string   "address",          limit: 255
+    t.string   "phone",            limit: 255
+    t.string   "fax",              limit: 255
+    t.string   "email",            limit: 255
+    t.string   "featured_image",   limit: 255
+    t.integer  "position",         limit: 4
+    t.boolean  "status",           limit: 1
+    t.datetime "open"
+    t.datetime "close"
+    t.integer  "seating_capacity", limit: 4
+    t.integer  "expiry",           limit: 4
+    t.integer  "restaurant_id",    limit: 4
+    t.integer  "user_id",          limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
+  add_index "branches", ["close"], name: "index_branches_on_close", using: :btree
+  add_index "branches", ["open"], name: "index_branches_on_open", using: :btree
   add_index "branches", ["position"], name: "index_branches_on_position", using: :btree
   add_index "branches", ["restaurant_id"], name: "index_branches_on_restaurant_id", using: :btree
   add_index "branches", ["slug"], name: "index_branches_on_slug", using: :btree
+  add_index "branches", ["user_id"], name: "index_branches_on_user_id", using: :btree
 
   create_table "ips", force: :cascade do |t|
     t.string   "address",    limit: 255
@@ -44,9 +51,9 @@ ActiveRecord::Schema.define(version: 20150205145116) do
 
   create_table "layouts", force: :cascade do |t|
     t.string   "layout",     limit: 255
+    t.string   "title",      limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.string   "title",      limit: 255
   end
 
   create_table "pages", force: :cascade do |t|
@@ -84,6 +91,26 @@ ActiveRecord::Schema.define(version: 20150205145116) do
   add_index "posts", ["position"], name: "index_posts_on_position", using: :btree
   add_index "posts", ["slug"], name: "index_posts_on_slug", using: :btree
   add_index "posts", ["status"], name: "index_posts_on_status", using: :btree
+
+  create_table "reservations", force: :cascade do |t|
+    t.string   "reservation_name", limit: 255
+    t.string   "reservation_code", limit: 255
+    t.boolean  "status",           limit: 1
+    t.integer  "branch_id",        limit: 4
+    t.string   "user_id",          limit: 255
+    t.integer  "people",           limit: 4
+    t.datetime "booking"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.datetime "expire_at"
+    t.integer  "created_by",       limit: 4
+  end
+
+  add_index "reservations", ["booking"], name: "index_reservations_on_booking", using: :btree
+  add_index "reservations", ["branch_id"], name: "index_reservations_on_branch_id", using: :btree
+  add_index "reservations", ["created_by"], name: "index_reservations_on_created_by", using: :btree
+  add_index "reservations", ["status"], name: "index_reservations_on_status", using: :btree
+  add_index "reservations", ["user_id"], name: "index_reservations_on_user_id", using: :btree
 
   create_table "restaurants", force: :cascade do |t|
     t.string   "title",          limit: 255
@@ -123,29 +150,13 @@ ActiveRecord::Schema.define(version: 20150205145116) do
     t.datetime "updated_at",             null: false
   end
 
-  create_table "tables", force: :cascade do |t|
-    t.string   "title",          limit: 255
-    t.string   "slug",           limit: 255
-    t.integer  "chairs",         limit: 4
-    t.integer  "branch_id",      limit: 4
-    t.string   "featured_image", limit: 255
-    t.integer  "position",       limit: 4
-    t.boolean  "status",         limit: 1
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.float    "hours",          limit: 24
-    t.integer  "user_id",        limit: 4
-  end
-
-  add_index "tables", ["branch_id"], name: "index_tables_on_branch_id", using: :btree
-  add_index "tables", ["position"], name: "index_tables_on_position", using: :btree
-  add_index "tables", ["slug"], name: "index_tables_on_slug", using: :btree
-
   create_table "users", force: :cascade do |t|
     t.string   "name",                   limit: 255
     t.integer  "role_id",                limit: 4
     t.string   "email",                  limit: 255, default: "", null: false
     t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "phone",                  limit: 255
+    t.string   "membership",             limit: 255
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -167,6 +178,8 @@ ActiveRecord::Schema.define(version: 20150205145116) do
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["membership"], name: "index_users_on_membership", using: :btree
+  add_index "users", ["phone"], name: "index_users_on_phone", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree

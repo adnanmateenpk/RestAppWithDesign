@@ -42,7 +42,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # You can put the params you want to permit in the empty array.
   def sign_up_params
     params[:user][:role_id] = "3"
-    params.require(:user).permit(:name, :role_id , :email, :password, :password_confirmation)
+    params[:user][:membership] =  Digest::SHA1.hexdigest(params[:user][:email])[0,6]
+    params.require(:user).permit(:name, :role_id , :email, :password, :password_confirmation,:phone,:membership)
   end
 
   # You can put the params you want to permit in the empty array.

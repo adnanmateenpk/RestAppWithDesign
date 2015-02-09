@@ -1,0 +1,36 @@
+<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action index')%> | 
+<%= link_to("Add Reservation",{:action=>'new'},:class=>'action new') %>
+<h1>Reservations List</h1>
+<table class="listing" summary="Reservations list">
+  <tr class="header">
+    <th>&nbsp;</th>
+    <th>Name</th>
+    <th>Code</th>
+    <th>Restaurant</th>
+    <th>Branch</th>
+    <th>Date</th>
+    <th>Time</th>
+    
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+  <% @reservations.each_with_index do |data,index| %>
+  <tr class="">
+    <td class="position"><%= index+1 %></td>
+    <td><%= data.reservation_name %></td>
+    <td><%= data.reservation_code %></td>
+    <td><%= data.branch.restaurant.title %></td>
+    <td><%= data.branch.title %></td>
+    <td><%= data.booking.strftime("%m-%d-%Y")%></td>
+    <td><%= data.booking.strftime("%I:%M:%S %p") %></td>
+    
+    <td><%= data.status ? "Active" : "Expired" %></td>
+  
+    <td class="actions">
+      <%= link_to("Edit", {:action => 'edit', :reservation_code => data.reservation_code}, :class => 'action edit') %>
+      <%= link_to 'Delete' , {:action => 'destroy' , :reservation_code => data.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' %>
+      
+    </td>
+  </tr>
+  <% end %>
+</table>

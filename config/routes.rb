@@ -2,26 +2,15 @@ Rails.application.routes.draw do
   
   
 
-  devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions" }
+ 
+
+  devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions" }, :path => "members"
   root to: 'main#index'
   patch "change-subscription" => 'main#convert_user'
   get "change-subscription" => 'main#subscription'
   get "dashboard" => 'admin#index'
-  resources :restaurants , :param => :slug do
-    member do
-      patch 'remove_image'
-    end
-    resources :branches , :param => :slug do
-      member do
-        patch 'remove_image'
-      end
-      resources :tables , :param => :slug do
-        member do
-          patch 'remove_image'
-        end
-      end
-    end
-  end
+  post "availability_restaurant" => 'main#restaurant'
+  post "availability_customer" => 'main#customer'
   scope :dashboard do
     get "settings" => 'admin#settings'
     patch "settings/save" => 'admin#settings_save'
@@ -36,7 +25,37 @@ Rails.application.routes.draw do
           patch 'remove_image'
       end
     end
-    
+    resources :restaurants , :param => :slug do
+      member do
+        patch 'remove_image'
+        
+      end
+      collection do 
+
+        get 'list' 
+      end
+      resources :branches , :param => :slug do
+        member do
+          patch 'remove_image'
+        end
+        collection do 
+          get 'list' 
+        end
+        
+      end
+    end
+    resources :reservations,:param => :reservation_code do
+      collection do 
+        post "filtered"
+        get "filtered"
+      end
+    end
+    resources :customers, :controller =>"users" , :param => :membership do
+      collection do 
+        post "filtered"
+        get "filtered"
+      end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
