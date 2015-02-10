@@ -27,3 +27,12 @@
 	User.create(email: 'restaurant1@restapp.com', password: 'password', :role_id => 2 , :name => "Restaurant Owner 1",:membership => Digest::SHA1.hexdigest('restaurant1@restapp.com')[0,6], :phone => "111-111-111") # restaurant owner who can only add restaurants and manage them
 	User.create(email: 'restaurant2@restapp.com', password: 'password', :role_id => 2 , :name => "Restaurant Owner 2",:membership => Digest::SHA1.hexdigest('restaurant2@restapp.com')[0,6], :phone => "111-111-111") # restaurant owner who can only add restaurants and manage them
 	User.create(email: 'customer@restapp.com', password: 'password', :role_id => 3 , :name => "Customer",:membership => Digest::SHA1.hexdigest('customer@restapp.com')[0,6], :phone => "111-111-111") #customer who cant do anything except bookings
+
+	ActiveRecord::Base.connection.execute("TRUNCATE restaurants;")
+	Restaurant.create(:title=>"First",:slug => "first",:user_id => 2,:status => 1)
+	Restaurant.create(:title=>"Second",:slug => "second",:user_id => 2,:status => 1)
+
+	ActiveRecord::Base.connection.execute("TRUNCATE branches;")
+	Branch.create(:title=>"First",:slug => "first", :position => 1 , :seating_capacity => 10 , :email => "first-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => "2001-01-01 12:00 PM" , :close => "2001-01-02 12:00 AM")
+	Branch.create(:title=>"Second",:slug => "second", :position => 2 , :seating_capacity => 15 , :email => "second-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => "2001-01-01 12:00 PM", :close => "2001-01-02 12:00 AM")
+	Branch.create(:title=>"Third",:slug => "third", :position => 3 , :seating_capacity => 20 , :email => "third-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1, :open => "2001-01-01 12:00 PM", :close => "2001-01-02 12:00 AM")

@@ -6,11 +6,11 @@
   </tr>
   <tr>
     <th><%= label_tag(:date,"Reservation Date")%></th>
-    <td><%= text_field_tag(:date,@date ,:placeholder=>@date) %></td>
+    <td><%= text_field_tag(:date, @date ,:placeholder=>"MM-DD-YYYY") %></td>
   </tr>
   <tr>
     <th><%= label_tag(:time,"Reservation Time")%></th>
-    <td><%= text_field_tag(:time, @time ,:placeholder=>@time) %></td>
+    <td><%= select_tag(:hours, options_for_select((1..12),@reservation.booking.strftime("%I").to_i)) %><%= select_tag(:mins, options_for_select([0,15,30,45],@reservation.booking.strftime("%M").to_i)) %><%= select_tag(:meri, options_for_select(["AM","PM"],@reservation.booking.strftime("%p"))) %></td>
   </tr>
   <tr>
     <th><%= label_tag(:restaurant_id, "Restaurants") %></th>
@@ -35,7 +35,7 @@
   <% if !@reservation.id.blank? %>
   <tr>
     <th><%= f.label(:status, "Status") %></th>
-    <td><%= f.select(:status, options_for_select([['Active',1],['Expire',0]],(@reservation.status ? 1 : 0))) %></td>
+    <td><%= f.select(:status, options_for_select([['Active',1],['Expired',0]],(@reservation.status ? 1 : 0))) %></td>
   </tr>
   <% end %>
   <tr>

@@ -1,10 +1,10 @@
 <%= link_to("Reservations",{:controller=>'reservations',:action=>'index'},:class=>'action index')%>
 <h1>Create Reservation</h1>
-<%= form_for(:reservation, :url=>{:action=>'create'},:multipart=>true) do |f| %>
+<%= form_for(:reservation, :url=>{:action=>'create'},:multipart=>true , :html => {:id => "reservation-form"}) do |f| %>
 <%= render(:partial => "form",:locals=>{:f=>f})%>
 <div class="form-buttons">
   <p id="notice" style="display:none;"></p>
-  <input type="button" value= "Check Availability" onclick="checkAvailability(this)" />
+  <input type="button" value= "Make Reservation" onclick="checkAvailability()" id="submit-button" />
 </div>
 <% end %>
 <%= javascript_tag 'populateBranches($("#restaurant_id").val());' %>

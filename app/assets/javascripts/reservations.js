@@ -33,43 +33,32 @@ function assignBranchValue(val){
 	val = val.split("|");
 	$("#reservation_branch_id").val(val[0]);
 }
-function checkAvailability(object,id=0){
+function checkAvailability(id=0){
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
 	date = $("#date").val();
-	time = $("#time").val();
+	time = $("#hours").val()+":"+$("#mins").val()+" "+$("#meri").val();
 	user = $("#reservation_user_id").val();
-
-	if ((new Date(date.split("-").join("/")+" "+time)) < new Date()) {
-		alert("Please Enter A valid Date or time");
-	}
-	else {
-		
-		$.ajax({	
-				url: "/availability_restaurant",
-				type: "POST",
-				data:{"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id },
-				done: function(){
-
-				},
-				success: function(result){
-					if(result.found){
-			            if(id==0)
-			            	$(".form-buttons").html($(".form-buttons").html()+'<input type="submit" value="Create Reservation" name="commit" id="submit-button" style="display:none;">');
-						else 
-							$(".form-buttons").html($(".form-buttons").html()+'<input type="submit" value="Update Reservation" name="commit" id="submit-button" style="display:none;">');
-						
-						$("#notice").html(result.message).show();
-						$("#submit-button").fadeIn();
-		        	}
-		        	else {
-		        		$("#notice").html(result.message).show();
-		        		$("#submit-button").remove();
-		        	}
-		        	
-		        }
-		    });
-	}
+	prev = $("#submit-button").val();
+	$("#submit-button").val("Checking Availability").attr("disabled",true);
+	$.ajax({	
+			url: "/availability_restaurant",
+			type: "POST",
+			data:{"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id },
+			success: function(result){
+				if(result.available){
+		        	$("#notice").html(result.message).show();
+		        	$("#submit-button").val("Saving");
+		        	$("#reservation-form").submit();
+				}
+	        	else {
+	        		$("#notice").html(result.message).show();
+	        		$("#submit-button").val(prev).attr("disabled",false);
+	        	}
+	        	
+	        }
+	    });
+	
 	
 	
 }
