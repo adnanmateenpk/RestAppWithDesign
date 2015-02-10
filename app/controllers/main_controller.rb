@@ -95,13 +95,16 @@ class MainController < ApplicationController
 
   private 
   def get_available_timeslots branch
-    time = branch.open
+    time = Time.at(branch.open.to_i)
     return_value = Array.new
     while time < branch.close do
-      return_value << time 
+      r = Hash.new
+      r["status"] = check_availability(branch,time.strftime("%I:%M %p"))[0]
+      r["time"] = time.strftime("%I:%M %p")
+      return_value << r
       time = Time.at(time.to_i + 0.5*60*60)
     end
-    Time.at(time.to_i + 0.5*60*60)
+    return_value
   end
   
 end

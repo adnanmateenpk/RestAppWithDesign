@@ -34,7 +34,7 @@ function assignBranchValue(val){
 	val = val.split("|");
 	$("#reservation_branch_id").val(val[0]);
 }
-function checkAvailability(id=0){
+function checkAvailability(id){
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
 	date = $("#date").val();

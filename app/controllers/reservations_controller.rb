@@ -38,10 +38,9 @@ class ReservationsController < ApplicationController
     @time = @reservation.booking.strftime("%H:%M:%S")
   end
   def destroy
-    @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
-    @reservation.status = 0
-    
-    render :json => {"cancelled" => @reservation.save}
+    reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
+    reservation.status = 0
+    render :json => {"cancelled" => reservation.save}
   end
   def update 
     @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first

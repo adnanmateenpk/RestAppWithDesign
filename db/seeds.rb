@@ -36,3 +36,5 @@
 	Branch.create(:title=>"First",:slug => "first", :position => 1 , :seating_capacity => 10 , :email => "first-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => Time.parse("2001-01-01 12:00 PM") , :close => Time.parse("2001-01-02 12:00 AM"))
 	Branch.create(:title=>"Second",:slug => "second", :position => 2 , :seating_capacity => 15 , :email => "second-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => Time.parse("2001-01-01 12:00 PM"), :close => Time.parse("2001-01-02 12:00 AM"))
 	Branch.create(:title=>"Third",:slug => "third", :position => 3 , :seating_capacity => 20 , :email => "third-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1, :open => Time.parse("2001-01-01 12:00 PM"), :close => Time.parse("2001-01-02 12:00 AM"))
+
+	ActiveRecord::Base.connection.execute("TRUNCATE reservations;")
