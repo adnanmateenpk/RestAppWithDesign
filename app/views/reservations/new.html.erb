@@ -7,4 +7,6 @@
   <input type="button" value= "Make Reservation" onclick="checkAvailability()" id="submit-button" />
 </div>
 <% end %>
-<%= javascript_tag 'populateBranches($("#restaurant_id").val());' %>
+<script>
+$(document).ready(function(){populateBranches($("#restaurant_id").val());});
+</script>

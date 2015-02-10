@@ -4,6 +4,6 @@
 <%= render(:partial => "form",:locals=>{:f=>f})%>
 <div class="form-buttons">
   <p id="notice" style="display:none;"></p>
-  <input type="button" value= "Apply Changes" onclick="checkAvailability(this,<%= @reservation.id %>)" />
+  <input type="button" value= "Apply Changes" onclick="checkAvailability(<%= @reservation.id %>)" />
 </div>
 <% end %>

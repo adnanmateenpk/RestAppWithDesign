@@ -21,11 +21,10 @@ class MainController < ApplicationController
       render :json => {"available" => false, "message" => "Enter A valid Branch"}
     else
       branch = Branch.find(params[:branch])
-      results = check_availability branch
+      results = check_availability branch,params[:time]
       if results[0]
         render :json => {"available" => results[0], "message" => results[1]}
       elsif !results[0] and results[1] == "Time Slot Not Available"
-        get_available_timeslots
         render :json => {"available" => results[0], "message" => results[1],"timeslots" => get_available_timeslots(branch)}
       else
         render :json => {"available" => results[0], "message" => results[1]}
@@ -60,7 +59,7 @@ class MainController < ApplicationController
     !(Time.parse(branch.open.strftime("%Y-%m-%d") + " " + slot) > branch.open || Time.parse(branch.close.strftime("%Y-%m-%d") + " " + slot) < branch.close)
   end
   private 
-  def check_availability branch
+  def check_availability branch,time
     available = true
     message = "Time slot available"
     already = false
@@ -68,23 +67,23 @@ class MainController < ApplicationController
       date = params[:date].split('-')
       params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     end
-    if params[:date].blank? or params[:time].blank?
+    if params[:date].blank? or time.blank?
       available = false
       message = "Please Enter A Valid Time"
-    elsif Time.parse(params[:date]+" "+ params[:time]) <= Time.now
+    elsif Time.parse(params[:date]+" "+ time) <= Time.now
       available = false
       message = "Please Enter A Valid Time"
-    elsif check_repeat Reservation.availability_for_restaurant(Time.parse(params[:date]+" "+params[:time]).strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted.where("user_id = ?",params[:customer]).first,Time.parse(params[:date]+" "+params[:time])
+    elsif check_repeat Reservation.availability_for_restaurant(Time.parse(params[:date]+" "+time).strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted.where("user_id = ?",params[:customer]).first,Time.parse(params[:date]+" "+time)
         available = false
         message = "Membership No. has a reservation clash"
     elsif params[:customer].blank?
       available = false
       message = "Please enter a valid membership code"
-    elsif check_branch_timings branch,params[:time]
+    elsif check_branch_timings branch,time
       available = false
       message = "Selected Branch opens at "+branch.open.strftime("%I:%M %p")+" uptill "+branch.close.strftime("%I:%M %p")
     else 
-      old = Reservation.availability_for_restaurant(Time.parse(params[:date]+" "+params[:time]).strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted
+      old = Reservation.availability_for_restaurant(Time.parse(params[:date]+" "+time).strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted
       if check_seats old,params[:people].to_i,branch.seating_capacity
         available = false
         message = "Time Slot Not Available"
@@ -96,7 +95,13 @@ class MainController < ApplicationController
 
   private 
   def get_available_timeslots branch
-    # 
+    time = branch.open
+    return_value = Array.new
+    while time < branch.close do
+      return_value << time 
+      time = Time.at(time.to_i + 0.5*60*60)
+    end
+    Time.at(time.to_i + 0.5*60*60)
   end
   
 end
