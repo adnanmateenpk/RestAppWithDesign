@@ -6,7 +6,7 @@ Commands to run before rails s
 
 * bundle install 
 
-* rake db:migrate
+* rake db:drop db:create db:migrate
 
 * rake db:seed 
 
