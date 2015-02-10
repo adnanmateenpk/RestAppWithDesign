@@ -15,14 +15,21 @@ class MainController < ApplicationController
   end
   def restaurant
     Reservation.expire_reservations
-    results = check_availability
 
-    if results[0]
-      render :json => {"available" => results[0], "message" => results[1]}
-    elsif !results[0] and results[1] == "Time Slot Not Available"
-      render :json => {"available" => results[0], "message" => results[1]}
+    if params[:branch].blank?
+      puts params[:branch].blank?.inspect
+      render :json => {"available" => false, "message" => "Enter A valid Branch"}
     else
-      render :json => {"available" => results[0], "message" => results[1]}
+      branch = Branch.find(params[:branch])
+      results = check_availability branch
+      if results[0]
+        render :json => {"available" => results[0], "message" => results[1]}
+      elsif !results[0] and results[1] == "Time Slot Not Available"
+        get_available_timeslots
+        render :json => {"available" => results[0], "message" => results[1],"timeslots" => get_available_timeslots(branch)}
+      else
+        render :json => {"available" => results[0], "message" => results[1]}
+      end
     end
 
   end
@@ -53,7 +60,7 @@ class MainController < ApplicationController
     !(Time.parse(branch.open.strftime("%Y-%m-%d") + " " + slot) > branch.open || Time.parse(branch.close.strftime("%Y-%m-%d") + " " + slot) < branch.close)
   end
   private 
-  def check_availability
+  def check_availability branch
     available = true
     message = "Time slot available"
     already = false
@@ -61,8 +68,6 @@ class MainController < ApplicationController
       date = params[:date].split('-')
       params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     end
-    branch = Branch.find(params[:branch])
-    puts branch
     if params[:date].blank? or params[:time].blank?
       available = false
       message = "Please Enter A Valid Time"
@@ -87,6 +92,11 @@ class MainController < ApplicationController
       end
     end
     [available,message]
+  end
+
+  private 
+  def get_available_timeslots branch
+    # 
   end
   
 end

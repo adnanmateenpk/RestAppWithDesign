@@ -11,6 +11,7 @@ $(document).ready(function(){
 	
 });
 function populateBranches(val){
+	$("#reservation_branch_id").val("");
 	if(val==0){
 		$("#branch_id").html("");
 		
@@ -45,6 +46,9 @@ function checkAvailability(id=0){
 			url: "/availability_restaurant",
 			type: "POST",
 			data:{"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id },
+			error: function(){
+				$("#submit-button").val(prev).attr("disabled",false);
+			},
 			success: function(result){
 				if(result.available){
 		        	$("#notice").html(result.message).show();

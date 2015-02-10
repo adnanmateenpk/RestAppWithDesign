@@ -10,7 +10,7 @@
   </tr>
   <tr>
     <th><%= label_tag(:time,"Reservation Time")%></th>
-    <td><%= select_tag(:hours, options_for_select((1..12),@reservation.booking.strftime("%I").to_i)) %><%= select_tag(:mins, options_for_select([0,15,30,45],@reservation.booking.strftime("%M").to_i)) %><%= select_tag(:meri, options_for_select(["AM","PM"],@reservation.booking.strftime("%p"))) %></td>
+    <td><%= select_tag(:hours, options_for_select((1..12),@reservation.booking.strftime("%I").to_i)) %><%= select_tag(:mins, options_for_select([0,30],@reservation.booking.strftime("%M").to_i)) %><%= select_tag(:meri, options_for_select(["AM","PM"],@reservation.booking.strftime("%p"))) %></td>
   </tr>
   <tr>
     <th><%= label_tag(:restaurant_id, "Restaurants") %></th>
