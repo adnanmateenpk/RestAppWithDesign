@@ -28,7 +28,10 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
-
+  <tr>
+    <th><%= f.label(:time_zone) %></th>
+    <td> <%= f.time_zone_select :time_zone %></td>
+  </tr>
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>

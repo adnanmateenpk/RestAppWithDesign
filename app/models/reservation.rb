@@ -22,7 +22,9 @@ class Reservation < ActiveRecord::Base
 	belongs_to :creator , :foreign_key => :created_by , :class_name => "User"
 
 	def self.expire_reservations
-		reservations = Reservation.expire_mode(Time.now.strftime("%Y-%m-%d %H:%M"))
+		Time.zone = "UTC"
+		reservations = Reservation.expire_mode(Time.zone.now.strftime("%Y-%m-%d %H:%M"))
+		#time_slots = TimeSlot.expire_mode((Time.zone.now+24*60*60)).destroy_all
 		reservations.each do |r|
 			r.status = 0
 			r.save

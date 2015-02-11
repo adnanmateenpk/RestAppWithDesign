@@ -1,4 +1,5 @@
 <%= error_messages_for(@branch) %>
+<% Time.zone = @branch.time_zone %>
 <table summary="Branch form fields">
   <tr>
     <th><%= f.label(:title,"Title")%></th>
@@ -52,7 +53,14 @@
     <th><%= f.label(:featured_image) %></th>
     <td><%= f.file_field(:featured_image) %></td>
   </tr>
-  
-  
+  <tr>
+    <th><%= f.label(:time_zone) %></th>
+    <% if @branch.id.blank? %>
+    <td><%= f.time_zone_select :time_zone,nil,:include_blank => true  %></td>
+    <% else %>
+    <td><%= branch.time_zone %></td>
+    <% end %>
+  </tr>
+ 
  
 </table>

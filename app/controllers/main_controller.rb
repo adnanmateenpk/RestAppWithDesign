@@ -15,19 +15,34 @@ class MainController < ApplicationController
   end
   def restaurant
     Reservation.expire_reservations
-
-    if params[:branch].blank?
-      puts params[:branch].blank?.inspect
-      render :json => {"available" => false, "message" => "Enter A valid Branch"}
+    if !params[:time_zone].blank?
+      Time.zone = params[:time_zone]
+    end
+    if !params[:date].blank?
+      date = params[:date].split('-')
+      params[:date] = date[2]+"-"+date[0]+"-"+date[1]
+    end
+    if params[:date].blank? 
+      render :json => {"available" => false, "message" => "Please Enter A Valid Date"}
+    elsif params[:time].blank? 
+      render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
+    elsif params[:customer].blank?
+      render :json => {"available" => false, "message" => "Please enter a valid membership code"}
+    elsif params[:branch].blank?
+      render :json => {"restaurant_slots" => true, "available" => false, "message" => "Availabale Time slots for all the branches for the Selected Restaurant are shown below", "time_slots" => get_restaurant_timeslots(params[:restaurant])}
+    elsif Time.zone.parse(params[:date]+" "+ params[:time]) <= Time.zone.now
+      render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
     else
       branch = Branch.find(params[:branch])
-      results = check_availability branch,params[:time]
-      if results[0]
-        render :json => {"available" => results[0], "message" => results[1]}
-      elsif !results[0] and results[1] == "Time Slot Not Available"
-        render :json => {"available" => results[0], "message" => results[1],"timeslots" => get_available_timeslots(branch)}
-      else
-        render :json => {"available" => results[0], "message" => results[1]}
+      slots = TimeSlot.where("branch_id = ? AND slot LIKE ? ",branch.id, "%"+params[:date]+"%")
+      if check_branch_timings branch,params[:time]
+        render :json => {"available" => false, "message" => "Branch is closed at the selected Time"}
+      elsif check_seats slots,branch,Time.zone.parse(params[:date]+" "+params[:time])
+        render :json => {"branch_slots" => true, "available" => false, "message" => "Capacity breached at this time please select an available time in the below list","time_slots" => get_available_timeslots(slots,branch)}
+      elsif check_repeat Reservation.availability_for_restaurant(Time.zone.parse(params[:date]+" "+params[:time]).utc.strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted.where("user_id = ?",params[:customer]).first,Time.zone.parse(params[:date]+" "+params[:time]).utc
+        render :json => {"branch_slots" => true, "available" => false, "message" => "Membership No. Conflict please select another time"}
+      else 
+        render :json => {"available" => false, "message" => "Creating Reservation"}
       end
     end
 
@@ -37,12 +52,15 @@ class MainController < ApplicationController
   end
 
   private 
-  def check_seats values,want,capacity
-    count = 0
-    values.each do |o|
-      count = count+o.people
+  def check_seats values,branch,time
+    Time.zone = branch.time_zone
+    return_value = false
+    values.each do |v|
+      if v.slot >= time and v.slot < time + branch.expiry*60*60
+        return_value = v.seats+params[:people].to_i > branch.seating_capacity
+      end
     end
-    count+want > capacity
+    return_value
 
   end
 
@@ -56,55 +74,37 @@ class MainController < ApplicationController
   end
   private 
   def check_branch_timings branch,slot
-    !(Time.parse(branch.open.strftime("%Y-%m-%d") + " " + slot) > branch.open || Time.parse(branch.close.strftime("%Y-%m-%d") + " " + slot) < branch.close)
+    Time.zone = params[:time_zone]
+    !(Time.zone.parse(branch.open.strftime("%Y-%m-%d") + " " + slot) >= branch.open || Time.zone.parse(branch.close.strftime("%Y-%m-%d") + " " + slot) < branch.close)
   end
-  private 
-  def check_availability branch,time
-    available = true
-    message = "Time slot available"
-    already = false
-    if !params[:date].blank?
-      date = params[:date].split('-')
-      params[:date] = date[2]+"-"+date[0]+"-"+date[1]
-    end
-    if params[:date].blank? or time.blank?
-      available = false
-      message = "Please Enter A Valid Time"
-    elsif Time.parse(params[:date]+" "+ time) <= Time.now
-      available = false
-      message = "Please Enter A Valid Time"
-    elsif check_repeat Reservation.availability_for_restaurant(Time.parse(params[:date]+" "+time).strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted.where("user_id = ?",params[:customer]).first,Time.parse(params[:date]+" "+time)
-        available = false
-        message = "Membership No. has a reservation clash"
-    elsif params[:customer].blank?
-      available = false
-      message = "Please enter a valid membership code"
-    elsif check_branch_timings branch,time
-      available = false
-      message = "Selected Branch opens at "+branch.open.strftime("%I:%M %p")+" uptill "+branch.close.strftime("%I:%M %p")
-    else 
-      old = Reservation.availability_for_restaurant(Time.parse(params[:date]+" "+time).strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted
-      if check_seats old,params[:people].to_i,branch.seating_capacity
-        available = false
-        message = "Time Slot Not Available"
-      
-      end
-    end
-    [available,message]
-  end
+  
 
   private 
-  def get_available_timeslots branch
-    time = Time.at(branch.open.to_i)
-    return_value = Array.new
-    while time < branch.close do
+  def get_available_timeslots slots,branch
+    Time.zone = branch.time_zone
+    return_value = Array.new  
+    slots.each do |s|
       r = Hash.new
-      r["status"] = check_availability(branch,time.strftime("%I:%M %p"))[0]
-      r["time"] = time.strftime("%I:%M %p")
+      r["available"] = !(check_seats slots,branch,s.slot)
+      r["time_slot"] = s.slot.strftime("%I:%M:%S %p %Z")
       return_value << r
-      time = Time.at(time.to_i + 0.5*60*60)
+    end
+    return_value   
+  end
+  private 
+  def get_restaurant_timeslots restaurant
+    branches= Restaurant.find(restaurant).branches
+    return_value = Array.new
+    branches.each do |b|
+      TimeSlot.initialize_slots params[:date],b.id
+      slots = b.time_slots.where("slot LIKE ?","%"+params[:date]+"%")
+      r = Hash.new
+      r["title"] = b.title
+      r["time_slots"] = get_available_timeslots slots,b
+      return_value << r
     end
     return_value
+
   end
   
 end

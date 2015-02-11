@@ -15,6 +15,7 @@
     <th>Actions</th>
   </tr>
   <% @reservations.each_with_index do |data,index| %>
+  <% Time.zone = data.branch.time_zone  %>
   <tr class="">
     <td class="position"><%= index+1 %></td>
     <td><%= data.reservation_name %></td>
@@ -22,7 +23,7 @@
     <td><%= data.branch.restaurant.title %></td>
     <td><%= data.branch.title %></td>
     <td><%= data.booking.strftime("%m-%d-%Y")%></td>
-    <td><%= data.booking.strftime("%I:%M:%S %p") %></td>
+    <td><%= data.booking.strftime("%I:%M:%S %p %Z") %></td>
     
     <td class= "status"><%= data.status ? "Active" : "Cancelled" %></td>
   

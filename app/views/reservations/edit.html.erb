@@ -1,9 +1,17 @@
 <%= link_to("Reservations",{:controller=>'reservations',:action=>'index'},:class=>'action index')%>
 <h1>Edit Reservation</h1>
 <%= form_for(:reservation, :url=>{:action=>'update',:reservation_code => @reservation.reservation_code},:multipart=>true,:method=>"patch", :html => {:id => "reservation-form"}) do |f| %>
+<% Time.zone = @reservation.branch.time_zone  %>
 <%= render(:partial => "form",:locals=>{:f=>f})%>
 <div class="form-buttons">
   <p id="notice" style="display:none;"></p>
   <input type="button" value= "Apply Changes" onclick="checkAvailability(<%= @reservation.id %>)" />
 </div>
 <% end %>
+<table id="slots">
+	<tbody>
+		
+
+	</tbody>
+
+</table>

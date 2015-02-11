@@ -29,6 +29,7 @@ class BranchesController < ApplicationController
   end
   
   def create
+    
     @branch_count = Branch.count + 1
     @branch = Branch.new(branch_params("test"))
     restaurant = Restaurant.where(["slug = ?",params[:restaurant_slug]]).first
@@ -45,9 +46,9 @@ class BranchesController < ApplicationController
 
   def destroy
     if current_user.role_id == 1
-      @branch = Branch.where(["slug = ?",params[:slug]]).first 
+      branch = Branch.where(["slug = ?",params[:slug]]).first 
     else
-      @branch = Branch.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first 
+      branch = Branch.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first 
     end
     
     if branch.featured_image.blank?
@@ -81,7 +82,7 @@ class BranchesController < ApplicationController
     else
       @branch = Branch.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first 
     end
-    if @branch.update_attributes(branch_params(@branch.featured_image))
+    if @branch.update_attributes(branch_params(@branch.featured_image,@branch.time_zone))
       flash[:notice] = "Branch saved"
       redirect_to(:action=>'index')
     else
@@ -91,9 +92,13 @@ class BranchesController < ApplicationController
   end
 
   private
-  def branch_params(old_image)
+  def branch_params(old_image,zone=nil)
     if old_image.blank?
       old_image = "test"
+    end
+    Time.zone = params[:branch][:time_zone]
+    if !zone.blank? and zone != params[:branch][:time_zone]
+      
     end
     if !params[:branch][:featured_image].blank?
       params[:branch][:featured_image]= upload_files_custom(params[:branch][:featured_image],"branches",old_image)
@@ -103,13 +108,13 @@ class BranchesController < ApplicationController
     else
         params[:branch][:slug] = params[:branch][:slug].parameterize
     end
-    params[:branch][:open] = DateTime.strptime(params[:hours_open]+":"+params[:mins_open]+" "+params[:meri_open],"%I:%M %p")
-    params[:branch][:close] = DateTime.strptime(params[:hours_close]+":"+params[:mins_close]+" "+params[:meri_close],"%I:%M %p")
+    params[:branch][:open] = Time.zone.parse("2001-01-01" + " " +params[:hours_open]+":"+params[:mins_open]+" "+params[:meri_open])
+    params[:branch][:close] = Time.zone.parse("2001-01-01" + " " +params[:hours_close]+":"+params[:mins_close]+" "+params[:meri_close])
     if params[:branch][:close] < params[:branch][:open]
-      params[:branch][:close] = params[:branch][:close] + 1
+      params[:branch][:close] = params[:branch][:close] + 24*60*60
     end
-    puts params
-    params.require(:branch).permit(:title,:slug,:status,:address,:email,:position,:phone,:fax,:featured_image,:open,:close,:expiry,:seating_capacity)
+    puts params[:branch][:open]
+    params.require(:branch).permit(:title,:slug,:status,:address,:email,:position,:phone,:fax,:featured_image,:open,:close,:expiry,:seating_capacity,:time_zone)
   end
   
 end
