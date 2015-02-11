@@ -42,7 +42,7 @@ class MainController < ApplicationController
       elsif check_repeat Reservation.availability_for_restaurant(Time.zone.parse(params[:date]+" "+params[:time]).utc.strftime("%Y-%m-%d %H:%M"),params[:branch],params[:id]).sorted.where("user_id = ?",params[:customer]).first,Time.zone.parse(params[:date]+" "+params[:time]).utc
         render :json => {"branch_slots" => true, "available" => false, "message" => "Membership No. Conflict please select another time"}
       else 
-        render :json => {"available" => false, "message" => "Creating Reservation"}
+        render :json => {"available" => true, "message" => "Creating Reservation"}
       end
     end
 
