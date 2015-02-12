@@ -29,13 +29,13 @@
 	User.create(email: 'customer@restapp.com', password: 'password', :role_id => 3 , :name => "Customer",:membership => Digest::SHA1.hexdigest('customer@restapp.com')[0,6], :phone => "111-111-111", :time_zone => "UTC") #customer who cant do anything except bookings
 
 	ActiveRecord::Base.connection.execute("TRUNCATE restaurants;")
-	Restaurant.create(:title=>"First",:slug => "first",:user_id => 2,:status => 1)
-	Restaurant.create(:title=>"Second",:slug => "second",:user_id => 2,:status => 1)
+	Restaurant.create(:title=>"Restaurant1",:slug => "first",:user_id => 2,:status => 1)
+	Restaurant.create(:title=>"Restaurant2",:slug => "second",:user_id => 2,:status => 1)
 
 	ActiveRecord::Base.connection.execute("TRUNCATE branches;")
-	Branch.create(:title=>"First",:slug => "first", :position => 1 , :seating_capacity => 10 , :email => "first-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => "2001-01-01 12:00 PM" , :close => "2001-01-02 12:00 AM" , :time_zone => "UTC")
-	Branch.create(:title=>"Second",:slug => "second", :position => 2 , :seating_capacity => 15 , :email => "second-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => "2001-01-01 12:00 PM", :close => "2001-01-02 12:00 AM", :time_zone => "UTC")
-	Branch.create(:title=>"Third",:slug => "third", :position => 3 , :seating_capacity => 20 , :email => "third-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1, :open => "2001-01-01 12:00 PM", :close => "2001-01-02 12:00 AM", :time_zone => "UTC")
+	Branch.create(:title=>"Branch1",:slug => "first", :position => 1 , :seating_capacity => 10 , :email => "first-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => "2001-01-01 12:00 PM" , :close => "2001-01-02 12:00 AM" , :time_zone => "UTC")
+	Branch.create(:title=>"Branch2",:slug => "second", :position => 2 , :seating_capacity => 15 , :email => "second-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1 , :open => "2001-01-01 1:00 PM", :close => "2001-01-01 10:00 PM", :time_zone => "UTC")
+	Branch.create(:title=>"Branch3",:slug => "third", :position => 3 , :seating_capacity => 20 , :email => "third-branch@branch.com" , :expiry => "1",:user_id => 2 , :restaurant_id => 1 ,:status => 1, :open => "2001-01-01 4:00 PM", :close => "2001-01-02 1:00 AM", :time_zone => "UTC")
 
 	ActiveRecord::Base.connection.execute("TRUNCATE reservations;")
 	ActiveRecord::Base.connection.execute("TRUNCATE time_slots;")

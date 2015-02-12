@@ -16,7 +16,7 @@
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
-every 1.minutes do
+every 30.minutes do
   runner "Reservation.expire_reservations"
 end
 # Learn more: http://github.com/javan/whenever

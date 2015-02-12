@@ -12,20 +12,20 @@ $(document).ready(function(){
 });
 function populateBranches(val){
 	$("#reservation_branch_id").val("");
-	val = val || ""
+	val = val || "";
 	if(val==0){
 		$("#branch_id").html("");
 	}
 	else {
 		val = val.split("|");
 		$.ajax({url: "/dashboard/restaurants/"+val[1]+"/branches/list", success: function(result){
-				html = "<option value='|UTC'>Select One</option>";
+				html = "<option value='|UTC|20'>Select One</option>";
 				$("#reservation_branch_id").val("");
 	            $("#time_zone").attr("readonly",false);
 	            $("#time_zone").val("UTC");
 	            $("#time_zone").attr("readonly",true);
 	            for (i = 0 ;i<result.length;i++){
-	            	html = html+"<option value='"+result[i].id +"|"+result[i].time_zone+"'>"+result[i].title+"</option>";
+	            	html = html+"<option value='"+result[i].id +"|"+result[i].time_zone+"|"+result[i].seating_capacity+"'>"+result[i].title+"</option>";
 	            }
 	            $("#branch_id").html(html);
         	
@@ -34,15 +34,22 @@ function populateBranches(val){
 	
 }
 function assignBranchValue(val){
-	val = val || ""
+	val = val || "";
 	val = val.split("|");
 	$("#reservation_branch_id").val(val[0]);
 	$("#time_zone").attr("readonly",false);
 	$("#time_zone").val(val[1]);
 	$("#time_zone").attr("readonly",true);
+	limit = parseInt(val[2]);
+	
+	html = "";
+	for(i=0;i<limit;i++){
+		html = html + "<option value='"+(i+1)+"'>"+(i+1)+"</option>";
+	}
+	$("#reservation_people").html(html);
 }
 function checkAvailability(id){
-	id = id || 0
+	id = id || 0 ;
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
 	date = $("#date").val();
@@ -87,7 +94,7 @@ function checkAvailability(id){
 	        		for(i=0;i<result.time_slots.length;i++){
 	        			html = html+"<tr>";
 	        			html = html+"<th>"+result.time_slots[i].title+"</th>";
-		        		for(j=0;j<result.time_slots[i].time_slots.length;j++){
+	        			for(j=0;j<result.time_slots[i].time_slots.length;j++){
 		        			if(result.time_slots[i].time_slots[j].available){
 		        				html= html + "<td>"+result.time_slots[i].time_slots[j].time_slot+"</td>";
 		        			}

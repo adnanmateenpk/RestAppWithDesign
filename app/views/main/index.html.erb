@@ -5,3 +5,52 @@
 <% elsif user_signed_in? %>
 	<%= link_to("Change Subscription",{:action=>'subscription'},:class=>'action index') %>
 <% end %>
+<h1>Create Reservation</h1>
+<%= form_for(:reservation, :url=>{:controller=>'reservations',:action=>'create'},:multipart=>true , :html => {:id => "reservation-form"}) do |f| %>
+<%= render(:partial => "form",:locals=>{:f=>f})%>
+<div class="form-buttons">
+ <input type="button" value= "Check Reservation" onclick="checkAvailability(0)" id="submit-button" />
+</div>
+
+<% end %>
+<p id="notice" ></p>
+<% if !user_signed_in? %>
+<div id ="sign-in-buttons" style="display:none;">
+<a style="cursor:pointer;color:blue;" id = "signin" onclick="$('#login').show();">Login</a>
+<%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link' , :target => "_blank" %>
+</div>
+<div id ="login" style="display:none">
+<h2>Log in</h2>
+
+<%= form_for(:user , url: session_path(:user) , :remote =>true ,:html => {:id=>"login-form"}) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  
+    <div class="field">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  
+
+  <div class="actions">
+    <input type="submit" value= "Log In" onclick="" id="login-button" />
+  </div>
+<% end %>
+
+</div>
+<% end %>
+<table id="slots">
+	<tbody>
+		
+		
+	</tbody>
+
+</table>
