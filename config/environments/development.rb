@@ -41,12 +41,12 @@ Rails.application.configure do
   
 
   config.action_mailer.smtp_settings = {
-    :address              => "smtp-relay.gmail.com",
+    :address              => "smtp.gmail.com",
     :port                 => 587,
     :domain               => "gmail.com",
     :user_name            => ENV["GMAIL_USERNAME"],
     :password             => ENV["GMAIL_PASSWORD"],
-    :authentication       => "plain",
+    :authentication       => "login",
     :enable_starttls_auto => true
   }
   # Raises error for missing translations

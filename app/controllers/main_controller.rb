@@ -20,9 +20,8 @@ class MainController < ApplicationController
   end
   
   def convert_user
-  	current_user.role_id = 2
-  	current_user.save
-  	flash[:notice]="You can now add your own Restaurants"
+  	AdminMailer.membership_change_request(current_user).deliver_now
+    flash[:notice]="You request has been generated !!"
   	redirect_to root_url
   end
   
@@ -50,7 +49,7 @@ class MainController < ApplicationController
     else
       branch = Branch.find(params[:branch])
        params[:customer] = Digest::SHA1.hexdigest(params[:customer])[0,6]
-      slots = TimeSlot.where("branch_id = ? AND slot LIKE ? ",branch.id, "%"+params[:date]+"%")
+      slots = TimeSlot.where("branch_id = ? AND slot > ? AND slot LIKE ? ",branch.id, Time.now.utc, "%"+params[:date]+"%")
       if check_branch_timings branch,params[:time]
         render :json => {"available" => false, "message" => "Branch is closed at the selected Time"}
       elsif check_seats slots,branch,Time.zone.parse(params[:date]+" "+params[:time])

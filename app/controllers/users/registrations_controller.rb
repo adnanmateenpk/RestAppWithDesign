@@ -9,9 +9,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+      AdminMailer.welcome_email(@user).deliver_now unless @user.invalid?
+  end
 
   # GET /resource/edit
   # def edit

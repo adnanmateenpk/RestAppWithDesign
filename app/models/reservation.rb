@@ -24,9 +24,10 @@ class Reservation < ActiveRecord::Base
 	def self.expire_reservations
 		Time.zone = "UTC"
 		reservations = Reservation.expire_mode(Time.zone.now.strftime("%Y-%m-%d %H:%M"))
-		#time_slots = TimeSlot.expire_mode((Time.zone.now+24*60*60)).destroy_all
+		time_slots = TimeSlot.expire_mode((Time.zone.now-24*60*60)).destroy_all
 		reservations.each do |r|
 			r.status = 0
+			#AdminMailer.cancel_reservation(r.user,r.reservation_code).deliver_now
 			r.save
 		end
 		reservations

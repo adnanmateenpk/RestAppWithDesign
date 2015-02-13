@@ -37,6 +37,8 @@ class ReservationsController < ApplicationController
         end
     elsif @reservation.save 
       TimeSlot.adjust_people @reservation.booking,@reservation.branch.expiry*2, @reservation.people
+      AdminMailer.create_customer_reservation(@reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
+      AdminMailer.create_restaurant_reservation(@reservation.branch.restaurant.user, @reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
       flash[:notice] = "Reservation Created With for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
       if user_signed_in? and current_user.role_id == 3
         redirect_to :action => :index,:controller => :main
@@ -64,6 +66,7 @@ class ReservationsController < ApplicationController
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
     reservation.status = 0
     TimeSlot.adjust_people reservation.booking,reservation.branch.expiry*2, -1*reservation.people
+    AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
     render :json => {"cancelled" => reservation.save}
   end
   def update 
