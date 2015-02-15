@@ -24,7 +24,7 @@
 	User.destroy_all
 	ActiveRecord::Base.connection.execute("TRUNCATE users;")
 	User.create(email: 'admin@restapp.com', password: 'adminpassword', :role_id => 1 , :name => "Super Admin" ,:membership => Digest::SHA1.hexdigest('admin@restapp.com')[0,6] , :phone => "111-111-111", :time_zone => "UTC") #super admin who can do everything like batman :P
-	User.create(email: 'restaurant1@restapp.com', password: 'password', :role_id => 2 , :name => "Restaurant Owner 1",:membership => Digest::SHA1.hexdigest('restaurant1@restapp.com')[0,6], :phone => "111-111-111", :time_zone => "UTC") # restaurant owner who can only add restaurants and manage them
+	User.create(email: 'webshacktesting@gmail.com', password: 'password', :role_id => 2 , :name => "Restaurant Owner 1",:membership => Digest::SHA1.hexdigest('webshacktesting@gmail.com')[0,6], :phone => "111-111-111", :time_zone => "UTC") # restaurant owner who can only add restaurants and manage them
 	User.create(email: 'restaurant2@restapp.com', password: 'password', :role_id => 2 , :name => "Restaurant Owner 2",:membership => Digest::SHA1.hexdigest('restaurant2@restapp.com')[0,6], :phone => "111-111-111", :time_zone => "UTC") # restaurant owner who can only add restaurants and manage them
 	User.create(email: 'customer@restapp.com', password: 'password', :role_id => 3 , :name => "Customer",:membership => Digest::SHA1.hexdigest('customer@restapp.com')[0,6], :phone => "111-111-111", :time_zone => "UTC") #customer who cant do anything except bookings
 

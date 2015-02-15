@@ -1,5 +1,5 @@
 class AdminMailer < ApplicationMailer
-	default from: "webshacktesting@gmail.com"
+	default from: "admin@restapp.com"
 
 	def welcome_email(user)
 	    @user = user

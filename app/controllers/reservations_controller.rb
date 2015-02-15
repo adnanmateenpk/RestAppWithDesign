@@ -39,8 +39,9 @@ class ReservationsController < ApplicationController
       TimeSlot.adjust_people @reservation.booking,@reservation.branch.expiry*2, @reservation.people
       AdminMailer.create_customer_reservation(@reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
       AdminMailer.create_restaurant_reservation(@reservation.branch.restaurant.user, @reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
-      flash[:notice] = "Reservation Created With for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
-      if user_signed_in? and current_user.role_id == 3
+      flash[:notice] = "Reservation Created for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
+      if session[:customer]
+        session[:customer] = false
         redirect_to :action => :index,:controller => :main
       else
         redirect_to :action => :index
@@ -122,9 +123,10 @@ class ReservationsController < ApplicationController
       params[:reservation][:reservation_name] = params[:reservation][:reservation_code]
     end
     params[:reservation][:created_by] = current_user.id;
-    if user_signed_in? and current_user.role_id == 3
+    if session[:customer]
       params[:reservation][:user_id] = Digest::SHA1.hexdigest(current_user.email)[0,6]
       params[:reservation][:reservation_name] = current_user.name
+
     else
       params[:reservation][:user_id] = Digest::SHA1.hexdigest(params[:reservation][:user_id])[0,6]
     end
