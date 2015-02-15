@@ -58,9 +58,9 @@
     <% if @branch.id.blank? %>
     <td><%= f.time_zone_select :time_zone,nil,:include_blank => true  %></td>
     <% else %>
-    <td><%= branch.time_zone %></td>
+    <td><%= @branch.time_zone %></td>
     <% end %>
   </tr>
- 
- 
+
+
 </table>
