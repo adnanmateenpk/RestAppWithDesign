@@ -50,7 +50,7 @@ class PostsController < ApplicationController
     File.delete(old_path) if File.exist?(old_path)
     post.featured_image = ""
     post.save
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" }
   end
   def destroy
     post = Post.where(["slug = ?",params[:slug]]).first 
@@ -61,7 +61,7 @@ class PostsController < ApplicationController
     old_path = File.join(directory,post.featured_image)
     File.delete(old_path) if File.exist?(old_path)
     post.destroy
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" }
   end
 
   private

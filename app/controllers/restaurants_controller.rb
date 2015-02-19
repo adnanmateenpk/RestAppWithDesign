@@ -65,7 +65,7 @@ end
     
     File.delete(old_path) if File.exist?(old_path)
     restaurant.destroy
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" }
   end
 
   def remove_image
@@ -79,7 +79,7 @@ end
     File.delete(old_path) if File.exist?(old_path)
     restaurant.featured_image = ""
     restaurant.save
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" } 
   end
 
   def update

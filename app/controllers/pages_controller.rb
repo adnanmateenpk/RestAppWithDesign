@@ -56,7 +56,7 @@ class PagesController < ApplicationController
     File.delete(old_path) if File.exist?(old_path)
     page.featured_image = ""
     page.save
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" }
   end
   def destroy
     page = Page.where(["slug = ?",params[:slug]]).first 
@@ -67,7 +67,7 @@ class PagesController < ApplicationController
     old_path = File.join(directory,page.featured_image)
     File.delete(old_path) if File.exist?(old_path)
     page.destroy
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" } 
   end
 
   private

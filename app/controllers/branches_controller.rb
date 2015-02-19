@@ -58,7 +58,7 @@ class BranchesController < ApplicationController
     old_path = File.join(directory,branch.featured_image)
     File.delete(old_path) if File.exist?(old_path)
     branch.destroy
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" }
   end
 
   def remove_image

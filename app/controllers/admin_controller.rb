@@ -15,7 +15,6 @@ class AdminController < ApplicationController
       flash[:notice]="Settings Saved successfully"
       redirect_to(:action=>'index')
     else
-      
       render('settings')
     end 
   	
@@ -28,7 +27,7 @@ class AdminController < ApplicationController
     File.delete(old_path) if File.exist?(old_path)
     @setting.logo = ""
    	@setting.save
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" } 
   end
 
   private
