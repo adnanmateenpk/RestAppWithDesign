@@ -72,7 +72,7 @@ class BranchesController < ApplicationController
     File.delete(old_path) if File.exist?(old_path)
     branch.featured_image = ""
     branch.save
-    render json: { "gst": "deleted" } 
+    render json: { "gst" => "deleted" }
   end
 
   def update
