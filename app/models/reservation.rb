@@ -3,7 +3,7 @@ class Reservation < ActiveRecord::Base
 	DATE_REGEX = /([1]{1}[9]{1}[9]{1}\d{1}|[2-9]{1}\d{3})-([0,1]?\d{1})-([0-2]?\d{1}|[3][0,1]{1})/ 
 	#scopes
 	scope :sorted, lambda { order("reservations.booking DESC") }
-	scope :by_creator, lambda { |user| where("reservations.created_by = ?",user) }
+	scope :by_restaurant_owner, lambda { |user| where("reservations.restaurant_owner = ?",user) }
 	scope :filter_single_date, lambda { |date| where("STR_TO_DATE(reservations.booking,'%Y-%m-%d') = ? " , date ) }
 	scope :filter_between_dates, lambda { |from,to| where("STR_TO_DATE(reservations.booking,'%Y-%m-%d') BETWEEN ? AND ?" , from,to ) }
 	scope :search_name_code , lambda { |data| where("reservations.reservation_name LIKE ? OR reservation_code LIKE ?" , "%"+data+"%" ,"%"+data+"%"  ) }

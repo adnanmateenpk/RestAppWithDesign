@@ -99,7 +99,7 @@ class ReservationsController < ApplicationController
   	if current_user.role_id == 1 
   		@reservations = Reservation.sorted
   	else
-  		@reservations = Reservation.by_creator(current_user.id).sorted
+  		@reservations = Reservation.by_restaurant_owner(current_user.id).sorted
   	end
   end
   def filtered
@@ -112,9 +112,8 @@ class ReservationsController < ApplicationController
   private
   def reservation_params
     Time.zone = params[:time_zone]
-    params[:time] = params[:hours]+":"+params[:mins]+" "+params[:meri]
     params[:reservation][:status] = params[:reservation][:status].blank? ? 1 : params[:reservation][:status]
-    date = params[:date].split('-')
+    date = params[:date].split('/')
     params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     params[:reservation][:booking] = Time.zone.parse(params[:date]+ " " + params[:time])
     params[:reservation][:expire_at] = params[:reservation][:booking] + Branch.find(params[:reservation][:branch_id]).expiry*60*60
@@ -130,7 +129,8 @@ class ReservationsController < ApplicationController
     else
       params[:reservation][:user_id] = Digest::SHA1.hexdigest(params[:reservation][:user_id])[0,6]
     end
-    params.require(:reservation).permit(:reservation_name,:reservation_code,:booking,:expire_at, :people ,:user_id, :status, :branch_id,:created_by)
+    params[:reservation][:restaurant_owner] = Branch.find(params[:reservation][:branch_id]).user_id;
+    params.require(:reservation).permit(:reservation_name,:reservation_code,:booking,:expire_at, :people ,:user_id, :status, :branch_id,:created_by,:restaurant_owner)
   end
   private 
   def check_repeat value,time

@@ -1,15 +1,10 @@
 class MainController < ApplicationController
+  
   def index
     @reservation = Reservation.new(:booking=>"7:30 PM")
 
-    restaurants = Restaurant.published
-    @restaurants = Array.new
-    restaurants.each_with_index do |u,i|
-      if u.branches.count > 0
-        @restaurants[i] = Array.new
-        @restaurants[i] = [u.title,u.id.to_s+"|"+u.slug]
-      end  
-    end
+    @restaurants = Restaurant.published
+    
   end
 
   def subscription
@@ -31,7 +26,7 @@ class MainController < ApplicationController
       Time.zone = params[:time_zone]
     end
     if !params[:date].blank?
-      date = params[:date].split('-')
+      date = params[:date].split('/')
       params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     end
     if params[:date].blank? 
@@ -68,7 +63,7 @@ class MainController < ApplicationController
       Time.zone = params[:time_zone]
     end
     if !params[:date].blank?
-      date = params[:date].split('-')
+      date = params[:date].split('/')
       params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     end
     if params[:date].blank? 
@@ -76,9 +71,9 @@ class MainController < ApplicationController
     elsif params[:time].blank? 
       render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
     elsif params[:restaurant].blank?
-      render :json => {"all_slots"=>true , "available" => false, "message" => "Available Slots for all restaurants are listed below" , "time_slots" => get_all_timeslots}
+      render :json => {"user_signed_in" => user_signed_in?,"all_slots"=>true , "available" => false, "message" => "Available Slots for all restaurants are listed below" , "time_slots" => get_all_timeslots}
     elsif params[:branch].blank?
-      render :json => {"restaurant_slots" => true, "available" => false, "message" => "Availabale Time slots for all the branches for the Selected Restaurant are shown below", "time_slots" => get_restaurant_timeslots(Restaurant.find(params[:restaurant]))}
+      render :json => {"user_signed_in" => user_signed_in?,"restaurant_slots" => true, "available" => false, "message" => "Availabale Time slots for all the branches for the Selected Restaurant are shown below", "time_slots" => get_restaurant_timeslots(Restaurant.find(params[:restaurant]))}
     elsif Time.zone.parse(params[:date]+" "+ params[:time]) <= Time.zone.now
       render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
     else
@@ -88,7 +83,7 @@ class MainController < ApplicationController
       if check_branch_timings branch,params[:time]
         render :json => {"available" => false, "message" => "Branch is closed at the selected Time"}
       elsif check_seats slots,branch,Time.zone.parse(params[:date]+" "+params[:time])
-        render :json => {"branch_slots" => true, "available" => false, "message" => "Capacity breached at this time please select an available time in the below list","time_slots" => get_available_timeslots(slots,branch)}
+        render :json => {"user_signed_in" => user_signed_in?,"branch_slots" => true, "available" => false, "message" => "Capacity breached at this time please select an available time in the below list","time_slots" => get_available_timeslots(slots,branch)}
       else 
         render :json => {"available" => true, "message" => "Creating Reservation" , "user_signed_in" => user_signed_in?}
       end
@@ -145,6 +140,7 @@ class MainController < ApplicationController
       TimeSlot.initialize_slots params[:date],b.id
       slots = b.time_slots.where("slot LIKE ?","%"+params[:date]+"%")
       r = Hash.new
+      r["id"] = b.id
       r["title"] = b.title
       r["time_slots"] = get_available_timeslots slots,b
       if r["time_slots"].count > 0
@@ -160,6 +156,7 @@ class MainController < ApplicationController
     restaurants.each do |r|
       re = Hash.new
       re["title"] = r.title
+      re["id"] = r.id
       re["time_slots"] = get_restaurant_timeslots r
       if re["time_slots"].count > 0
         return_value << re

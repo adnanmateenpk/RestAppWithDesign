@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20150211014640) do
     t.datetime "updated_at",                   null: false
     t.datetime "expire_at"
     t.integer  "created_by",       limit: 4
+    t.integer  "restaurant_owner", limit: 4
   end
 
   add_index "reservations", ["booking"], name: "index_reservations_on_booking", using: :btree

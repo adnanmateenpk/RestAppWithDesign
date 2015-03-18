@@ -1,43 +1,55 @@
 <%= error_messages_for(@reservation) %>
-
-<table summary="Reservation form fields">
-<tbody>
+<div class="row form">
+  <!-- <div class="form-group">
+    <%= label_tag(:restaurant_id, "Restaurants",:class => "col-sm-5 control-label") %>
+    <div class="col-sm-6">
+     <%= select_tag(:restaurant_id, options_for_select(@restaurants), include_blank: "Select One", :id => "restaurant_id", :onchange => "populateBranches();", :class=>"form-control") %>
+    </div>
+  </div> -->
   
-  <tr>
-    <th><%= label_tag(:restaurant_id, "Restaurants") %></th>
-    <td><%= select_tag(:restaurant_id, options_for_select(@restaurants), include_blank: "Select One", :id => "restaurant_id", :onchange => "populateBranches(this.value);") %></td>
-    
-  </tr>
-  <tr>
-    <th><%= f.label(:branch_id, "Branches") %></th>
-    <td><%= select_tag(:branch_id, options_for_select([]),:onchange => "assignBranchValue(this.value);") %>
+   <div class="form-group has-error">
+    <label class="col-xs-12 control-label" id="notice" style="font-size:40px;text-align:center;"></label>
+  </div>
+  <div class="form-group ">
+    <%= f.label(:branch_id, "Select A Branch",:class => "col-sm-5 control-label") %>
+    <div class="col-sm-6">
+     <%= select_tag(:branch_id, options_for_select([]),:onchange => "assignBranchValue(this.value);",:class=>"form-control") %>
     <%= f.hidden_field(:branch_id) %>
-    </td>
-    
-  </tr>
-  <tr>
-    <th><%= label_tag(:date,"Reservation Date")%></th>
-    <td><%= text_field_tag(:date, @date ,:placeholder=>"MM-DD-YYYY") %></td>
-  </tr>
-  <tr>
-    <th><%= label_tag(:time,"Reservation Time")%></th>
-    <td><%= select_tag(:hours, options_for_select((1..12),@reservation.booking.strftime("%I").to_i)) %><%= select_tag(:mins, options_for_select([0,30],@reservation.booking.strftime("%M").to_i)) %><%= select_tag(:meri, options_for_select(["AM","PM"],@reservation.booking.strftime("%p"))) %></td>
-  </tr>
-  <% if !@reservation.id.blank? %>
-  <tr>
-    <th><%= f.label(:status, "Status") %></th>
-    <td><%= f.select(:status, options_for_select([['Active',1],['Expired',0]],(@reservation.status ? 1 : 0))) %></td>
-  </tr>
-  <% end %>
-  <tr>
-    <th><%= f.label(:people, "No. of People") %></th>
-    <td><%= f.select(:people, options_for_select((1..20),@reservation.people)) %></td>
-  </tr>
-  <tr>
-    <th><%= label_tag(:time_zone) %></th>
-   
-    <td><%= text_field_tag :time_zone,"UTC", :readonly =>true %> </td>
-    
-  </tr>
-  </tbody>
-</table>
+    <%= hidden_field_tag(:restaurant_id) %>
+    </div>
+  </div>
+  <div class="form-group datetime-group">
+    <%= label_tag(:date,"Fecha",:class => "col-sm-5 control-label")%>
+    <div class="col-sm-6">
+     <%= text_field_tag(:date, @date  , :class => 'datepicker form-control') %>
+    </div>
+  </div>
+  <div class="form-group datetime-group">
+    <%= label_tag(:time,"Hora",:class => "col-sm-5 control-label")%>
+    <div class="col-sm-6">
+     <%= text_field_tag(:time, @time ,:class => "timepicker form-control") %>
+
+    </div>
+  </div>
+  <div class="form-group quantity-group">
+    <%= f.label(:people, "Numero De Personas",:class => "col-sm-5 control-label") %>
+    <div class="col-sm-6">
+     <%= f.select(:people, options_for_select((1..20),@reservation.people),{},{ :class=>"form-control"}) %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= label_tag(:time_zone,nil,:class => "col-sm-5 control-label") %>
+    <div class="col-sm-6">
+     <%= text_field_tag :time_zone,"UTC", :readonly =>true,:class => "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-xs-offset-4 col-xs-6 col-sm-offset-5">
+      <input type="button" onclick="checkAvailability(0)" id="submit-button" class="submit-button" />
+    </div>
+  </div>
+ 
+  
+  </div>
+  
+

@@ -1,0 +1,366 @@
+@font-face {
+    font-family: "ostrich";
+    src: url("BebasNeue Light.otf");
+}
+@font-face {
+    font-family: "ostrich-black";
+    src: url("BebasNeue Regular.otf");
+}
+body{
+	font-family:  "ostrich";
+	font-size: 20px;
+	background-image: url("bg-form-container.png");
+}
+.modal-content {
+	background-image: url("bg-form-container.png");
+}
+.modal-header,.modal-footer{
+	background-image: url("bg-overlay.png");
+	background-color: white;
+}
+#slots tr,#slots th{
+	background-color: #f9f9f9;
+	text-align: center;
+}
+#slots td{
+	cursor: pointer;
+}
+strong{
+	font-family: "ostrich-black";
+	font-weight: normal;
+}
+[class^="icon-"], [class*=" icon-"] {
+    background-image: url("glyphicons-halflings.png");
+    background-position: 14px 14px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    margin-top: 1px;
+    vertical-align: text-top;
+    width: 14px;
+}
+.icon-chevron-up {
+    background-position: -288px -120px;
+}
+.icon-chevron-down {
+    background-position: -313px -119px;
+}
+
+.row,.container-fluid{
+	margin:0;
+	padding:0;
+}
+.table-image .img-responsive,.profile-picture .img-responsive{
+`}
+
+.profile-picture .img-responsive{
+	box-shadow: 3px -3px 10px #b7b7b9;
+}
+.map{
+	min-height: 200px;
+	margin:0 15px;
+	margin-bottom:3%;
+
+}
+.transparent{
+	opacity: 0.6;
+}
+
+.sidebar{
+	position: relative;
+	background-image: url("bg-overlay.png");
+	background-color: white;
+	padding-top: 1%;
+}
+.form-container{
+	
+	padding:4% 2%;
+	
+}
+.pageinfo{
+	font-size: 2em;
+}
+
+.form-wrapper h1,.content-heading h1{
+	padding:0;
+	font-size: 2.5em;
+	
+
+}
+.arrow{
+	background-image: url("arrow-right-mobile.png");
+	background-size: 100% 100%;
+	width: 76px;
+	height: 108px;
+	float:left;
+}
+.content-heading .arrow{
+	background-image: url("arrow-left-mobile.png");
+	width: 53px;
+	
+	
+}
+.heading-separator{
+	border-left: 4px solid #333;
+	margin: 0 10px;
+	
+}
+.home .form{
+	margin-top: 1%;
+	background-image: url("bg-form.png");
+	box-shadow: 3px -3px 10px #4c4c4c;
+	padding: 0 1%;
+	padding-top:4%;
+
+}
+.profile .form{
+	margin-top: 3%;
+
+}
+
+.form-group input,.form-group select{
+	background-image:  url("bg-input.png");
+	box-shadow: 1px -1px 5px #4c4c4c;
+	
+
+
+}
+.form-group input,.form-group select,.form-group label{
+	height: 50px;
+	font-size: 1.75em;
+	
+	
+}
+.form-control{
+	font-family: Arial;
+}
+.profile .form-group input[type=text],.profile .form-group select,.profile .form-group label{
+	height: 40px;
+	font-size: 1.5em;
+	background-image:  url("bg-input-2.png");
+	
+}
+.heading-sidebar{
+	font-size: 2.25em;
+	text-align: center;
+	line-height: 1em;
+
+}
+.profile .content-heading{
+	text-align: center;
+}
+.description{
+	font-size: 1.5em;
+	line-height: 1.05em;
+	text-align: center;
+}
+.footer{
+	color:#fff;
+	background-image: url("bg-footer.png");
+	background-color: #4a4a4d;
+	padding: 1% 0;
+	font-size: 16px;
+	
+}
+.submit-button{
+	height: 48px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    width: 142px;
+	background-image: url("reservation-button-mobile.png") !important;
+	background-size: 100% 100%;
+	box-shadow: 1px -1px 5px #4c4c4c;
+	border:none;
+}
+.submit-button:active{
+	box-shadow: -1px 1px 5px #4c4c4c;
+}
+.restaurant-logo-container{
+	padding-top: 10%;
+	max-height: 540px;
+	overflow: hidden;
+}
+.logo{
+	margin-top:2%;
+	margin-bottom: 2%;
+}
+.profile .logo img{
+	box-shadow: 3px -3px 10px #b7b7b9;
+}
+.reservations{
+	max-height: 130px;
+	overflow: hidden;
+}
+.userdetails{
+	text-align: center;
+}
+.user-subheading{
+	font-size: 1.75em;
+	line-height: 0.75em;
+}
+.track3 {
+    width: 10px;
+    background: rgba(0, 0, 0, 0);
+    margin-right: 2px;
+    border-radius: 10px;
+    -webkit-transition: background 250ms linear;
+    transition: background 250ms linear;
+}
+
+.track3:hover,
+.track3.dragging {
+    background: #d9d9d9; /* Browsers without rgba support */
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.handle3 {
+    width: 7px;
+    right: 0;
+    background: #999;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 7px;
+    -webkit-transition: width 250ms;
+    transition: width 250ms;
+}
+
+.track3:hover .handle3,
+.track3.dragging .handle3 {
+    width: 10px;
+}
+.track4 {
+    width: 15px;
+    background-clip: padding-box;
+    background: #dfdfe7;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0;
+    border-left-width: 1px;
+}
+
+.track4.dragging,
+.track4:hover {
+    background: #dfdfe7; /* No RGBA support */
+    
+   
+}
+
+.track4:active {
+    background: #dfdfe7; /* No RGBA support */
+    
+    
+}
+
+.handle4 {
+    width: 15px;
+    background-clip: padding-box;
+    background: #909096; /* No RGBA support */
+    
+    
+}
+
+.handle4:hover {
+    background: #909096; /* No RGBA support */
+    
+   
+}
+
+.dragging .handle4,
+.handle4:active {
+    background: #909096; /* No RGBA support */
+   
+    
+}
+.reservations{
+	padding:0 20px;
+	margin-top: 10%;
+}
+.button-container{
+	text-align: center;
+}
+@media (min-width: 768px) and (orientation: landscape){ 
+
+	body,html{
+		height: 100%;
+	}
+	.height100{height: 100%;}
+	.form-heading{
+		position: absolute;
+		width: 100%;
+		top: 0;
+	}
+	.content{
+		height: 90%;
+	}
+	.table-image{
+		display: block;
+		position: absolute;
+		bottom: 1%;
+	} 
+	.profile .table-image{
+		left: 15%;
+	} 
+	.home .form{
+		height:85%;
+		margin-top: 11%;
+	}
+	.pageinfo{
+		margin-top: 10%;
+	}
+	.profile .pageinfo{
+		margin-top: 2%;
+		font-size: 1.25em;
+	}
+	/*.map-container,.button-container{
+		height:60%;
+
+	}
+	.button-container .submit-button{
+		height:164px;
+		width:90px;
+		background-image: url("reservation-button.png");
+		position: absolute;
+		bottom: 1%;
+		right: 25%;
+	}*/
+	.footer{
+		height: 10%;
+	}
+	.restaurant-logo-container{
+		max-height: 87%;
+		
+
+	}
+	.reservations{
+		
+		height:30%;
+
+	}
+	.heading-sidebar{
+		margin-top: 10%;
+	}
+	.arrow{
+		background-image: url("form-arrow.png");
+		background-size: 100% 100%;
+		height: 85px;
+		width: 118px;
+		float:left;
+	}
+	.content-heading .arrow{
+		background-image: url("list-arrow.png");
+		
+		height: 110px;
+		width: 58px;
+		
+	}
+	.profile-picture{
+		margin-top:30%;
+	}
+	
+}
+
+@media (max-width: 768px) { 
+	.footer,.sidebar {
+		text-align: center;
+	} 
+}

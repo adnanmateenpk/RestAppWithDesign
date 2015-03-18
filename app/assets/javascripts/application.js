@@ -14,5 +14,10 @@
 //= require jquery_ujs
 //= require jquery.turbolinks
 //= require turbolinks
+//= require bootstrap.min
+//= require enscroll.min
+//= require bootstrap-datepicker
+//= require bootstrap-timepicker.min
+//= require actions
 //= require main
 
