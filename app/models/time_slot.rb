@@ -6,7 +6,8 @@ class TimeSlot < ActiveRecord::Base
 	belongs_to :branch
 	#methods
 	def self.initialize_slots date,branch_id
-		if TimeSlot.where("branch_id = ? AND slot LIKE ? ",branch_id, "%"+date+"%").count == 0
+
+		if TimeSlot.where("branch_id = ? AND slot > ? ",branch_id, date).count == 0
 			branch = Branch.find(branch_id)
 			Time.zone = "UTC"
 			time = branch.open

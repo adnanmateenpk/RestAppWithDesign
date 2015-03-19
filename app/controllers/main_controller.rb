@@ -44,7 +44,7 @@ class MainController < ApplicationController
     else
       branch = Branch.find(params[:branch])
        params[:customer] = Digest::SHA1.hexdigest(params[:customer])[0,6]
-      slots = TimeSlot.where("branch_id = ? AND slot > ? AND slot LIKE ? ",branch.id, Time.now.utc, "%"+params[:date]+"%")
+      slots = TimeSlot.where("branch_id = ? AND slot > ? AND slot > ? ",branch.id, Time.now.utc, "%"+params[:date]+"%")
       if check_branch_timings branch,params[:time]
         render :json => {"available" => false, "message" => "Branch is closed at the selected Time"}
       elsif check_seats slots,branch,Time.zone.parse(params[:date]+" "+params[:time])
@@ -79,7 +79,7 @@ class MainController < ApplicationController
     else
       branch = Branch.find(params[:branch])
      
-      slots = TimeSlot.where("branch_id = ? AND slot LIKE ? ",branch.id, "%"+params[:date]+"%")
+      slots = TimeSlot.where("branch_id = ? AND slot > ? ",branch.id, "%"+params[:date]+"%")
       if check_branch_timings branch,params[:time]
         render :json => {"available" => false, "message" => "Branch is closed at the selected Time"}
       elsif check_seats slots,branch,Time.zone.parse(params[:date]+" "+params[:time])
@@ -138,7 +138,7 @@ class MainController < ApplicationController
     return_value = Array.new
     branches.each do |b|
       TimeSlot.initialize_slots params[:date],b.id
-      slots = b.time_slots.where("slot LIKE ?","%"+params[:date]+"%")
+      slots = b.time_slots.where("slot > ?","%"+params[:date]+"%")
       r = Hash.new
       r["id"] = b.id
       r["title"] = b.title
