@@ -5,7 +5,7 @@ class Restaurant < ActiveRecord::Base
 	belongs_to :user 
 	#scopes
 	scope :by_user, lambda { |user| where("restaurants.user_id = ?",user) }
-	scope :published, lambda { where("restaurants.status = 1") }
+	scope :published, lambda { where("restaurants.status = ?",true) }
 	#validations
 	validates :title,		:presence => true,
 							:length => { :maximum => 25 }

@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   #scopes
   scope :without_current , lambda {|id| where("users.id != ?",id) }
   scope :search, lambda { |data| where("users.membership LIKE ? OR users.name LIKE ?" , "%"+data+"%", "%"+data+"%" ) }
-  scope :limited_users, lambda { where("users.role_id = 2 OR users.role_id = 3 ") }
+  scope :limited_users, lambda { where("users.role_id = ? OR users.role_id = ? ",2,3) }
   
   #validations
   validates :name,		:presence => true,

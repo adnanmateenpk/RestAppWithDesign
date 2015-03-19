@@ -7,8 +7,8 @@ class Reservation < ActiveRecord::Base
 	scope :filter_single_date, lambda { |date| where("STR_TO_DATE(reservations.booking,'%Y-%m-%d') = ? " , date ) }
 	scope :filter_between_dates, lambda { |from,to| where("STR_TO_DATE(reservations.booking,'%Y-%m-%d') BETWEEN ? AND ?" , from,to ) }
 	scope :search_name_code , lambda { |data| where("reservations.reservation_name LIKE ? OR reservation_code LIKE ?" , "%"+data+"%" ,"%"+data+"%"  ) }
-	scope :expire_mode, lambda {|time| where("reservations.status = 1 AND reservations.expire_at < ?",time)}
-	scope :availability_for_restaurant , lambda {|date,branch,id| where("reservations.status = 1 AND reservations.branch_id = ? AND reservations.booking<= ? AND reservations.expire_at > ? AND reservations.id != ?",branch,date,date,id)}
+	scope :expire_mode, lambda {|time| where("reservations.status = ? AND reservations.expire_at < ?",true,time)}
+	scope :availability_for_restaurant , lambda {|date,branch,id| where("reservations.status = ? AND reservations.branch_id = ? AND reservations.booking<= ? AND reservations.expire_at > ? AND reservations.id != ?",true,branch,date,date,id)}
 	#validations
 	validates :reservation_name, :presence => true, :length => {:maximum => 25}
 	validates :reservation_code, :presence => true, :length => {:maximum => 6}, :uniqueness => true

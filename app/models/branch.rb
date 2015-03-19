@@ -9,7 +9,7 @@ class Branch < ActiveRecord::Base
 	scope :sorted, lambda { order("branches.position ASC") }
 	scope :by_user, lambda { |user| where("branches.user_id = ?",user) }
 	#scope :by_time, lambda{|time| where{""} }
-	scope :published, lambda { where("branches.status = 1") }
+	scope :published, lambda { where("branches.status = ?",true) }
 	#constant
   	EMAIL_REGEX = /\A[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}\Z/i
 	#validations
