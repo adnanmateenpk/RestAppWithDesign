@@ -141,7 +141,7 @@ function checkAvailability(id){
 					
 		        	$btn.button('reset');
 		        	$('#login-popup').modal('show');
-		        	$("#submit-button").popover({content: "Log In First"}).popover("show");
+		        	$("#submit-button").popover({content: "You Need To Log In"}).popover("show");
 		        	
 				}
 				else if(!result.available && result.message == "Please Enter A Valid Date/Time"){
