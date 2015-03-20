@@ -3,10 +3,13 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 $(document).ready(function(){
+	$("#submit-button").popover('destroy');
 	$('#login-form').on('ajax:success', function(e,data) {  
+		$("#submit-button").popover({content: "Creating Reservation"}).popover("show");
 	    $("#reservation-form").submit();
 	}).on("ajax:error", function() {  
-	    $("#notice").html("Invalid Email or Password!!!").show();
+	    
+	    $("#submit-button").popover({content: "Invalid Email or Password!!!"}).popover("show");
 	});
 	$("#restaurant_id").val("");
 	$("#reservation_branch_id").val("");
@@ -138,7 +141,7 @@ function checkAvailability(id){
 					
 		        	$btn.button('reset');
 		        	$('#login-popup').modal('show');
-		        	$("#submit-button").popover({content: result.message}).popover("show");
+		        	$("#submit-button").popover({content: "Log In First"}).popover("show");
 		        	
 				}
 				else if(!result.available && result.message == "Please Enter A Valid Date/Time"){
