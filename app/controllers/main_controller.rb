@@ -30,9 +30,9 @@ class MainController < ApplicationController
       params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     end
     if params[:date].blank? 
-      render :json => {"available" => false, "message" => "Please Enter A Valid Date"}
+      render :json => {"available" => false, "message" => "Please Enter A Valid Date/Time"}
     elsif params[:time].blank? 
-      render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
+      render :json => {"available" => false, "message" => "Please Enter A Valid Date/Time"}
     elsif params[:customer].blank?
       render :json => {"available" => false, "message" => "Please enter a valid Email Address"}
     elsif params[:restaurant].blank?
@@ -40,13 +40,13 @@ class MainController < ApplicationController
     elsif params[:branch].blank?
       render :json => {"restaurant_slots" => true, "available" => false, "message" => "Availabale Time slots for all the branches for the Selected Restaurant are shown below", "time_slots" => get_restaurant_timeslots(Restaurant.find(params[:restaurant]))}
     elsif Time.zone.parse(params[:date]+" "+ params[:time]) <= Time.zone.now
-      render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
+      render :json => {"available" => false, "message" => "Please Enter A Valid Date/Time"}
     else
       branch = Branch.find(params[:branch])
        params[:customer] = Digest::SHA1.hexdigest(params[:customer])[0,6]
       slots = TimeSlot.where("branch_id = ? AND slot > ? AND slot > ? ",branch.id, Time.now.utc, "%"+params[:date]+"%")
       if check_branch_timings branch,params[:time]
-        render :json => {"available" => false, "message" => "Branch is closed at the selected Time"}
+        render :json => {"available" => false, "message" => "Branch is closed at the selected Date/Time"}
       elsif check_seats slots,branch,Time.zone.parse(params[:date]+" "+params[:time])
         render :json => {"branch_slots" => true, "available" => false, "message" => "Capacity breached at this time please select an available time in the below list","time_slots" => get_available_timeslots(slots,branch)}
       else 
@@ -67,23 +67,23 @@ class MainController < ApplicationController
       params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     end
     if params[:date].blank? 
-      render :json => {"available" => false, "message" => "Please Enter A Valid Date"}
+      render :json => {"available" => false, "message" => "Please Enter A Valid Date/Time"}
     elsif params[:time].blank? 
-      render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
+      render :json => {"available" => false, "message" => "Please Enter A Valid Date/Time"}
     elsif params[:restaurant].blank?
       render :json => {"user_signed_in" => user_signed_in?,"all_slots"=>true , "available" => false, "message" => "Available Slots for all restaurants are listed below" , "time_slots" => get_all_timeslots}
     elsif params[:branch].blank?
-      render :json => {"user_signed_in" => user_signed_in?,"restaurant_slots" => true, "available" => false, "message" => "Availabale Time slots for all the branches for the Selected Restaurant are shown below", "time_slots" => get_restaurant_timeslots(Restaurant.find(params[:restaurant]))}
+      render :json => {"user_signed_in" => user_signed_in?,"restaurant_slots" => true, "available" => false, "message" => "Available Times For All The Branches Of Selected Restaurant", "time_slots" => get_restaurant_timeslots(Restaurant.find(params[:restaurant]))}
     elsif Time.zone.parse(params[:date]+" "+ params[:time]) <= Time.zone.now
-      render :json => {"available" => false, "message" => "Please Enter A Valid Time"}
+      render :json => {"available" => false, "message" => "Please Enter A Valid Date/Time"}
     else
       branch = Branch.find(params[:branch])
      
       slots = TimeSlot.where("branch_id = ? AND slot > ? ",branch.id, "%"+params[:date]+"%")
       if check_branch_timings branch,params[:time]
-        render :json => {"available" => false, "message" => "Branch is closed at the selected Time"}
+        render :json => {"available" => false, "message" => "Branch is closed at the selected Date/Time"}
       elsif check_seats slots,branch,Time.zone.parse(params[:date]+" "+params[:time])
-        render :json => {"user_signed_in" => user_signed_in?,"branch_slots" => true, "available" => false, "message" => "Capacity breached at this time please select an available time in the below list","time_slots" => get_available_timeslots(slots,branch)}
+        render :json => {"user_signed_in" => user_signed_in?,"branch_slots" => true, "available" => false, "message" => "Capacity Breached Please Select An Available Time From The List","time_slots" => get_available_timeslots(slots,branch)}
       else 
         render :json => {"available" => true, "message" => "Creating Reservation" , "user_signed_in" => user_signed_in?}
       end

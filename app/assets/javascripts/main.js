@@ -12,7 +12,11 @@ $(document).ready(function(){
 	$("#reservation_branch_id").val("");
 	
 });
-function populateBranches(val){
+function populateBranches(val,object){
+	$(".logo img").removeClass("selected").addClass("disabled");
+	$(object).addClass("selected");
+	$(".logo img.disabled").popover("destroy");
+
 	val = val.split("|");
 	$("#restaurant_id").val(val[0]);
 	if(val==0){
@@ -21,17 +25,21 @@ function populateBranches(val){
 	else {
 		
 		$.ajax({url: "/dashboard/restaurants/"+val[1]+"/branches/list", success: function(result){
-				var html = "<option value='|UTC|20'>Select One</option>";
+				var html = "";
 				$("#reservation_branch_id").val("");
 	            $("#time_zone").attr("readonly",false);
 	            $("#time_zone").val("UTC");
 	            $("#time_zone").attr("readonly",true);
+	            if(result.length>1){
+		            for (i = 0 ;i<result.length;i++){
+		            	html = html+"<a style='display:block;margin:5px 0; cursor:pointer;' onclick='assignBranchValue(\""+result[i].id +"|"+result[i].time_zone+"|"+result[i].seating_capacity+"\");' value=>"+result[i].title+"</a>";
+		            }
+		        }
+		        else if(result.length==1) {
+		        	assignBranchValue(result[i].id +"|"+result[i].time_zone+"|"+result[i].seating_capacity);
+		        }
 	            
-	            for (i = 0 ;i<result.length;i++){
-	            	html = html+"<option value='"+result[i].id +"|"+result[i].time_zone+"|"+result[i].seating_capacity+"'>"+result[i].title+"</option>";
-	            }
-	            $("#branch_id").html(html);
-        	
+        		$(".logo img.selected").popover({content: html,html: true}).popover("show");
         }});
 	}
 	
@@ -77,6 +85,7 @@ function setTimeFromSlot(time,submission,object,signed_in){
 	$("#slots td").unbind( "click" );
 }
 function assignBranchValue(val){
+	$(".logo img.selected").popover({content: html,html: true}).popover("show");
 	val = val || "";
 	val = val.split("|");
 	$("#reservation_branch_id").val(val[0]);
@@ -90,53 +99,58 @@ function assignBranchValue(val){
 		html = html + "<option value='"+(i+1)+"'>"+(i+1)+"</option>";
 	}
 	$("#reservation_people").html(html);
+	$(".logo img").popover("destroy");
 }
-function checkAvailability(id){
-
+function checkAvailability(id){	
+	$(".logo img").popover("destroy");
 	id = id || 0 ;
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
 	date = $("#date").val();
 	time = $("#time").val();
 	user = $("#reservation_user_id").val();
-	
+	var $btn = $("#submit-button").button('loading');
 	restaurant = $("#restaurant_id").val();
 	restaurant = restaurant.split("|");
 	restaurant = restaurant[0];
-	$(".datetime-group").removeClass("has-danger");
-	$("#submit-button").attr("disabled",true);
+	$("#submit-button").popover('destroy');
+	$(".datetime-group").removeClass("has-error");
+	$("#notice").html("").hide();
 	$("table#slots tbody").html("");
 	$.ajax({	
 			url: "/availability_customer",
 			type: "POST",
 			data:{"restaurant":restaurant ,"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id,"time_zone" : $("#time_zone").val()},
 			error: function(){
-				$("#submit-button").attr("disabled",false);
+				$btn.button('reset');
 			},
 			success: function(result){
 
 				if(result.available && result.user_signed_in){
-					$("#submit-button").attr("disabled",false);
-		        	$("#notice").html(result.message).show();
-		        	$("#submit-button").val("Saving");
+					
+		        	
+		        	$btn.button('reset');
 		        	$("#reservation-form").submit();
+		        	$("#submit-button").popover({content: result.message}).popover("show");
 		        	
 				}
 				else if(result.available && !result.user_signed_in){
-					$("#submit-button").attr("disabled",false);
-		        	
+					
+		        	$btn.button('reset');
 		        	$('#login-popup').modal('show');
+		        	$("#submit-button").popover({content: result.message}).popover("show");
 		        	
 				}
-				else if(!result.available && result.message == "Please Enter A Valid Time" || result.message == "Please Enter A Valid Date"){
-						$("#notice").html(result.message).show();
+				else if(!result.available && result.message == "Please Enter A Valid Date/Time"){
+						
 						$(".datetime-group").addClass("has-error");
-						$("#submit-button").attr("disabled",false);
+						$btn.button('reset');
+						$("#submit-button").popover({content: result.message}).popover("show");
 				}
 				else if(result.branch_slots){
 					
-					
-	        		$("#submit-button").attr("disabled",false);
+					$btn.button('reset');
+	        		$("#submit-button").popover({content: result.message}).popover("show");
 	        		var html = "<tr><th>Selected Branch</th></tr>";
 	        		for(i=0;i<result.time_slots.length;i++){
 	        			if(result.time_slots[i].available){
@@ -148,9 +162,9 @@ function checkAvailability(id){
 	        		$('#time-slots').modal('show');
 				}
 				else if(result.restaurant_slots){
-					
-	        		$("#submit-button").attr("disabled",false);
-
+					$btn.button('reset');
+					$("#submit-button").popover({content: result.message}).popover("show");
+	        		
 					var html="";
 	        		for(i=0;i<result.time_slots.length;i++){
 	        			html = html+"<tr class='branch' data-value = '"+result.time_slots[i].id+"'>";
@@ -167,9 +181,9 @@ function checkAvailability(id){
 	        		$('#time-slots').modal('show');
 				}
 				else if(result.all_slots){
-					
-	        		$("#submit-button").attr("disabled",false);
-
+					$btn.button('reset');
+					$("#submit-button").popover({content: result.message}).popover("show");
+	        		
 					var html="";
 					for(x=0;x<result.time_slots.length;x++){
 						html=html+"<tr class='restaurant' data-value='"+result.time_slots[x].id+"'><th>"+result.time_slots[x].title+"</th></tr>"
@@ -189,8 +203,9 @@ function checkAvailability(id){
 	        		$('#time-slots').modal('show');
 				}
 	        	else {
-	        		$("#notice").html(result.message).show();
-	        		$("#submit-button").attr("disabled",false);
+	        		
+	        		$btn.button('reset');
+	        		$("#submit-button").popover({content: result.message}).popover("show");
 	        	}
 	        	
 	        }

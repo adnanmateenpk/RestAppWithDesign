@@ -41,21 +41,21 @@ var initialize = function() {
 	$(".restaurant-logo-container,.reservations").attr("style","outline: medium none; overflow: hidden;");
 	$(".track4").parent().hide();
 	$(".track3").parent().css("top","0");
-	  var myLatlng = new google.maps.LatLng(37.7699298, -122.4469157);
-	  var mapOptions = {
-	    zoom: 14,
-	    center: myLatlng
-	  }
-	  var mapCanvas =  document.getElementById('map');
-	  if(mapCanvas!=null){ 
+	 //  var myLatlng = new google.maps.LatLng(37.7699298, -122.4469157);
+	 //  var mapOptions = {
+	 //    zoom: 14,
+	 //    center: myLatlng
+	 //  }
+	 //  var mapCanvas =  document.getElementById('map');
+	 //  if(mapCanvas!=null){ 
 
-		  var map = new google.maps.Map(mapCanvas, mapOptions);
+		//   var map = new google.maps.Map(mapCanvas, mapOptions);
 
-		  var marker = new google.maps.Marker({
-		      position: myLatlng,
-		      map: map
-		  });
-		}
+		//   var marker = new google.maps.Marker({
+		//       position: myLatlng,
+		//       map: map
+		//   });
+		// }
 	  setTimeout(function () {
 	    // and call `resolve` on the deferred object, once you're done
 	    r.resolve();

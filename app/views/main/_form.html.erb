@@ -6,17 +6,8 @@
      <%= select_tag(:restaurant_id, options_for_select(@restaurants), include_blank: "Select One", :id => "restaurant_id", :onchange => "populateBranches();", :class=>"form-control") %>
     </div>
   </div> -->
-  
-   <div class="form-group has-error">
-    <label class="col-xs-12 control-label" id="notice" style="font-size:40px;text-align:center;"></label>
-  </div>
-  <div class="form-group ">
-    <%= f.label(:branch_id, "Select A Branch",:class => "col-sm-5 control-label") %>
-    <div class="col-sm-6">
-     <%= select_tag(:branch_id, options_for_select([]),:onchange => "assignBranchValue(this.value);",:class=>"form-control") %>
-    <%= f.hidden_field(:branch_id) %>
-    <%= hidden_field_tag(:restaurant_id) %>
-    </div>
+  <div class="form-group datetime-group">
+    <img src="/assets/header-image-login.png" class="img-responsive " style="margin: 5% auto" />
   </div>
   <div class="form-group datetime-group">
     <%= label_tag(:date,"Fecha",:class => "col-sm-5 control-label")%>
@@ -44,8 +35,10 @@
     </div>
   </div>
   <div class="form-group">
-    <div class="col-xs-offset-4 col-xs-6 col-sm-offset-5">
-      <input type="button" onclick="checkAvailability(0)" id="submit-button" class="submit-button" />
+    <div class="col-xs-offset-4 col-xs-4 col-sm-offset-5">
+    <%= f.hidden_field(:branch_id) %>
+    <%= hidden_field_tag(:restaurant_id) %>
+      <input type="button" onclick="checkAvailability(0)" id="submit-button" class="form-control" data-loading-text="Loading..." style="padding:0;font-weight:bold;" value="RESERVAR" data-toggle="popover" data-placement="bottom" data-trigger="focus" />
     </div>
   </div>
  

@@ -106,6 +106,14 @@ strong{
 	margin: 0 10px;
 	
 }
+.logo img{
+	margin:0 auto;
+	width:80%;
+}
+.logo img.selected{
+	border: 2px solid #d9534f
+
+}
 .home .form{
 	margin-top: 1%;
 	background-image: url("bg-form.png");
