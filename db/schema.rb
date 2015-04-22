@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211014640) do
+ActiveRecord::Schema.define(version: 20150421202708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20150211014640) do
     t.datetime "open"
     t.datetime "close"
     t.string   "time_zone"
+    t.boolean  "night_club"
   end
 
   add_index "branches", ["position"], name: "index_branches_on_position", using: :btree

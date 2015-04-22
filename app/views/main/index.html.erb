@@ -1,110 +1,184 @@
 
-<div class="content container-fluid home">
-
+    <div class="container-fluid content">
+      <div class="breadcrumb">Inicio<strong> | usuario</strong></div>
       <div class="row height100">
-      
-        <div class="col-md-3 sidebar height100 col-md-push-9">
-          <div class="row pageinfo">
-            <div class="col-xs-8 col-xs-offset-2 col-md-8 col-lg-offset-4">inicio<strong><span class="heading-separator"></span>usuario</strong></div>
-          </div>
-          <div class="row table-image">
-            <div class="col-xs-8 col-xs-offset-2">
-              <img src="/assets/mesaparatodos.png" class="img-responsive" />
+        <div class="col-md-3 white height100 ">
+          <div class="row logo-container">
+            <div class="col-xs-4 col-xs-offset-4 col-md-8 col-md-offset-2">
+              <img src="/assets/logo.png" class="img-responsive">
             </div>
           </div>
+        </div>
+        <div class="col-md-5 yellow height100">
+          <div class="heading row">
+            <h1 class="col-xs-4 col-sm-5 col-lg-4  col-xs-offset-1">
+              <strong>1 | </strong>Elige
+            </h1>
+            <div class="col-xs-3  ">
+              <img src="/assets/arrow-down-right.png" class="img-responsive">
+            </div>
+          </div>
+          <ul class="tab-controls nav nav-pills" role="tablist">
+            <li role="presentation" class="col-xs-6 tab-button active"><a href="#restaurante" aria-controls="restaurante" role="tab" data-toggle="tab">Restaurante</a></li>
+            <li role="presentation" class="col-xs-6 tab-button"><a href="#discoteca" aria-controls="discoteca" role="tab" data-toggle="tab">Discoteca</a></li>
+
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active row height100 custom-scroll" id="restaurante">
+              <% x= 0 %>
+              <% @restaurants.each_with_index do |u,i| %>
+                <% if u.branches.count > 0 and !u.branches[0].night_club %>
+                  <div class= "col-xs-3 col-xs-offset-2">
+                    <% if !(u.featured_image.blank?) %>
+
+                     <img src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle" style="width:303px" data-toggle="popover" data-trigger="focus" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>">
+                     
+                   <% else %>
+                      <img src="/assets/dining-default.png" class="img-responsive img-circle" style="width:303px" data-toggle="popover" data-trigger="focus" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>">
+                      
+                    <% end %>
+                  </div>
+                  <% x=x+1 %>
+                <% end %>   
+              <% end %>  
+              
+            </div>
+            <div role="tabpanel" class="tab-pane fade height100 custom-scroll" id="discoteca">
+             <% x= 0 %>
+              <% @restaurants.each_with_index do |u,i| %>
+                <% if u.branches.count > 0 and u.branches[0].night_club %>
+                  <div class= "col-xs-3 col-xs-offset-2">
+                    <% if !(u.featured_image.blank?) %>
+
+                     <img src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle" style="width:303px" data-toggle="popover" data-trigger="focus" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>">
+                     
+                   <% else %>
+                      <img src="/assets/dining-default.png" class="img-responsive img-circle" style="width:303px" data-toggle="popover" data-trigger="focus" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>">
+                      
+                    <% end %>
+                  </div>
+                  <% x=x+1 %>
+                <% end %>   
+              <% end %>  
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 white height100">
+          <div class="heading2 row">
+            <h1 class="col-lg-offset-2 col-xs-offset-2 col-xs-7 col-sm-10 col-lg-7 ">
+              <strong>2 | </strong>Completa
+            </h1>
+            <div class="col-xs-2  ">
+              <img src="/assets/arrow-down-right.png" class="img-responsive">
+            </div>
+          </div>
+          <%= form_for(:reservation, :url=>{:controller=>'reservations',:action=>'create'},:multipart=>true , :html => {:id => "reservation-form",:class =>"form-horizontal"}) do |f| %>
+          <%= render(:partial => "form",:locals=>{:f=>f})%>
+          <% end %>
+          
+            
           
         </div>
-        <div class="col-md-9 form-container height100 col-md-pull-3 ">
-          <div class="row height100">
-            <div class="col-md-4 col-md-push-8 height100">
-              <div class="restaurant-logo-container" >
-                <div class="row restaurants">
-                <% x= 0 %>
-                <% @restaurants.each_with_index do |u,i| %>
-                  <% if u.branches.count > 0 %>
-
-                    <div class="col-xs-6 logo ">
-                      <% if !(u.featured_image.blank?) %>
-                        <img data-toggle="popover" data-trigger="focus" src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>" />
-                     <% else %>
-                        <img data-toggle="popover" data-trigger="focus" src="/assets/dining-default.png" class="img-responsive img-circle" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>"  />
-                      <% end %>
-                    </div>
-                    <% x=x+1 %>
-                  <% end %>   
-                <% end %>  
-                </div>
-              </div>
-              <div class="row content-heading">
-                 <div class="arrow">
-                  
-                  </div> 
-                <div class="col-xs-2 col-xs-offset-2">
-                 
-                  <h1><strong>1<span class="heading-separator"></span></strong>Elige</h1>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-8 form-wrapper height100 col-md-pull-4" id="form">
-            <%= form_for(:reservation, :url=>{:controller=>'reservations',:action=>'create'},:multipart=>true , :html => {:id => "reservation-form",:class =>"form-horizontal"}) do |f| %>
-              <%= render(:partial => "form",:locals=>{:f=>f})%>
-              <% end %>
-              <div class="row form-heading">
-                <div class=" col-lg-4 col-md-6 col-xs-5 col-xs-offset-2 col-md-offset-1">
-                  <h1><strong>2<span class="heading-separator"></span></strong>Completa</h1>
-                </div>
-                <div class="arrow col-xs-offset-1 col-sm-offset-0 ">
-                  
-                </div>
-              </div>
-            </div>
-            
-          </div>
-        </div>
-        
       </div>
     </div>
-    <div class="modal fade row home" id="login-popup">
+  
+    <div class="modal fade" id="loginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-        <div class="modal-content row">
-          <div class="modal-header col-sm-12">
+        <div class="modal-content">
+          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h1 class="modal-title" style="text-align:center">You have to log In Before Proceeding </h1>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Inicia Sesion</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user , url: session_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Email") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Password" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Registrarse</button>
+                </div>
+              </div>
+           <% end %>
           </div>
           
-          <div class="modal-body form col-sm-8 col-sm-offset-2" style="margin-top: 2%; padding-bottom: 9%; margin-bottom: 12%;">
-          <img src="/assets/header-image-login.png" class="img-responsive " style="margin: 5% auto" />
-            <%= form_for(:user , url: session_path(:user) , :remote =>true ,:html => {:id=>"login-form",:class=>"form-horizontal"}) do |f| %>
-
-              <div class="form-group">
-                <%= f.label :email,nil,:class=>"col-sm-4 control-label" %>
-                <div class="col-sm-8">
-                <%= f.email_field(:email ,:class => "form-control",:style =>"font-size:20px;") %>
-                </div>
-              </div>
-               <div class="form-group ">
-                <%= f.label :password,nil,:class=>"col-sm-4 control-label" %>
-                <div class="col-sm-8">
-                <%= f.password_field :password, autocomplete: "off",:class => "form-control",:style =>"font-size:20px;" %>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="col-xs-offset-4 col-xs-6 col-sm-offset-4">
-                  <input type="submit" class="btn btn-default" value= "Log In" onclick="" id="login-button" />
-                </div>
-              </div>
-              
-    
-            <% end %>
-            <img src="/assets/form-element-1.png" class="img-responsive col-sm-3 col-xs-2" style="left: 45%;position: absolute;" />
-          </div> 
-
-          <div class="modal-footer col-sm-12">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+     <div class="modal fade" id="loginFormRemote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Inicia Sesion</h2>
           </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+          <div class="modal-body">
+           <%= form_for(:user , url: session_path(:user) , :remote =>true ,:html => {:id=>"login-form",:class=>"form-horizontal"}) do |f| %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Email") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Password" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Registrarse</button>
+                </div>
+              </div>
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="contactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Contacto</h2>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <div class="col-xs-6">
+                  <input type="text" class="form-control" id="name" placeholder="Nombre">
+                </div>
+                <div class="col-xs-6">
+                  <input type="email" class="form-control" id="email" placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-12 ">
+                  <textarea type="password" class="form-control" id="password" placeholder="Comentario"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Registrarse</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
     <div class="modal fade row home" id="time-slots">
       <div class="col-sm-8 col-sm-offset-2">
         <div class="modal-content row">
@@ -120,8 +194,10 @@
           </div> 
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+   
+ 

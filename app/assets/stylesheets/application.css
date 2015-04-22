@@ -10,9 +10,10 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require bootstrap.min
+ 
  *= require datepicker
  *= require timepicker
+ *= require bootstrap.min
  *= require style
 
  */

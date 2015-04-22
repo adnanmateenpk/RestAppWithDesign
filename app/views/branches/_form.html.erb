@@ -21,10 +21,7 @@
     <th><%= f.label(:close,"Closing Time")%></th>
     <td><%= select_tag(:hours_close, options_for_select((1..12),@branch.close.strftime("%I"))) %><%= select_tag(:mins_close, options_for_select([0,30],@branch.close.strftime("%M"))) %><%= select_tag(:meri_close, options_for_select(["AM","PM"],@branch.close.strftime("%p"))) %></td>
   </tr>
-  <tr>
-    <th><%= f.label(:expiry,"Time For a Reservation to Expire in Hours")%></th>
-    <td><%= f.text_field(:expiry)%></td>
-  </tr>
+
   <tr>
     <th><%= f.label(:email,"Email")%></th>
     <td><%= f.text_field(:email)%></td>
@@ -44,6 +41,10 @@
   <tr>
     <th><%= f.label(:status, "Status") %></th>
     <td><%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@branch.status ? 1 : 0))) %></td>
+  </tr>
+  <tr>
+    <th><%= f.label(:night_club, "Restaurant Type") %></th>
+    <td><%= f.select(:night_club, options_for_select([['Night Club',1],['Restaurant',0]],(@branch.night_club ? 1 : 0))) %></td>
   </tr>
   <tr>
     <th><%= f.label(:position,"Position")%></th>

@@ -12,10 +12,17 @@ class TimeSlot < ActiveRecord::Base
 			Time.zone = "UTC"
 			time = branch.open
 			while time < branch.close  do
-				if Time.zone.parse(date+" "+time.strftime("%H:%M:%S")) > Time.zone.now
-					TimeSlot.create(:branch_id =>branch_id,:seats =>0, :slot =>date+" "+time.strftime("%H:%M:%S"))
+				if  branch.open.strftime("%d").to_i < (time).strftime("%d").to_i
+					slot_time = Time.zone.parse(date+" "+time.strftime("%H:%M:%S")) + 24*60*60
+				else 
+					slot_time = Time.zone.parse(date+" "+time.strftime("%H:%M:%S")) 
 				end
+				if Time.zone.parse(date+" "+time.strftime("%H:%M:%S")) > Time.zone.now
+					TimeSlot.create(:branch_id =>branch_id,:seats =>0, :slot =>slot_time)
+				end
+
 				time = time + 0.5*60*60
+
 			end
 		end
 	end

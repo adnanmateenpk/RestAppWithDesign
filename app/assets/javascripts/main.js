@@ -16,9 +16,9 @@ $(document).ready(function(){
 	
 });
 function populateBranches(val,object){
-	$(".logo img").removeClass("selected").addClass("disabled");
+	$("img.selected").removeClass("selected").addClass("disabled");
 	$(object).addClass("selected");
-	$(".logo img.disabled").popover("destroy");
+	$("img.disabled").popover("destroy");
 
 	val = val.split("|");
 	$("#restaurant_id").val(val[0]);
@@ -39,10 +39,10 @@ function populateBranches(val,object){
 		            }
 		        }
 		        else if(result.length==1) {
-		        	assignBranchValue(result[i].id +"|"+result[i].time_zone+"|"+result[i].seating_capacity);
+		        	assignBranchValue(result[0].id +"|"+result[0].time_zone+"|"+result[0].seating_capacity);
 		        }
 	            
-        		$(".logo img.selected").popover({content: html,html: true}).popover("show");
+        		$("img.selected").popover({content: html,html: true}).popover("show");
         }});
 	}
 	
@@ -60,7 +60,7 @@ function setTimeFromSlot(time,submission,object,signed_in){
 		}
 		else {
 			$('#time-slots').modal('hide');
-			$('#login-popup').modal('show');
+			$('#loginFormRemote').modal('show');
 		}
 	}
 	else if(submission===1) {
@@ -70,7 +70,7 @@ function setTimeFromSlot(time,submission,object,signed_in){
 		}
 		else {
 			$('#time-slots').modal('hide');
-			$('#login-popup').modal('show');
+			$('#loginFormRemote').modal('show');
 		}
 	}
 	else if(submission===2) {
@@ -81,14 +81,14 @@ function setTimeFromSlot(time,submission,object,signed_in){
 		}
 		else {
 			$('#time-slots').modal('hide');
-			$('#login-popup').modal('show');
+			$('#loginFormRemote').modal('show');
 		}
 	}
 
 	$("#slots td").unbind( "click" );
 }
 function assignBranchValue(val){
-	$(".logo img.selected").popover({content: html,html: true}).popover("show");
+	$("img.selected").popover({content: html,html: true}).popover("show");
 	val = val || "";
 	val = val.split("|");
 	$("#reservation_branch_id").val(val[0]);
@@ -97,15 +97,15 @@ function assignBranchValue(val){
 	$("#time_zone").attr("readonly",true);
 	limit = parseInt(val[2]);
 	
-	var html = "";
+	var html = "<option value=''>Numero de Personas</option>";
 	for(i=0;i<limit;i++){
 		html = html + "<option value='"+(i+1)+"'>"+(i+1)+"</option>";
 	}
 	$("#reservation_people").html(html);
-	$(".logo img").popover("destroy");
+	$("img").popover("destroy");
 }
 function checkAvailability(id){	
-	$(".logo img").popover("destroy");
+	$("img").popover("destroy");
 	id = id || 0 ;
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
@@ -140,7 +140,7 @@ function checkAvailability(id){
 				else if(result.available && !result.user_signed_in){
 					
 		        	$btn.button('reset');
-		        	$('#login-popup').modal('show');
+		        	$('#loginFormRemote').modal('show');
 		        	$("#submit-button").popover({content: "You Need To Log In"}).popover("show");
 		        	
 				}
@@ -154,7 +154,7 @@ function checkAvailability(id){
 					
 					$btn.button('reset');
 	        		$("#submit-button").popover({content: result.message}).popover("show");
-	        		var html = "<tr><th>Selected Branch</th></tr>";
+	        		var html = "<tr><th>Select Branch</th></tr>";
 	        		for(i=0;i<result.time_slots.length;i++){
 	        			if(result.time_slots[i].available){
 	        				html= html + "<tr><td>"+result.time_slots[i].time_slot+"</td></tr>";
@@ -217,3 +217,4 @@ function checkAvailability(id){
 	
 	
 }
+
