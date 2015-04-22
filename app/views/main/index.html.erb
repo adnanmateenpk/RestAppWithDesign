@@ -1,6 +1,11 @@
 
     <div class="container-fluid content">
-      <div class="breadcrumb">Inicio<strong> | usuario</strong></div>
+      <div class="breadcrumb">Inicio 
+      <% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %>
+      
+      </div>
       <div class="row height100">
         <div class="col-md-3 white height100 ">
           <div class="row logo-container">
