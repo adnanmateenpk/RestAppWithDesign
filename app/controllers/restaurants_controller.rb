@@ -1,6 +1,6 @@
 class RestaurantsController < ApplicationController
-  before_action :authenticate_user! , :except => [:list]
-  layout 'admin'
+  before_action :auth_user , :except => [:list]
+  
   authorize_resource :class => false
  def index
     if current_user.role_id != 1

@@ -1,5 +1,6 @@
-<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action admin index')%> | 
-<%= link_to("Add Restaurant",{:action=>'new'},:class=>'action restaurant new') %>
+<div class="container-fluid content">
+<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action admin index' , :style => "color:black")%> | 
+<%= link_to("Add Restaurant",{:action=>'new'},:class=>'action restaurant new' , :style => "color:black") %>
 <h1>Restaurants</h1>
 <table class="listing" summary="Restaurant list">
   <tr class="header">
@@ -17,11 +18,12 @@
     <td><%= d.status ? "Published" : "Unpublished" %></td>
   
     <td class="actions">
-     	  <%= link_to("Branches", restaurant_branches_path(d.slug), :class => 'action branches') %>
-      	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit') %>
-      	<%= link_to 'Delete' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' %>
+     	  <%= link_to("Branches", restaurant_branches_path(d.slug), :class => 'action branches', :style => "color:black") %>
+      	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit' , :style => "color:black") %>
+      	<%= link_to 'Delete' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %>
       
     </td>
   </tr>
   <% end %>
 </table>
+</div>

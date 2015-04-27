@@ -1,20 +1,10 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user! 
+  before_action :auth_user
   layout 'admin'
   authorize_resource :class => false
   skip_filter :verify_authenticity_token, :create
   def new
-   
-    @reservation = Reservation.new(:booking=>"7:30 PM")
-
-    restaurants = Restaurant.by_user(current_user.id).published
-    @restaurants = Array.new
-    restaurants.each_with_index do |u,i|
-      if u.branches.count > 0
-        @restaurants[i] = Array.new
-        @restaurants[i] = [u.title,u.id.to_s+"|"+u.slug]
-      end  
-    end
+    redirect_to :controller=>:main , :action => :index
   end
   def create
     @reservation = Reservation.new(reservation_params)
@@ -22,40 +12,15 @@ class ReservationsController < ApplicationController
      
     if check_repeat Reservation.availability_for_restaurant(Time.zone.parse(params[:date]+" "+params[:time]).utc.strftime("%Y-%m-%d %H:%M"),params[:reservation][:branch_id],0).sorted.where("user_id = ?", params[:reservation][:user_id]).first,Time.zone.parse(params[:date]+" "+params[:time]).utc
        flash[:alert] = "Membership No. Conflict please select another time"
-       restaurants = Restaurant.by_user(current_user.id).published
-        @restaurants = Array.new
-        restaurants.each_with_index do |u,i|
-          @restaurants[i] = Array.new
-          @restaurants[i] = [u.title,u.id.to_s+"|"+u.slug] 
-        end
-        @date = @reservation.booking.strftime("%m-%d-%Y")
-        @time = @reservation.booking.strftime("%H:%M:%S")
-        if user_signed_in? and current_user.role_id == 3
-          redirect_to :action => :index,:controller => :main
-        else
-          render "new"
-        end
+       redirect_to :action => :index,:controller => :main
     elsif @reservation.save 
       TimeSlot.adjust_people @reservation.booking,@reservation.branch.expiry+1, @reservation.people
-      AdminMailer.create_customer_reservation(@reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
-      AdminMailer.create_restaurant_reservation(@reservation.branch.restaurant.user, @reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
+      # AdminMailer.create_customer_reservation(@reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
+      # AdminMailer.create_restaurant_reservation(@reservation.branch.restaurant.user, @reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
       flash[:notice] = "Reservation Created for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
-      if session[:customer]
-        session[:customer] = false
-        redirect_to :action => :index,:controller => :main
-      else
-        redirect_to :action => :index
-      end
+      redirect_to :action => :index,:controller => :main
     else 
-      restaurants = Restaurant.by_user(current_user.id).published
-      @restaurants = Array.new
-      restaurants.each_with_index do |u,i|
-        @restaurants[i] = Array.new
-        @restaurants[i] = [u.title,u.id.to_s+"|"+u.slug] 
-      end
-      @date = @reservation.booking.strftime("%m-%d-%Y")
-      @time = @reservation.booking.strftime("%H:%M:%S")
-      render "new"
+      redirect_to :controller=>:main , :action => :index
     end
   end
   def edit
@@ -67,7 +32,7 @@ class ReservationsController < ApplicationController
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
     reservation.status = 0
     TimeSlot.adjust_people reservation.booking,reservation.branch.expiry*2, -1*reservation.people
-    AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
+    # AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
     render :json => {"cancelled" => reservation.save}
   end
   def update 

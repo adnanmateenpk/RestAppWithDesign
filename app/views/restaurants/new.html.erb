@@ -1,9 +1,19 @@
-<%= link_to("Restaurants",{:controller=>'restaurants',:action=>'index'},:class=>'action index')%>
-<h1>New Restaurant</h1>
 
-<%= form_for(:restaurant, :url=>{:action=>'create'},:multipart=>true) do |f| %>
-<%= render(:partial => "form",:locals=>{:f=>f})%>
-<div class="form-buttons">
-  <%= submit_tag("Create Restaurant")%>
-</div>
-<% end %>
+
+<div class="container-fluid content">
+      <div class="breadcrumb">nueva reserva<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %></div>
+      <div class="row form-yellow">
+        
+        <%= form_for(:restaurant, :url=>{:action=>'create'},:multipart=>true, :html => {:class=>"form-horizontal col-md-10 "}) do |f| %>
+       		<%= render(:partial => "form",:locals=>{:f=>f})%>
+          
+          <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-8">
+             	<%= submit_tag("Create Restaurant",:class=>"form-control")%>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>

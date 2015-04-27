@@ -61,6 +61,11 @@ a,a:hover,a:focus{
 	color:#1d1c1c;
 	background-color: #e87523;
 }
+.footer-nav > li > a:focus, .footer-nav > li > a:hover{
+	background: transparent;
+	border: none;
+	text-decoration: underline;
+}
 .yellow{
 	background-image: url("bg-yellow.png");
 	padding:0;
@@ -206,7 +211,47 @@ strong{
 .icon-chevron-down {
     background-position: -313px -119px;
 }
+.form-yellow{
+	padding:15px 15px 0;
+	background-image: url("bg-yellow.png");
+}
+.form-yellow .form-control{
+	background-color:#e8dab0;
+	border:none;
+	border-radius: 0;
+	font-size:25px;
+	line-height:auto;
+	height:auto;
+	margin-bottom: 25px;
+}
+.form-yellow .form-group {
+    margin-bottom:0;
+}
+.form-yellow .img-responsive{
+	margin:0 auto 10px;	
 
+}
+.form-yellow button.form-control{
+	font-size:40px;
+	line-height:auto;
+	text-align: center;
+	
+}
+/*.img-responsive{
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}*/
+.form-yellow .form-control{
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.modal-open{
+	overflow: auto !important;
+}
+.modal {
+	position: absolute !important;
+}
+.modal-backdrop{
+	position: fixed !important;
+}
 @media (min-width: 768px) and (orientation: landscape){ 
 	body, html {
 	    height: 100%;
@@ -253,5 +298,9 @@ strong{
 		position:absolute;
 		
 		right:20px;
+	}
+	.form-yellow{
+		margin-top:125px;
+		
 	}
 }

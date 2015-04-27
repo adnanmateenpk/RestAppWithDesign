@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post "availability_restaurant" => 'main#restaurant'
   post "availability_customer" => 'main#customer'
   post "get_authenticity_token" => 'main#get_token'
+  get "reservations" => 'main#reservations'
   scope :dashboard do
     get "settings" => 'admin#settings'
     patch "settings/save" => 'admin#settings_save'

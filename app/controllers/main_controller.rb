@@ -1,5 +1,5 @@
 class MainController < ApplicationController
-  
+   before_action :auth_user, :only => [:reservations]
   def index
     @reservation = Reservation.new(:booking=>"7:30 PM")
 
@@ -15,7 +15,7 @@ class MainController < ApplicationController
   end
   
   def convert_user
-  	AdminMailer.membership_change_request(current_user).deliver_now
+  	#AdminMailer.membership_change_request(current_user).deliver_now
     flash[:notice]="You request has been generated !!"
   	redirect_to root_url
   end
@@ -55,7 +55,8 @@ class MainController < ApplicationController
     end
 
   end
-  
+  def reservations
+  end
   def customer
     Reservation.expire_reservations
     session[:customer] = true
@@ -131,6 +132,7 @@ class MainController < ApplicationController
     return_value
 
   end
+  
   private 
   def check_repeat value,time
     return_value = false

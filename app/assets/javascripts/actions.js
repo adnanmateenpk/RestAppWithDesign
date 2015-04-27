@@ -85,7 +85,8 @@ $(document).ready(function(){
       $('.custom-scroll').enscroll({
         minScrollbarLength: 28,
         verticalTrackClass: 'track3',
-        verticalHandleClass: 'handle3'
+        verticalHandleClass: 'handle3',
+        addPaddingToPane: false
       });
   });
 });

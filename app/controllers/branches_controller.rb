@@ -1,5 +1,5 @@
 class BranchesController < ApplicationController
-  before_action :authenticate_user! , :except => [:list]
+  before_action :auth_user , :except => [:list]
   layout 'admin'
   authorize_resource :class => false
   def index
@@ -114,7 +114,7 @@ class BranchesController < ApplicationController
       params[:branch][:close] = params[:branch][:close] + 24*60*60
     end
     puts params[:branch][:open]
-    params[:expiry] = 1;
+    params[:branch][:expiry] = 1;
     params.require(:branch).permit(:title,:slug,:status,:address,:email,:position,:phone,:fax,:featured_image,:open,:close,:expiry,:seating_capacity,:time_zone)
   end
   

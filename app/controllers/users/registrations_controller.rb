@@ -4,20 +4,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
 # before_filter :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  # def new
-  #   super
-  # end
+  def new
+    redirect_to :root
+  end
 
   # POST /resource
   def create
     super
-      AdminMailer.welcome_email(@user).deliver_now unless @user.invalid?
+      #AdminMailer.welcome_email(@user).deliver_now unless @user.invalid?
   end
 
   # GET /resource/edit
-  # def edit
-  #   super
-  # end
+  def edit
+    redirect_to :root
+  end
 
   # PUT /resource
   # def update

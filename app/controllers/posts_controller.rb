@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :auth_user
   layout 'admin'
   authorize_resource :class => false
   def index
