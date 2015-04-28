@@ -2,17 +2,205 @@
 <html>
 <head>
   <title>RestApp</title>
- 
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  
   <%= csrf_meta_tags %>
 </head>
 <body>
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
-<% if user_signed_in? %>
-    <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link',:style =>""  %>
-    <% end %>
- <%= javascript_include_tag "admin_main", 'data-turbolinks-track' => true %>
-<%= yield %>
+<!-- <p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p> -->
 
+<%= yield %>
+  <div class="footer container-fluid">
+  <ul class="nav nav-pills nav-justified footer-nav">
+   <% if user_signed_in? && current_user.role_id != 3   %>
+	<li><%= link_to "Dashboard", {:controller => :admin ,:action => :index}, :class => 'navbar-link'  %></li>
+	<li><%= link_to("Restaurants",{:controller=>'restaurants',:action=>'index'},:class=>'action restaurants index')%></li>
+	<li><%= link_to("Customers",{:controller=>'users',:action=>'index'},:class=>'action index')%></li>
+	<li><%= link_to("Reservations",{:controller=>'reservations',:action=>'index'},:class=>'action index')%></li>
+    <% if current_user.role_id == 1 %>
+	<li><%= link_to("Settings",{:action=>'settings',:controller=>:admin},:class=>'action settings')%></li>
+	<% end %>
+    
+    <% end %>
+    <li> <a  data-toggle="modal" data-target="#contactForm"> contacto</a></li>
+    <li><a>terminos y condiciones</a></li>
+    <% if user_signed_in? %>
+    <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+
+    <% else %>
+    <li><a data-toggle="modal" data-target="#loginForm">Inicia Sesion</a></li>
+    <% end %>
+    <li><a>copyright &copy; webideaco.com</a></li>
+  </ul>
+    
+  </div>
+
+    <div class="modal fade" id="loginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Inicia Sesion</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user , url: session_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Email") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Password" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">iniciar sesión</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <input type="button" class="form-control" value="Registarse" data-dismiss="modal" data-toggle="modal" data-target="#registrationForm" >
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <input type="button" class="form-control" value="Olvidaste tu contraseña?" data-dismiss="modal" data-toggle="modal" data-target="#passwordForm" >
+                </div>
+              </div>
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+      <div class="modal fade" id="contactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Contacto</h2>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <div class="col-xs-6">
+                  <input type="text" class="form-control"  placeholder="Nombre">
+                </div>
+                <div class="col-xs-6">
+                  <input type="email" class="form-control"  placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-12 ">
+                  <textarea type="password" class="form-control"  placeholder="Comentario"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">iniciar sesión</button>
+                </div>
+              </div>
+             
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="registrationForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Registrarse</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user , url: registration_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:name ,:class => "form-control",:placeholder =>"Nombre") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:phone ,:class => "form-control",:placeholder =>"Telf") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Correo electrónico") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Contraseña" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password_confirmation, autocomplete: "off",:class => "form-control",:placeholder =>"confirmar Contraseña" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Registrarse</button>
+                </div>
+              </div>
+              
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+     <div class="modal fade" id="passwordForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Restablecer La Contraseña</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user , url: password_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+              
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Correo electrónico") %>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Restablecer La Contraseña</button>
+                </div>
+              </div>
+              
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+<!--
+Google Analytics
+-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-47849197-4', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 </body>
 </html>

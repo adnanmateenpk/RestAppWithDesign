@@ -252,6 +252,19 @@ strong{
 .modal-backdrop{
 	position: fixed !important;
 }
+.table-yellow{;
+	padding:15px 15px 0;
+	background-image: url("bg-yellow.png");
+	overflow: auto;
+	height:auto;
+}
+.table-striped > tbody > tr:nth-of-type(2n){
+	background-color:#e8dab0;
+}
+.breadcrumb a {
+	color:black;
+	text-decoration:underline;
+}
 @media (min-width: 768px) and (orientation: landscape){ 
 	body, html {
 	    height: 100%;
@@ -262,6 +275,7 @@ strong{
 	}
 	.content{
 		height:90%;
+		padding-top: 100px;
 	}
 	.height100{
 		height:100% !important;
@@ -296,11 +310,16 @@ strong{
 	}
 	.breadcrumb{
 		position:absolute;
-		
+		top:0;
 		right:20px;
 	}
 	.form-yellow{
-		margin-top:125px;
 		
+		
+	}
+	.table-yellow{
+		
+		
+		height:100%;
 	}
 }

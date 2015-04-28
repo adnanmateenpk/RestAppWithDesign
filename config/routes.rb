@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 
         get 'list' 
       end
-      resources :branches , :param => :slug do
+      resources :details ,:controller => :branches , :param => :slug do
         member do
           patch 'remove_image'
         end

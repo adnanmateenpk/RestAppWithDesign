@@ -13,9 +13,6 @@
 <%= yield %>
   <div class="footer container-fluid">
   <ul class="nav nav-pills nav-justified footer-nav">
-    <% if user_signed_in? %>
-    <li><%= link_to "Reservations", {:action => :reservations,:controller => :main}, :class => 'navbar-link'  %></li>
-    <% end %>
     <% if user_signed_in? && current_user.role_id != 3   %>
     <li><%= link_to "Dashboard", {:controller => :admin ,:action => :index}, :class => 'navbar-link'  %></li>
     <% end %>

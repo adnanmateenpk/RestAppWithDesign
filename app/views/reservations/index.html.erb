@@ -1,7 +1,11 @@
-<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action index')%> | 
-<%= link_to("Add Reservation",{:action=>'new'},:class=>'action new') %>
-<h1>Reservations List</h1>
-<table class="listing" summary="Reservations list">
+<div class="container-fluid content">
+
+<div class="breadcrumb">Reservations<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %><strong> | <%= link_to("Make a Reservation",{:action=>'new'},:class=>'action restaurant new' , :style => "") %>
+</strong></div>
+      <div class="row table-yellow">
+<table class="table table-striped" summary="Restaurant list">
   <tr class="header">
     <th>&nbsp;</th>
     <th>Name</th>
@@ -28,7 +32,7 @@
     <td class= "status"><%= data.status ? "Active" : "Cancelled" %></td>
   
     <td class="actions">
-      <%= link_to("Edit", {:action => 'edit', :reservation_code => data.reservation_code}, :class => 'action edit') %>
+      
      <% if data.status %>
       <%= link_to 'Cancel' , {:action => 'destroy' , :reservation_code => data.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'reservation_row'  %>
       <% end %>
@@ -36,3 +40,7 @@
   </tr>
   <% end %>
 </table>
+</div>
+
+</div>
+

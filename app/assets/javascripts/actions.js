@@ -82,7 +82,7 @@ $(document).ready(function(){
 	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: false});
    $(document).ready(function() {
 
-      $('.custom-scroll').enscroll({
+      $('.custom-scroll,.table-yellow').enscroll({
         minScrollbarLength: 28,
         verticalTrackClass: 'track3',
         verticalHandleClass: 'handle3',

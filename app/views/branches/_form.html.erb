@@ -1,67 +1,62 @@
-<%= error_messages_for(@branch) %>
-<% Time.zone = @branch.time_zone %>
-<table summary="Branch form fields">
-  <tr>
-    <th><%= f.label(:title,"Title")%></th>
-    <td><%= f.text_field(:title)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:slug,"Slug")%></th>
-    <td><%= f.text_field(:slug)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:seating_capacity,"Seating Capacity")%></th>
-    <td><%= f.text_field(:seating_capacity)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:open,"Opening Time")%></th>
-    <td><%= select_tag(:hours_open, options_for_select((1..12),@branch.open.strftime("%I"))) %><%= select_tag(:mins_open, options_for_select([0,30],@branch.open.strftime("%M"))) %><%= select_tag(:meri_open, options_for_select(["AM","PM"],@branch.open.strftime("%p"))) %></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:close,"Closing Time")%></th>
-    <td><%= select_tag(:hours_close, options_for_select((1..12),@branch.close.strftime("%I"))) %><%= select_tag(:mins_close, options_for_select([0,30],@branch.close.strftime("%M"))) %><%= select_tag(:meri_close, options_for_select(["AM","PM"],@branch.close.strftime("%p"))) %></td>
-  </tr>
 
-  <tr>
-    <th><%= f.label(:email,"Email")%></th>
-    <td><%= f.text_field(:email)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:address,"Address")%></th>
-    <td><%= f.text_field(:address)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:phone,"Phone No.")%></th>
-    <td><%= f.text_field(:phone)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:fax,"Fax No.")%></th>
-    <td><%= f.text_field(:fax)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:status, "Status") %></th>
-    <td><%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@branch.status ? 1 : 0))) %></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:night_club, "Restaurant Type") %></th>
-    <td><%= f.select(:night_club, options_for_select([['Night Club',1],['Restaurant',0]],(@branch.night_club ? 1 : 0))) %></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:position,"Position")%></th>
-    <td><%= f.select(:position, 1..@branch_count)%></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:featured_image) %></th>
-    <td><%= f.file_field(:featured_image) %></td>
-  </tr>
-  <tr>
-    <th><%= f.label(:time_zone) %></th>
-    <% if @branch.id.blank? %>
-    <td><%= f.time_zone_select :time_zone,nil,:include_blank => true  %></td>
-    <% else %>
-    <td><%= @branch.time_zone %></td>
-    <% end %>
-  </tr>
-
-
-</table>
+          <div class="form-group">
+            <div class="col-md-6 ">
+              <%= f.email_field(:email,:class => 'form-control' , :placeholder =>"Email")%>
+            </div>
+            <div class="col-md-6 ">
+              <%= f.text_field(:seating_capacity,:class => 'form-control' , :placeholder =>"Seating Capacity")%>
+            </div>
+           
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 ">
+              <%= f.text_field(:address,:class => 'form-control' , :placeholder =>"Address")%>
+            </div>
+            <div class="col-md-6 ">
+              <%= f.text_field(:phone,:class => 'form-control' , :placeholder =>"Phone No.")%>
+            </div>
+           
+          </div>
+        <div class="form-group">
+            <div class="col-md-6 ">
+            <% if !@branch.id.blank? %>
+              <%= f.text_field(:open,:class => 'form-control timepicker' , :placeholder =>"Opening Time",:value => @branch.open.strftime("%I:%M:%S %p %Z") )%>
+              <% else %>
+              <%= f.text_field(:open,:class => 'form-control timepicker' , :placeholder =>"Opening Time" )%>
+              <% end %>
+            </div>
+            <div class="col-md-6 ">
+              <% if !@branch.id.blank? %>
+              <%= f.text_field(:close,:class => 'form-control timepicker' , :placeholder =>"Closing Time",:value => @branch.close.strftime("%I:%M:%S %p %Z") )%>
+              <% else %>
+              <%= f.text_field(:close,:class => 'form-control timepicker' , :placeholder =>"Closing Time" )%>
+              <% end %>  </div>
+           
+          </div>
+          
+          <div class="form-group">
+            <div class="col-md-6 ">
+              <%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@branch.status ? 1 : 0)),{},{ :class=>"form-control"}) %>
+            </div>
+            <div class="col-md-6 ">
+             <%= f.select(:night_club, options_for_select([['Night Club',1],['Restaurant',0]],(@branch.night_club ? 1 : 0)),{},{ :class=>"form-control"}) %>
+            </div>
+           
+          </div>
+          <div class="form-group">
+            <div class="col-md-6 ">
+            <% if @branch.id.blank? %>
+              <%= f.time_zone_select(:time_zone,nil,{:include_blank => "Time Zone"},{:class => "form-control"})  %>
+              <% else %>
+              
+                <%= f.text_field(:time_zone,:class => 'form-control',:readonly=>true) %>
+              
+              <% end %>
+            </div>
+            <div class="col-md-6 ">
+              <%= f.select(:position, 1..@branch_count , {:include_blank => "Position"} , {:class=>"form-control"})%>
+            </div>
+           
+          </div>
+         
+         

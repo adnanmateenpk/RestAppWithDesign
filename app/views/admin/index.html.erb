@@ -1,15 +1,9 @@
+<div class="container-fluid content">
 
-<h1>Dashboard</h1>
-<% if current_user.role_id == 1 %>
-<%= link_to("Pages",{:controller=>'pages',:action=>'index'},:class=>'action pages index')%>
-<%= link_to("Posts",{:controller=>'posts',:action=>'index'},:class=>'action posts index')%>
-<% end %>
-<%= link_to("Restaurants",{:controller=>'restaurants',:action=>'index'},:class=>'action restaurants index')%>
-<%= link_to("Customers",{:controller=>'users',:action=>'index'},:class=>'action index')%>
-<%= link_to("Reservations",{:controller=>'reservations',:action=>'index'},:class=>'action index')%>
-<%= link_to("Make A Reservation",{:controller=>'reservations',:action=>'new'},:class=>'action index')%>
-<% if current_user.role_id == 1 %>
-<%= link_to("Settings",{:action=>'settings'},:class=>'action settings')%>
-<% end %>
+<div class="breadcrumb">Dashboard<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %><strong> | <%= link_to("Make A Reservation",{:controller=>'main',:action=>'index'},:class=>'action index')%>
+</strong></div>
 
 
+</div>

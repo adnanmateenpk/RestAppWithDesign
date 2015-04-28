@@ -1,17 +1,11 @@
 
-<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action admin index')%> | 
-<h1>Customers</h1>
-<%= form_tag({:action=>'filtered'}) do %>
-<table class="search" summary="">
+<div class="container-fluid content">
 
-	<tr>
-		<td>
-			<%= label_tag("Search By")%> <%= text_field_tag("search",params[:search].blank? ? "" : params[:search], :placeholder=>"Name or Membership No")%>
-		</td>
-	</tr>
-
-</table>	<% end %>
-<table class="listing" summary="Customer list">
+<div class="breadcrumb">Customers<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %></div>
+<div class="row table-yellow">
+<table class="table table-striped" summary="Restaurant list">
   <tr class="header">
     <th>&nbsp;</th>
     <th>Name</th>
@@ -46,3 +40,4 @@
   </tr>
   <% end %>
 </table>
+</div></div>

@@ -1,8 +1,11 @@
 <div class="container-fluid content">
-<%= link_to("Dashboard",{:controller=>'admin',:action=>'index'},:class=>'action admin index' , :style => "color:black")%> | 
-<%= link_to("Add Restaurant",{:action=>'new'},:class=>'action restaurant new' , :style => "color:black") %>
-<h1>Restaurants</h1>
-<table class="listing" summary="Restaurant list">
+
+<div class="breadcrumb">restaurantes<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %><strong> | <%= link_to("Add Restaurant",{:action=>'new'},:class=>'action restaurant new' , :style => "") %>
+</strong></div>
+      <div class="row table-yellow">
+<table class="table table-striped" summary="Restaurant list">
   <tr class="header">
     <th>&nbsp;</th>
     <th>Title</th>
@@ -13,17 +16,17 @@
   <tr class="">
     <td class="position"><%= i+1 %></td>
     <td><%= d.title %></td>
-    
-    
     <td><%= d.status ? "Published" : "Unpublished" %></td>
-  
     <td class="actions">
-     	  <%= link_to("Branches", restaurant_branches_path(d.slug), :class => 'action branches', :style => "color:black") %>
-      	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit' , :style => "color:black") %>
+     	  <%= link_to("Details", edit_restaurant_detail_path(d.slug,d.branches[0].slug), :class => 'action branches', :style => "color:black") %> |
+      	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit' , :style => "color:black") %> |
       	<%= link_to 'Delete' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %>
-      
     </td>
   </tr>
   <% end %>
+  
 </table>
+</div>
+</div>
+
 </div>

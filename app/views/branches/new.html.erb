@@ -1,9 +1,21 @@
-<%= link_to("Branches",{:controller=>'branches',:action=>'index'},:class=>'action index')%>
-<h1>New Branch</h1>
 
-<%= form_for(:branch, :url=>{:action=>'create'},:multipart=>true ,html: {:id=>"branch-form"}) do |f| %>
-<%= render(:partial => "form",:locals=>{:f=>f})%>
-<div class="form-buttons">
-  <%= submit_tag("Create Branch")%>
-</div>
-<% end %>
+
+<div class="container-fluid content">
+      <div class="breadcrumb">Add Restaurant Details<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %></div>
+      <div class="row form-yellow">
+        <div class="col-md-2 col-md-push-10">
+          <img src="/assets/logo-default.png" class="img-responsive img-circle">
+        </div>
+        <%= form_for(:branch, :url=>{:action=>'create'},:multipart=>true ,:html => {:class=>"form-horizontal col-md-10  col-md-pull-2"}) do |f| %>
+        <%= render(:partial => "form",:locals=>{:f=>f})%>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-8">
+             	<button type="submit" class="form-control" >Save Restaurant Details</button>
+            </div>
+            
+          </div>
+        <% end %>
+      </div>
+    </div>

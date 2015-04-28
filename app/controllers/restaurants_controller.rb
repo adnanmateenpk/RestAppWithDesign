@@ -1,6 +1,6 @@
 class RestaurantsController < ApplicationController
   before_action :auth_user , :except => [:list]
-  
+  layout 'admin'
   authorize_resource :class => false
  def index
     if current_user.role_id != 1
@@ -39,7 +39,8 @@ end
     
     if @restaurant.save
       flash[:notice] = "Restaurant saved"
-      redirect_to(:action=>'index')
+
+      redirect_to(new_restaurant_branch_path(@restaurant.slug))
     else
       if current_user.role_id == 1
         @users = User.where(["role_id = ?",2])
@@ -90,7 +91,7 @@ end
     end
     if @restaurant.update_attributes(restaurant_params(@restaurant.featured_image))
       flash[:notice] = "Restaurant saved"
-      redirect_to(:action=>'index')
+      redirect_to(edit_restaurant_branch_path(@restaurant.slug,@restaurant.branches[0].slug))
     else
       if current_user.role_id == 1
         @users = User.where(["role_id = ?",2])
