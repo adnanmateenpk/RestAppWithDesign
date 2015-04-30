@@ -1,3 +1,4 @@
+
 <div class="container-fluid content">
      
       <div class="row height100">
@@ -48,6 +49,7 @@
               <div class="row ">
               <% x= 0 %>
               <% @reservations.each_with_index do |r,i| %>
+              <% Time.zone = r.branch.time_zone %>
               <% u = r.branch.restaurant %>
                 <div class= "col-xs-8 col-xs-offset-2 reservations">
                 <% if !(u.featured_image.blank?) %>
