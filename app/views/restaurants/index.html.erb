@@ -18,7 +18,12 @@
     <td><%= d.title %></td>
     <td><%= d.status ? "Published" : "Unpublished" %></td>
     <td class="actions">
-     	  <%= link_to("Details", edit_restaurant_detail_path(d.slug,d.branches[0].slug), :class => 'action branches', :style => "color:black") %> |
+        <% if d.branches.count > 0 %>
+     	  <%= link_to("Details", edit_restaurant_detail_path(d.slug,d.branches[0].slug), :class => 'action branches', :style => "color:black") %> 
+        <% else %>
+         <%= link_to("Details", new_restaurant_detail_path(d.slug), :class => 'action branches', :style => "color:black") %> 
+         <% end %>
+        |
       	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit' , :style => "color:black") %> |
       	<%= link_to 'Delete' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %>
     </td>
