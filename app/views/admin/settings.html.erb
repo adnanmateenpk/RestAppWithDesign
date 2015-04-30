@@ -1,51 +1,71 @@
-<%= link_to("Dashboard",{:action=>'index'},:class=>'action index')%>
-<h1>Settings</h1>
-<%= form_for(:setting, :url=>{:action => 'settings_save'},:method=>"patch",:multipart=>true) do |f| %>
-	<%= error_messages_for(@setting) %>
-	<table summary="Page form fields">
-	  <tr>
-	    <th><%= f.label(:title,"Title")%></th>
-	    <td><%= f.text_field(:title)%></td>
-	  </tr>
-	  <tr>
-	    <th><%= f.label(:company_name,"Company Name")%></th>
-	    <td><%= f.text_field(:company_name)%></td>
-	  </tr>
-	  <tr>
-	    <th><%= f.label(:address,"Address")%></th>
-	    <td><%= f.text_field(:address) %></td>
-	  </tr>
-	  <tr>
-	    <th><%= f.label(:email,"Email")%></th>
-	    <td><%= f.text_field(:email)%></td>
-	  </tr>
-	  <tr>
-	    <th><%= f.label(:phone,"Phone No.")%></th>
-	    <td><%= f.text_field(:phone) %></td>
-	  </tr>
-	  <tr>
-	    <th><%= f.label(:fax,"Fax No.")%></th>
-	    <td><%= f.text_field(:fax) %></td>
-	  </tr>
-	  <tr>
-	    <th><%= f.label(:logo,"Logo") %></th>
-	    <td><%= f.file_field(:logo) %></td>
-	  </tr>
-	  <tr>
-   		<th><%= f.label(:meta_keywords,"Meta Keywords")%></th>
-    	<td><%= f.text_field(:meta_keywords)%></td>
-  	  </tr>
-  	  <tr>
-    	<th><%= f.label(:meta_description,"Meta Description")%></th>
-    	<td><%= f.text_field(:meta_description)%></td>
-  	  </tr>
-	 
-	</table>
-	<% if !(@setting.logo.blank?) %>
-	<img src='/assets/uploads/logo/<%= @setting.logo%>' id="featured_image"/>
-	<% end %>
-	<div class="form-buttons">
-	<%= submit_tag("Update Settings")%>
-	<%= link_to 'Remove logo' , {:action => 'remove_logo'}, method: :patch, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'remove_image' %>
+
+<div class="container-fluid content">
+      <div class="breadcrumb">Settings<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %></div>
+      <div class="row form-yellow">
+        <div class="col-md-2 col-md-push-10">
+        <% if !(@setting.logo.blank?) %>
+			<img src='/assets/uploads/logo/<%= @setting.logo%>' class="img-responsive img-circle" id="featured_image"/>
+		<% end %>
+        </div>
+        
+        <%= form_for(:setting, :url=>{:action => 'settings_save'},:method=>"patch",:multipart=>true,:html => {:class=>"form-horizontal col-md-10  col-md-pull-2"}) do |f| %>
+        <div class="form-group">
+        <div class="col-md-6 ">
+        		<%= f.text_field(:title,:class => 'form-control' , :placeholder =>"Title")%>
+              
+            </div>
+            <div class="col-md-6 ">
+              <%= f.text_field(:company_name,:class => 'form-control' , :placeholder =>"Company Name")%>
+            </div>
+            </div>
+             <div class="form-group">
+        <div class="col-md-6 ">
+        		<%= f.text_field(:address,:class => 'form-control' , :placeholder =>"Address")%>
+              
+            </div>
+            <div class="col-md-6 ">
+              <%= f.text_field(:email,:class => 'form-control' , :placeholder =>"Email")%>
+            </div>
+            </div>
+             <div class="form-group">
+        <div class="col-md-6 ">
+        		<%= f.text_field(:phone,:class => 'form-control' , :placeholder =>"Phone No.")%>
+              
+            </div>
+            <div class="col-md-6 ">
+              <%= f.text_field(:fax,:class => 'form-control' , :placeholder =>"Fax No.")%>
+            </div>
+            </div>
+              <div class="form-group">
+        <div class="col-md-6 ">
+        		<%= f.file_field(:logo,:class => 'form-control' , :placeholder =>"Logo") %>
+              
+            </div>
+            <div class="col-md-6 ">
+        		<%= f.text_field(:meta_description,:class => 'form-control' , :placeholder =>"Meta Keywords")%>
+              
+            </div>
+            </div>
+             <div class="form-group">
+        
+            <div class="col-md-12 ">
+              <%= f.text_field(:meta_keywords,:class => 'form-control' , :placeholder =>"Meta Description")%>
+            </div>
+            </div>
+        <div class="form-group">
+            
+            <div class="col-md-6">
+             	<button type="submit" class="form-control" >Update Settings</button>
+            </div>
+            <div class="col-md-6">
+            	<button type="submit" class="form-control" onclick="$('remove_image').click();return false;">Remove Logo</button>
+             	 <%= link_to 'Remove logo' , {:action => 'remove_logo'}, method: :patch, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'remove_image' , :style => "display:none" %>
+            </div>
+          
+            
+          </div>
+        <% end %>
+      </div>
     </div>
-<% end %>
