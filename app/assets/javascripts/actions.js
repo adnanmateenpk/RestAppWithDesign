@@ -102,6 +102,7 @@ $(document).ready(function(){
         $('html, body').animate({scrollTop: $("#reservation-data").position().top}, 300);
         return false;
     })
+   resetReservationData();
 });
 function populateReservationData(object){
   id=$(object).attr("id");
@@ -118,6 +119,25 @@ function populateReservationData(object){
   $("#date").val(date);
   $("#time").val(time);
   $("#address").html("<strong>DIRECCION | </strong>"+address);
+  $("#zone").val(zone);
+  $("#ppl").val(ppl);
+  $("#cancel-data").html(url);
+}
+function resetReservationData(){
+  
+  title="";
+  date="Fecha";
+  time="Horra";
+  address="";
+  zone = "zona horaria";
+  ppl = "Numero de Personas";
+  img = $(object).attr("src");
+  url = $("#cancel"+id).val();
+  $("#data-image").attr("src",img);
+  $("#title-data").html(title);
+  $("#date").val(date);
+  $("#time").val(time);
+  $("#address").html(address);
   $("#zone").val(zone);
   $("#ppl").val(ppl);
   $("#cancel-data").html(url);

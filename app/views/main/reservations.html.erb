@@ -63,7 +63,7 @@
                     <h4 style="text-align:center;font-weight:bold;" id="title<%= r.id %>" ><%= u.title %></h4>
                     <input type="hidden" id="date<%= r.id %>" value="<%= r.booking.strftime("%m-%d-%Y") %>"/>
                     <input type="hidden" id="time<%= r.id %>" value="<%= r.booking.strftime("%I:%M %p ") %>"/>
-                    <input type="hidden" id="address<%= r.id %>" value="<%= r.branch.address %>"/>
+                    <input type="hidden" id="address<%= r.id %>" value="<strong>DIRECCION | </strong><%= r.branch.address %>"/>
                     <input type="hidden" id="ppl<%= r.id %>" value="<%= r.people %>"/>
                     <input type="hidden" id="zone<%= r.id %>" value="<%= r.branch.time_zone %>"/>
                     <input type="hidden" id="cancel<%= r.id %>" value ='<%= link_to 'Cancel Reservation' , {:controller=>"reservations",:action => 'destroy' , :reservation_code => r.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, "data-type" => :json , :class => 'reservation_cancel', :style =>"color:black;"  %>' />
