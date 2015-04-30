@@ -12,7 +12,10 @@
     <th>Membership No.</th>
     <th>Email </th>
     <th>Phone No.</th>
+     <% if current_user.role_id == 1 %>
     <th>Actions</th>
+    <th>Remove</th>
+    <% end %>
   </tr>
   <% @users.each_with_index do |data,i| %>
   <tr class="">
@@ -21,8 +24,9 @@
     <td><%= data.membership %></td>
     <td><%= data.email %></td>
   	<td><%= data.phone %></td>
+    <% if current_user.role_id == 1 %>
     <td class="actions">
-      	<% if current_user.role_id == 1 %>
+      	
      		<%= form_tag({:action=>'update' , :membership => data.membership},:method => "patch" ,:remote => true, :class => "ajax-form") do %>
      			<%= hidden_field_tag("role_id",1)%>
      			<%= submit_tag("Admin",:class => "ajax-button",:disabled => data.role_id == 1 ? true : false)%>
@@ -35,8 +39,12 @@
      			<%= hidden_field_tag("role_id",3)%>
      			<%= submit_tag("Customer",:class => "ajax-button",:disabled => data.role_id == 3 ? true : false)%>
      		<% end %>
-     	<% end %>
+     	
     </td>
+    <td>
+      <%= link_to 'Remove' , {:action => 'destroy' , :membership => data.membership}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row', :style => "color:black"  %>
+    </td>
+    <% end %>
   </tr>
   <% end %>
 </table>

@@ -56,6 +56,9 @@ class MainController < ApplicationController
 
   end
   def reservations
+
+    @reservations = Reservation.where("status = ? AND user_id = ? ",true ,current_user.membership)
+    puts @reservations.count
   end
   def customer
     Reservation.expire_reservations

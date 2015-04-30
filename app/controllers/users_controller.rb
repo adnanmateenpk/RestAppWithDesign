@@ -27,4 +27,9 @@ class UsersController < ApplicationController
   	user.save
   	render json: ["complete"]
   end
+  def destroy
+    user = User.where("membership = ?",params[:membership]).first
+    user.destroy
+    render json: { "gst" => "deleted" }
+  end
 end

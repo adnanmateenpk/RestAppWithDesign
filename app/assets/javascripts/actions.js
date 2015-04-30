@@ -10,6 +10,12 @@ var waitForFinalEvent = (function () {
     timers[uniqueId] = setTimeout(callback, ms);
   };
 })();
+$(window).resize(function () {
+
+    waitForFinalEvent(function(){
+      
+    }, 500, "some unique string");
+});
 // $(window).resize(function () {
 
 //     waitForFinalEvent(function(){
@@ -82,12 +88,38 @@ $(document).ready(function(){
 	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: false});
    $(document).ready(function() {
 
-      $('.custom-scroll,.table-yellow').enscroll({
+      $('.custom-scroll,.table-yellow,.reservation-wrapper').enscroll({
         minScrollbarLength: 28,
         verticalTrackClass: 'track3',
         verticalHandleClass: 'handle3',
         addPaddingToPane: false
       });
   });
+   $("img.reservation").click(function(event) {
+        event.preventDefault();
+
+       populateReservationData(this);
+        $('html, body').animate({scrollTop: $("#reservation-data").position().top}, 300);
+        return false;
+    })
 });
+function populateReservationData(object){
+  id=$(object).attr("id");
+  title=$("#title"+id).html();
+  date=$("#date"+id).val();
+  time=$("#time"+id).val();
+  address=$("#address"+id).val();
+  zone = $("#zone"+id).val();
+  ppl = $("#ppl"+id).val();
+  img = $(object).attr("src");
+  url = $("#cancel"+id).val();
+  $("#data-image").attr("src",img);
+  $("#title-data").html(title);
+  $("#date").val(date);
+  $("#time").val(time);
+  $("#address").html("<strong>DIRECCION | </strong>"+address);
+  $("#zone").val(zone);
+  $("#ppl").val(ppl);
+  $("#cancel-data").html(url);
+}
 

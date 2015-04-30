@@ -33,7 +33,8 @@ class ReservationsController < ApplicationController
     reservation.status = 0
     TimeSlot.adjust_people reservation.booking,reservation.branch.expiry*2, -1*reservation.people
     # AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
-    render :json => {"cancelled" => reservation.save}
+    reservation.save
+    redirect_to :controller=>:main , :action => :reservations
   end
   def update 
     @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first

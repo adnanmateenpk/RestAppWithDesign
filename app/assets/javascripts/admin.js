@@ -11,6 +11,11 @@ $(document).ready(function(){
 	        })
 
 	}); 
+	$('.reservation_cancel').on('ajax:success', function() {  
+			console.log("deleted");
+	        location.reload();
+
+	}); 
 	$('.remove_image').on('ajax:success', function() {  
 		
 	        $("#featured_image").fadeOut("slow",function(){

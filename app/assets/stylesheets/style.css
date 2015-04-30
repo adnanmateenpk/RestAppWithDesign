@@ -265,7 +265,78 @@ strong{
 	color:black;
 	text-decoration:underline;
 }
-@media (min-width: 768px) and (orientation: landscape){ 
+
+.logo-container-profile h1{
+	font-size:45px;
+	text-align: center;
+	margin-bottom: 0px;
+}
+.logo-container-profile h2{
+	font-size:35px;
+	text-align: center;
+	margin-top: 10px;
+}
+.reservation-details h1{
+	font-size:50px;
+	text-align: center;
+	margin-bottom: 0px;
+}
+.reservation-details .form-control{
+	
+	font-size:25px;
+	line-height:auto;
+	height:auto;
+	margin-bottom: 25px;
+}
+.reservation-details .address{
+	font-size:25px;
+	line-height:auto;
+}
+.restaurant-logo {
+	margin-top:40px;
+	margin-bottom: 40px;
+	
+}
+.restaurant-logo img{
+	margin:0 auto;
+	max-width: 50%;
+}
+.profile-picture{
+	margin-top: 40px;
+
+}
+.reservation-container h2 {
+	text-align: center;
+	margin-bottom: 0px;
+	margin-top: 10px;
+	font-size:35px;
+}
+.reservation-container h1 {
+	text-align: center;
+	margin-bottom: 10px;
+	margin-top: 5px;
+	font-size:45px;
+}
+.reservation-container .reservations{
+	margin-top:5px;
+	margin-bottom: 5px;
+}
+.reservation-wrapper{
+	
+	overflow: auto;
+}
+.reservations img{
+	margin: 0 auto;
+}
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
+	cursor: pointer;
+}
+.ajax-button:disabled{
+	background-color: #F3B400;
+	border:none;
+	font-weight: bold;
+}
+@media (min-width: 1010px) {
 	body, html {
 	    height: 100%;
 	}
@@ -315,11 +386,25 @@ strong{
 	}
 	.form-yellow{
 		margin-top: 100px;
-		
+		height:88%;
 	}
 	.table-yellow{
 		margin-top: 100px;
 		
-		height:100%;
+		height:88%;
+	}
+	.logo-container-profile{
+		margin-top: 40px;
+
+	}
+	.reservation-details{
+		margin-top: 30px;
+	}
+	
+	.reservation-container h2 {
+		margin-top: 100px;
+	}
+	.reservation-wrapper{
+		height: 65%;
 	}
 }

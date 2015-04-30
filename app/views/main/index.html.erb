@@ -42,6 +42,7 @@
                       <img src="/assets/dining-default.png" class="img-responsive img-circle" style="width:303px" data-toggle="popover" data-trigger="focus" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>">
                       
                     <% end %>
+                    <h4 style="text-align:center;font-weight:bold;"><%= u.title %></h4>
                   </div>
                   <% x=x+1 %>
                 <% end %>   
@@ -61,6 +62,7 @@
                       <img src="/assets/dining-default.png" class="img-responsive img-circle" style="width:303px" data-toggle="popover" data-trigger="focus" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);" data-placement="<%= (x).to_i.even? ? "right" : "left" %>">
                       
                     <% end %>
+                    <h4 style="text-align:center;font-weight:bold;"><%= u.title %></h4>
                   </div>
                   <% x=x+1 %>
                 <% end %>   

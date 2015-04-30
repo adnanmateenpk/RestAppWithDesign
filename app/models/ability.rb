@@ -17,7 +17,7 @@ class Ability
       elsif user.role_id == 3
         can [:list] , :restaurant
         can [:list] , :branch
-        can [:create], :reservation
+        can [:create,:destroy], :reservation
       else 
         can [:list] , :restaurant
         can [:list] , :branch

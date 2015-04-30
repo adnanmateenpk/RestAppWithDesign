@@ -13,17 +13,17 @@
 <%= yield %>
   <div class="footer container-fluid">
   <ul class="nav nav-pills nav-justified footer-nav">
+  <li><%= link_to "Make a Reservation", {:controller => :main ,:action => :index}, :class => 'navbar-link'  %></li>
+    
    <% if user_signed_in? && current_user.role_id != 3   %>
 	<li><%= link_to "Dashboard", {:controller => :admin ,:action => :index}, :class => 'navbar-link'  %></li>
 	<li><%= link_to("Restaurants",{:controller=>'restaurants',:action=>'index'},:class=>'action restaurants index')%></li>
 	<li><%= link_to("Customers",{:controller=>'users',:action=>'index'},:class=>'action index')%></li>
-	<li><%= link_to("Reservations",{:controller=>'reservations',:action=>'index'},:class=>'action index')%></li>
-    <% if current_user.role_id == 1 %>
+	  <% if current_user.role_id == 1 %>
 	<li><%= link_to("Settings",{:action=>'settings',:controller=>:admin},:class=>'action settings')%></li>
 	<% end %>
     
     <% end %>
-    <li> <a  data-toggle="modal" data-target="#contactForm"> contacto</a></li>
     <li><a>terminos y condiciones</a></li>
     <% if user_signed_in? %>
     <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>

@@ -19,8 +19,8 @@ class Branch < ActiveRecord::Base
 	validates :slug, 		:uniqueness => true,
 							:presence => true
 
-	validates :position, 	:numericality => { :only_integer => true , :greater_than => 0 },
-							:presence => true
+	# validates :position, 	:numericality => { :only_integer => true , :greater_than => 0 },
+	# 						:presence => true
 	validates :email, 		:presence => true, :format => EMAIL_REGEX	
 	validates :seating_capacity, 		:presence => true,:numericality => { :only_integer => true , :greater_than => 0 }
 	validates :expiry, 		:presence => true,:numericality => { :only_integer => true , :greater_than => 0 }

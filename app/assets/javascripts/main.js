@@ -27,7 +27,7 @@ function populateBranches(val,object){
 	}
 	else {
 		
-		$.ajax({url: "/dashboard/restaurants/"+val[1]+"/branches/list", success: function(result){
+		$.ajax({url: "/dashboard/restaurants/"+val[1]+"/details/list", success: function(result){
 				var html = "";
 				$("#reservation_branch_id").val("");
 	            $("#time_zone").attr("readonly",false);

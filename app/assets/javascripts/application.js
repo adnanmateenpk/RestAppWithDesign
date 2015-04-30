@@ -17,6 +17,7 @@
 //= require bootstrap-datepicker
 //= require bootstrap-timepicker.min
 //= require admin
+//= require users
 //= require actions
 //= require main
 
