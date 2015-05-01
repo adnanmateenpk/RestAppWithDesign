@@ -212,6 +212,9 @@ body{
 	background-image: url("bg-overlay.png");
 
 }
+.datepicker.dropdown-menu{
+	z-index: 999999999 !important;
+}
 *{
 	outline: 0 !important;
 }
@@ -527,9 +530,15 @@ strong{
 }
 .reservations img{
 	margin: 0 auto;
+	  width: 160px;
 }
 .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control{
 	cursor: pointer;
+}
+.ajax-button:disabled{
+	background-color: #F3B400;
+	border:none;
+	font-weight: bold;
 }
 @media (min-width: 1010px) {
 	body, html {

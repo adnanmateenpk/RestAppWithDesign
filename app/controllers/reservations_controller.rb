@@ -68,13 +68,21 @@ class ReservationsController < ApplicationController
   		@reservations = Reservation.by_restaurant_owner(current_user.id).sorted
   	end
   end
-  def filtered
-    if !params[:search].blank?
-        render "index"
-    else
-        redirect_to ({:action=>:index}) 
-    end
+  def list
+    @restaurant = Restaurant.find(params[:id])
+    Time.zone = @restaurant.branches[0].time_zone
+    date = params[:date].split('/')
+    params[:date] = date[2]+"-"+date[0]+"-"+date[1]
+    startTime = Time.zone.parse(params[:date]).utc
+    endTime = Time.zone.parse(params[:date]).utc + 24*60*60
+    @reservations  = Reservation.where("branch_id = ? AND booking < ? AND booking >= ? " , @restaurant.branches[0].id ,endTime,startTime )
+
+    # render json: { "gst" => @reservations}
+    render "index"
   end
+  def show
+  end
+  
   private
   def reservation_params
     Time.zone = params[:time_zone]
@@ -98,6 +106,7 @@ class ReservationsController < ApplicationController
     params[:reservation][:restaurant_owner] = Branch.find(params[:reservation][:branch_id]).user_id;
     params.require(:reservation).permit(:reservation_name,:reservation_code,:booking,:expire_at, :people ,:user_id, :status, :branch_id,:created_by,:restaurant_owner)
   end
+
   private 
   def check_repeat value,time
     return_value = false

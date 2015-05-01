@@ -11321,6 +11321,7 @@ $(document).ready(function(){
 
 	}); 
 	$('.reservation_cancel').on('ajax:success', function() {  
+			console.log("deleted");
 	        location.reload();
 
 	}); 
@@ -11455,6 +11456,7 @@ $(document).ready(function(){
         $('html, body').animate({scrollTop: $("#reservation-data").position().top}, 300);
         return false;
     })
+   resetReservationData();
 });
 function populateReservationData(object){
   id=$(object).attr("id");
@@ -11470,10 +11472,28 @@ function populateReservationData(object){
   $("#title-data").html(title);
   $("#date").val(date);
   $("#time").val(time);
-  $("#address").html("<strong>DIRECCION | </strong>"+address);
+  $("#address").html(address);
   $("#zone").val(zone);
   $("#ppl").val(ppl);
   $("#cancel-data").html(url);
+}
+function resetReservationData(){
+  
+  
+  date="Fecha";
+  time="Horra";
+  
+  zone = "zona horaria";
+  ppl = "Numero de Personas";
+  
+  
+  
+  $("#date").val(date);
+  $("#time").val(time);
+ 
+  $("#zone").val(zone);
+  $("#ppl").val(ppl);
+  
 }
 
 ;
