@@ -6,7 +6,15 @@
       <% end %></div>
       <div class="row form-yellow">
         <div class="col-md-2 col-md-push-10">
-          <img src="/assets/logo-default.png" class="img-responsive img-circle">
+          <div class= "col-xs-3 col-xs-offset-2">
+                    <% if !(u.featured_image.blank?) %>
+
+                     <img src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle remove_image" >
+                     
+                   <% else %>
+                      <img src="/assets/dining-default.png" class="img-responsive remove_image" >
+                      
+                    <% end %>
         </div>
         <%= form_for(:restaurant, :url=>{:action => 'update', :slug => @restaurant.slug},:method=>"patch",:multipart=>true, :html => {:class=>"form-horizontal col-md-10  col-md-pull-2"}) do |f| %>
         <%= render(:partial => "form",:locals=>{:f=>f})%>
@@ -15,7 +23,7 @@
              	<button type="submit" class="form-control" >Edit Restaurant</button>
             </div>
             <div class="col-md-6">
-            	<button type="submit" class="form-control" onclick="$('remove_image').click();return false;">Remove Restaurant Logo</button>
+            	<input type="button" class="form-control" onclick="$('remove_image').click();" value="Remove Restaurant Logo">
              	 <%= link_to 'Remove Featured Image' , {:action => 'remove_image' , :slug => @restaurant.slug}, method: :patch, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'remove_image',:style=>"display:none" %>
             </div>
           </div>
