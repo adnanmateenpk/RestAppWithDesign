@@ -18,10 +18,7 @@ $(document).ready(function(){
 	}); 
 	$('.remove_image').on('ajax:success', function() {  
 		
-	        $("#featured_image").fadeOut("slow",function(){
-	        	$(this).remove();
-	        	
-	        })
+	        $("#featured_image").attr("src" , "/assets/dining-default.png")
 
 	});
 	$('#branch-form').submit(function(){
