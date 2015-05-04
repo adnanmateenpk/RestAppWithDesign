@@ -25,12 +25,9 @@
     
     <% end %>
     <li><a>terminos y condiciones</a></li>
-    <% if user_signed_in? %>
+    
     <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
-
-    <% else %>
-    <li><a data-toggle="modal" data-target="#loginForm">Inicia Sesion</a></li>
-    <% end %>
+    
     <li><a>copyright &copy; webideaco.com</a></li>
   </ul>
     

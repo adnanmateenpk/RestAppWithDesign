@@ -42,6 +42,11 @@
           </div>
           <div class="modal-body">
            <%= form_for(:user , url: session_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+            <% if !flash[:invalid_user].blank? %>
+            <div style="text-align:center;width:100%;">
+             <%= flash[:invalid_user] %>
+             </div>
+              <% end %>
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-1">
                   <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Email") %>
@@ -83,6 +88,7 @@
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
+            
               <div class="form-group">
                 <div class="col-xs-6">
                   <input type="text" class="form-control"  placeholder="Nombre">
@@ -198,5 +204,21 @@ Google Analytics
 
 </script>
 <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+<% if !flash[:invalid_user].blank? %>
+<script>
+  $(document).ready(function(){
+    $("#loginForm").modal("show");
+  });
+
+</script>
+<% end %>
+<% if !flash[:register].blank? %>
+<script>
+  $(document).ready(function(){
+    $("#registrationForm").modal("show");
+  });
+
+</script>
+<% end %>
 </body>
 </html>

@@ -6,7 +6,10 @@ class MainController < ApplicationController
     @restaurants = Restaurant.published
     
   end
-
+  def register
+    flash[:register] = true
+    redirect_to :action => :index
+  end
   def subscription
 
   end

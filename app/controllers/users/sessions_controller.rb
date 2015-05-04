@@ -5,6 +5,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
+    flash[:invalid_user]  = alert 
     redirect_to :root
   end
 
