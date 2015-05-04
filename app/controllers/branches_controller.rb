@@ -11,21 +11,26 @@ class BranchesController < ApplicationController
   end
 
   def edit
+    
     if current_user.role_id == 1
       @branch = Branch.where(["slug = ?",params[:slug]]).first 
     else
       @branch = Branch.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first 
     end
     @branch_count = Branch.count
+    if !flash[:model].blank?
+        @branch.assign_attributes(flash[:model])
+    end
   end
 
   def new
+    
     @branch_count = Branch.count + 1
     @branch = Branch.new
     restaurant = Restaurant.where(["slug = ?",params[:restaurant_slug]]).first
-    # if restaurant.branches.count > 0
-    #   redirect_to :controller=>:restaurants, :action => :index
-    # end
+    if !flash[:model].blank?
+        @branch.assign_attributes(flash[:model])
+    end
   end
 
   def create
@@ -38,7 +43,10 @@ class BranchesController < ApplicationController
       flash[:notice] = "Branch saved"
       redirect_to(:action=>'index')
     else
-      render("new")
+      flash[:model] = @branch
+      flash[:error_model] = @branch.errors.full_messages
+     
+      redirect_to(:action=>'new')
     end
   end
 
@@ -83,8 +91,9 @@ class BranchesController < ApplicationController
       flash[:notice] = "Branch saved"
       redirect_to(:action=>'index')
     else
-      @branch_count = Branch.count
-      render("edit")
+      flash[:model] = @branch
+      flash[:error_model] = @branch.errors.full_messages
+      redirect_to(:action=>'edit')
     end
   end
 

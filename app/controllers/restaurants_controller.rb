@@ -23,6 +23,9 @@ end
     else
        @restaurant = Restaurant.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first
     end
+    if !flash[:model].blank?
+        @restaurant.assign_attributes(flash[:model])
+    end
   end
 
   def new
@@ -32,6 +35,9 @@ end
 
         
       end
+    if !flash[:model].blank?
+        @restaurant.assign_attributes(flash[:model])
+    end
   end
   
   def create
@@ -42,12 +48,11 @@ end
 
       redirect_to(new_restaurant_detail_path(@restaurant.slug))
     else
-      if current_user.role_id == 1
-        @users = User.where(["role_id = ?",2])
-
-        
-      end
-      render("new")
+      
+      flash[:model] =@restaurant
+      flash[:error_model] =@restaurant.errors.full_messages
+     
+      redirect_to(:action=>'new')
     end
 
   end
@@ -93,12 +98,11 @@ end
       flash[:notice] = "Restaurant saved"
       redirect_to(edit_restaurant_detail_path(@restaurant.slug,@restaurant.branches[0].slug))
     else
-      if current_user.role_id == 1
-        @users = User.where(["role_id = ?",2])
-
-        
-      end
-      render("new")
+      flash[:model] =@restaurant
+      flash[:error_model] =@restaurant.errors.full_messages
+     
+      redirect_to(:action=>'edit')
+      
     end
   end
 
