@@ -130,8 +130,8 @@ function populateReservationData(object){
 function resetReservationData(){
   
   
-  date="Fecha";
-  time="Horra";
+  date="";
+  time="";
   
   zone = "zona horaria";
   ppl = "Numero de Personas";

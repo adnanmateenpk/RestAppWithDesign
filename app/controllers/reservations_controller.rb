@@ -62,23 +62,23 @@ class ReservationsController < ApplicationController
     end
   end
   def index
-  	if current_user.role_id == 1 
-  		@reservations = Reservation.sorted
-  	else
-  		@reservations = Reservation.by_restaurant_owner(current_user.id).sorted
-  	end
+  	redirect_to :controller=>:restaurants , :action => :index
   end
   def list
-    @restaurant = Restaurant.find(params[:id])
-    Time.zone = @restaurant.branches[0].time_zone
+    
+    @reservations  = Reservation.where("branch_id = ?" , params[:id])
+
+    render 'index'
+   # redirect_to  :action => :index
+  end
+  def filtered_list
+    Time.zone = Branch.find(params[:id]).time_zone
     date = params[:date].split('/')
     params[:date] = date[2]+"-"+date[0]+"-"+date[1]
     startTime = Time.zone.parse(params[:date]).utc
     endTime = Time.zone.parse(params[:date]).utc + 24*60*60
-    @reservations  = Reservation.where("branch_id = ? AND booking < ? AND booking >= ? " , @restaurant.branches[0].id ,endTime,startTime )
-
-    # render json: { "gst" => @reservations}
-    render "index"
+    @reservations  = Reservation.where("branch_id = ? AND booking < ? AND booking >= ? " , params[:id],endTime,startTime )
+    render 'index'
   end
   def show
   end

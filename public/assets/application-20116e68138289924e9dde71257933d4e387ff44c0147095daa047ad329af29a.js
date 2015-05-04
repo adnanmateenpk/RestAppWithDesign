@@ -11457,6 +11457,10 @@ $(document).ready(function(){
         return false;
     })
    resetReservationData();
+   $('.reservation-button').on('click', function () {
+      $("#rest-id").val($(this).data("id"));
+      $('#reservationDate').modal('show');
+    })
 });
 function populateReservationData(object){
   id=$(object).attr("id");
@@ -11480,8 +11484,8 @@ function populateReservationData(object){
 function resetReservationData(){
   
   
-  date="Fecha";
-  time="Horra";
+  date="";
+  time="";
   
   zone = "zona horaria";
   ppl = "Numero de Personas";

@@ -47,7 +47,10 @@ Rails.application.routes.draw do
       end
     end
     resources :reservations,:param => :reservation_code do
-      
+      collection do 
+        get "list/:id" => 'reservations#list'
+        post "filtered_list"
+      end
     end
     resources :customers, :controller =>"users" , :param => :membership do
       collection do 
@@ -55,7 +58,7 @@ Rails.application.routes.draw do
         get "filtered"
       end
     end
-    post "reservations/list" => 'reservations#list' 
+   
      
   end
 
