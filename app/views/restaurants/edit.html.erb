@@ -16,6 +16,7 @@
                       
                     <% end %>
         </div>
+        </div>
         <%= form_for(:restaurant, :url=>{:action => 'update', :slug => @restaurant.slug},:method=>"patch",:multipart=>true, :html => {:class=>"form-horizontal col-md-10  col-md-pull-2"}) do |f| %>
         <%= render(:partial => "form",:locals=>{:f=>f})%>
         <div class="form-group">
