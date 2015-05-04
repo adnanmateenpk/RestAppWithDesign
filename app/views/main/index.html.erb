@@ -28,8 +28,8 @@
             <li role="presentation" class="col-xs-6 tab-button"><a href="#discoteca" aria-controls="discoteca" role="tab" data-toggle="tab">Discoteca</a></li>
 
           </ul>
-          <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade in active row height100 custom-scroll" id="restaurante">
+          <div class="tab-content row">
+            <div role="tabpanel" class="tab-pane fade in active col-md-12 height100 custom-scroll" id="restaurante">
               <% x= 0 %>
               <% @restaurants.each_with_index do |u,i| %>
                 <% if u.branches.count > 0 and !u.branches[0].night_club %>
@@ -73,7 +73,7 @@
         </div>
         <div class="col-md-4 white height100">
           <div class="heading2 row">
-            <h1 class="col-lg-offset-2 col-xs-offset-2 col-xs-7 col-sm-10 col-lg-7 ">
+            <h1 class="col-lg-offset-2 col-xs-offset-2 col-sm-offset-0 col-xs-7 col-sm-10 col-lg-7 ">
               <strong>2 | </strong>Completa
             </h1>
             <div class="col-xs-2  ">

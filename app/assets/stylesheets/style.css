@@ -340,7 +340,7 @@ strong{
 	border:none;
 	font-weight: bold;
 }
-@media (min-width: 768px) and (orientation: landscape){ 
+@media (min-width: 1001px) and (orientation: landscape){ 
 	body, html {
 	    height: 100%;
 	}
