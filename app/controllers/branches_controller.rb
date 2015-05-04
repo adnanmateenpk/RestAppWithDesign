@@ -119,6 +119,7 @@ class BranchesController < ApplicationController
     puts params[:branch][:open]
     params[:branch][:expiry] = "1";
     params[:branch][:status] = "1";
+    params[:branch][:title] = "";
     params.require(:branch).permit(:night_club,:title,:slug,:status,:address,:email,:position,:phone,:fax,:featured_image,:open,:close,:expiry,:seating_capacity,:time_zone)
   end
   
