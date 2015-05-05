@@ -27,6 +27,9 @@
     <% else %>
     <li><a data-toggle="modal" data-target="#loginForm">Inicia Sesion</a></li>
     <% end %>
+    <% if user_signed_in? && current_user.role_id == 3   %>
+    <li><%= link_to "Upgrade Membership", {:controller => :main ,:action => :convert_user}, method: :patch, :class => 'navbar-link'  %></li>
+    <% end %>
     <li><a>copyright &copy; webideaco.com</a></li>
   </ul>
     
@@ -208,6 +211,25 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="FlashNotice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Notice</h2>
+          </div>
+          <div class="modal-body">
+          <div style="width:100%; text-align:center;">
+          <% if !flash[:notice].blank? %>
+           <%= flash[:notice] %>
+           <% end %>
+           </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
 <!--
 Google Analytics
 -->
@@ -242,6 +264,14 @@ Google Analytics
 <script>
   $(document).ready(function(){
     $("#ErrorModal").modal("show");
+  });
+
+</script>
+<% end %>
+<% if !flash[:notice].blank? %>
+<script>
+  $(document).ready(function(){
+    $("#FlashNotice").modal("show");
   });
 
 </script>

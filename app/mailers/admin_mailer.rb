@@ -7,7 +7,7 @@ class AdminMailer < ApplicationMailer
   	end
   	def membership_change_request(user)
 	    @user = user
-	    mail(to: ENV["GMAIL_USERNAME"], subject: 'Membership Change Request')
+	    mail(to: Setting.first.email, subject: 'Membership Change Request')
   	end
   	def cancel_reservation(user,code)
 	    @reservation_code = code

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions" }, :path => "members"
   root to: 'main#index'
-  patch "change-subscription" => 'main#convert_user'
+  patch "update-subscription" => 'main#convert_user'
   get "register" => 'main#register'
   get "dashboard" => 'admin#index'
   post "availability_restaurant" => 'main#restaurant'
