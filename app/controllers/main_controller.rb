@@ -18,7 +18,7 @@ class MainController < ApplicationController
   end
   
   def convert_user
-  	#AdminMailer.membership_change_request(current_user).deliver_now
+  	AdminMailer.membership_change_request(current_user).deliver_now
     flash[:notice]="You request has been generated !!"
   	redirect_to root_url
   end
@@ -150,7 +150,7 @@ class MainController < ApplicationController
   end
   private 
   def check_branch_timings branch,slot
-    Time.zone = params[:time_zone]
+    Time.zone = branch.time_zone
     !(Time.zone.parse(branch.open.strftime("%Y-%m-%d") + " " + slot) >= branch.open && Time.zone.parse(branch.close.strftime("%Y-%m-%d") + " " + slot) < branch.close)
   end
   

@@ -11,7 +11,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     super
-      #AdminMailer.welcome_email(@user).deliver_now unless @user.invalid?
+      AdminMailer.welcome_email(@user).deliver_now unless @user.invalid?
   end
 
   # GET /resource/edit

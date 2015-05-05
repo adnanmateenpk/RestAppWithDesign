@@ -49,7 +49,7 @@
               <% end %>  
               
             </div>
-            <div role="tabpanel" class="tab-pane fade height100 custom-scroll" id="discoteca">
+            <div role="tabpanel" class="tab-pane fade height100 custom-scroll col-md-12" id="discoteca">
              <% x= 0 %>
               <% @restaurants.each_with_index do |u,i| %>
                 <% if u.branches.count > 0 and u.branches[0].night_club %>

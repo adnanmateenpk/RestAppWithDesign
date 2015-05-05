@@ -15,8 +15,8 @@ class ReservationsController < ApplicationController
        redirect_to :action => :index,:controller => :main
     elsif @reservation.save 
       TimeSlot.adjust_people @reservation.booking,@reservation.branch.expiry+1, @reservation.people
-      # AdminMailer.create_customer_reservation(@reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
-      # AdminMailer.create_restaurant_reservation(@reservation.branch.restaurant.user, @reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
+      AdminMailer.create_customer_reservation(@reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
+      AdminMailer.create_restaurant_reservation(@reservation.branch.restaurant.user, @reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
       flash[:notice] = "Reservation Created for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
       redirect_to :action => :index,:controller => :main
     else 
@@ -30,7 +30,7 @@ class ReservationsController < ApplicationController
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
     reservation.status = 0
     TimeSlot.adjust_people reservation.booking,reservation.branch.expiry*2, -1*reservation.people
-    # AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
+    AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
     reservation.save
     redirect_to :controller=>:main , :action => :reservations
   end
