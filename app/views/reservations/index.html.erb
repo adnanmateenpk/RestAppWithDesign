@@ -13,6 +13,7 @@
     <th>Booking Time</th>
     <th>Status</th>
     <th>Reservation Code</th>
+    <th>No. Of People</th>
     <th>Actions</th>
   </tr>
   <% @reservations.each_with_index do |d,i| %>
@@ -24,6 +25,7 @@
     <td><%= d.booking.strftime("%I:%M %p")%></td>
     <td><%= d.status ? "Active" : "Cancelled" %></td>
     <td ><%= d.reservation_code %> </td>
+    <td><%= d.people %></td>
     <td >
     <% if d.status %>
     <%= link_to 'Cancel' , {:action => 'destroy' , :reservation_code => d.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %>
