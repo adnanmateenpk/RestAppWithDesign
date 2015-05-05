@@ -246,5 +246,17 @@ Google Analytics
 
 </script>
 <% end %>
+ <script>
+ $(document).ready(function(){
+    $(".form-control.register-button").click(function(){
+      $(".modal").modal("hide");
+      $("#registrationForm").nodal("show");
+    });
+    $(".form-control.forgot-password").click(function(){
+      $(".modal").modal("hide");
+      $("#passwordForm").nodal("show");
+    });
+ });
+ </script>
 </body>
 </html>
