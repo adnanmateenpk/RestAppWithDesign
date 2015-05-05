@@ -65,7 +65,6 @@ class MainController < ApplicationController
   end
   def customer
     Reservation.expire_reservations
-    session[:customer] = true
     if !params[:time_zone].blank?
       Time.zone = params[:time_zone]
     end
