@@ -80,9 +80,9 @@ class MainController < ApplicationController
     elsif params[:people].blank? 
       render :json => {"available" => false, "message" => "Please Enter A Valid Number of People"}  
     elsif params[:restaurant].blank?
-      render :json => {"user_signed_in" => user_signed_in?,"all_slots"=>true , "available" => false, "message" => "Available Slots for all restaurants are listed below" , "time_slots" => get_all_timeslots}
+      render :json => {"user_signed_in" => false,"all_slots"=>true , "available" => false, "message" => "Available Slots for all restaurants are listed below" , "time_slots" => get_all_timeslots}
     elsif params[:branch].blank?
-      render :json => {"user_signed_in" => user_signed_in?,"restaurant_slots" => true, "available" => false, "message" => "Available Times For All The Branches Of Selected Restaurant", "time_slots" => get_restaurant_timeslots(Restaurant.find(params[:restaurant]))}
+      render :json => {"user_signed_in" => false,"restaurant_slots" => true, "available" => false, "message" => "Available Times For All The Branches Of Selected Restaurant", "time_slots" => get_restaurant_timeslots(Restaurant.find(params[:restaurant]))}
     elsif Time.zone.parse(params[:date]+" "+ params[:time]) <= Time.zone.now
       render :json => {"available" => false, "message" => "Please Enter A Valid Date/Time"}
     else
@@ -93,13 +93,15 @@ class MainController < ApplicationController
       else 
           slot_time2 = Time.zone.parse(params[:date]+" "+branch.close.strftime("%H:%M:%S")) 
       end
+
+
       slots = TimeSlot.where("branch_id = ? AND slot > ? AND slot < ?",branch.id, slot_time1,slot_time2).order("id ASC")
       if check_branch_timings branch,params[:time]
         render :json => {"available" => false, "message" => "Branch is closed at the selected Date/Time"}
       elsif check_slot slots,branch,Time.zone.parse(params[:date]+" "+params[:time])
-        render :json => {"user_signed_in" => user_signed_in?,"branch_slots" => true, "available" => false, "message" => "Capacity Breached Please Select An Available Time From The List","time_slots" => get_available_timeslots(slots,branch)}
+        render :json => {"user_signed_in" => false,"branch_slots" => true, "available" => false, "message" => "Capacity Breached Please Select An Available Time From The List","time_slots" => get_available_timeslots(slots,branch)}
       else 
-        render :json => {"available" => true, "message" => "Creating Reservation" , "user_signed_in" => user_signed_in?}
+        render :json => {"available" => true, "message" => "Creating Reservation" , "user_signed_in" => false,"time_zone" => params[:time]}
       end
     end
   end
@@ -124,7 +126,7 @@ class MainController < ApplicationController
     values.each_with_index do |v,i|
       
       if v.slot == time 
-        puts 'xaxaxaxaxaxaxaxa'
+        
         return_value = v.seats+params[:people].to_i > branch.seating_capacity 
         if i < values.count
           return_value = values[i+1].seats+params[:people].to_i > branch.seating_capacity 
@@ -149,7 +151,7 @@ class MainController < ApplicationController
   private 
   def check_branch_timings branch,slot
     Time.zone = params[:time_zone]
-    !(Time.zone.parse(branch.open.strftime("%Y-%m-%d") + " " + slot) >= branch.open || Time.zone.parse(branch.close.strftime("%Y-%m-%d") + " " + slot) < branch.close)
+    !(Time.zone.parse(branch.open.strftime("%Y-%m-%d") + " " + slot) >= branch.open && Time.zone.parse(branch.close.strftime("%Y-%m-%d") + " " + slot) < branch.close)
   end
   
 
