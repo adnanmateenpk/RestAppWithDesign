@@ -24,9 +24,7 @@ class ReservationsController < ApplicationController
     end
   end
   def edit
-    @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
-    @date = @reservation.booking.strftime("%m-%d-%Y")
-    @time = @reservation.booking.strftime("%H:%M:%S")
+   
   end
   def destroy
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
@@ -37,29 +35,7 @@ class ReservationsController < ApplicationController
     redirect_to :controller=>:main , :action => :reservations
   end
   def update 
-    @reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
-    old = @reservation.people
-    values=reservation_params
-    if check_repeat Reservation.availability_for_restaurant(Time.zone.parse(params[:date]+" "+params[:time]).utc.strftime("%Y-%m-%d %H:%M"),params[:reservation][:branch_id],0).sorted.where("user_id = ?", params[:reservation][:user_id]).first,Time.zone.parse(params[:date]+" "+params[:time]).utc
-       flash[:alert] = "Membership No. Conflict please select another time"
-       restaurants = Restaurant.by_user(current_user.id).published
-        @restaurants = Array.new
-        restaurants.each_with_index do |u,i|
-          @restaurants[i] = Array.new
-          @restaurants[i] = [u.title,u.id.to_s+"|"+u.slug] 
-        end
-        @date = @reservation.booking.strftime("%m-%d-%Y")
-        @time = @reservation.booking.strftime("%H:%M:%S")
-        render "edit"
-    elsif @reservation.update_attributes(values) 
-      TimeSlot.adjust_people @reservation.booking,@reservation.branch.expiry*2, @reservation.people - old
-      flash[:notice] = "Reservation Updated for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
-      redirect_to :action => :index
-    else 
-      @date = @reservation.booking.strftime("%m-%d-%Y")
-      @time = @reservation.booking.strftime("%H:%M:%S")
-      render "edit"
-    end
+    
   end
   def index
   	redirect_to :controller=>:restaurants , :action => :index
