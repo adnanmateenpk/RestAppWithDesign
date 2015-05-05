@@ -118,12 +118,12 @@
               </div>
               <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-8">
-                  <input type="button" class="form-control" value="Registarse" data-dismiss="modal" data-toggle="modal" data-target="#registrationForm" >
+                  <input type="button" class="form-control register-button" value="Registarse">
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-8">
-                  <input type="button" class="form-control" value="Olvidaste tu contraseña?" data-dismiss="modal" data-toggle="modal" data-target="#passwordForm" >
+                  <input type="button" class="form-control forgot-password" value="Olvidaste tu contraseña?">
                 </div>
               </div>
            <% end %>
@@ -154,4 +154,15 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
    
- 
+ <script>
+ $(document).ready(function(){
+    $(".form-control.register-button").click(function(){
+      $(".modal").modal("hide");
+      $("#registrationForm").nodal("show");
+    });
+    $(".form-control.forgot-password").click(function(){
+      $(".modal").modal("hide");
+      $("#passwordForm").nodal("show");
+    });
+ });
+ </script>
