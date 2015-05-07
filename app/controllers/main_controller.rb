@@ -33,7 +33,7 @@ class MainController < ApplicationController
     puts @reservations.count
   end
   def customer
-    
+    render :json => {"available" => false, "message" => "Site Down For Maintenance"}
   end
 
 end
