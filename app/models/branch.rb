@@ -4,7 +4,7 @@ class Branch < ActiveRecord::Base
 	#relations
 	has_many :reservations , dependent: :destroy
 	belongs_to :restaurant
-	has_many :time_slots , dependent: :destroy
+	
 	#scopes
 	scope :sorted, lambda { order("branches.position ASC") }
 	scope :by_user, lambda { |user| where("branches.user_id = ?",user) }

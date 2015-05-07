@@ -215,6 +215,9 @@
           <% if !flash[:notice].blank? %>
            <%= flash[:notice] %>
            <% end %>
+           <% if !flash[:alert].blank? %>
+           <%= flash[:alert] %>
+           <% end %>
            </div>
           </div>
           
@@ -243,7 +246,7 @@ Google Analytics
 
 </script>
 <% end %>
-<% if !flash[:notice].blank? %>
+<% if !flash[:notice].blank? or !flash[:alert].blank?  %>
 <script>
   $(document).ready(function(){
     $("#FlashNotice").modal("show");

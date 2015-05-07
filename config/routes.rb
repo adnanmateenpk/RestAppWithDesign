@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  
-  
-
- 
-
   devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions" }, :path => "members"
   root to: 'main#index'
   patch "update-subscription" => 'main#convert_user'
@@ -35,6 +30,10 @@ Rails.application.routes.draw do
       collection do 
 
         get 'list' 
+      end
+      resources :tables do
+        
+        
       end
       resources :details ,:controller => :branches , :param => :slug do
         member do

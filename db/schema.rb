@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150421202708) do
+ActiveRecord::Schema.define(version: 20150507185430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,7 +98,6 @@ ActiveRecord::Schema.define(version: 20150421202708) do
   create_table "reservations", force: :cascade do |t|
     t.string   "reservation_name"
     t.string   "reservation_code"
-    t.boolean  "status"
     t.integer  "branch_id"
     t.string   "user_id"
     t.integer  "people"
@@ -108,12 +107,12 @@ ActiveRecord::Schema.define(version: 20150421202708) do
     t.datetime "expire_at"
     t.integer  "created_by"
     t.integer  "restaurant_owner"
+    t.integer  "status"
   end
 
   add_index "reservations", ["booking"], name: "index_reservations_on_booking", using: :btree
   add_index "reservations", ["branch_id"], name: "index_reservations_on_branch_id", using: :btree
   add_index "reservations", ["created_by"], name: "index_reservations_on_created_by", using: :btree
-  add_index "reservations", ["status"], name: "index_reservations_on_status", using: :btree
   add_index "reservations", ["user_id"], name: "index_reservations_on_user_id", using: :btree
 
   create_table "restaurants", force: :cascade do |t|
@@ -154,16 +153,13 @@ ActiveRecord::Schema.define(version: 20150421202708) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "time_slots", force: :cascade do |t|
-    t.datetime "slot"
+  create_table "tables", force: :cascade do |t|
+    t.integer  "restaurant_id"
     t.integer  "seats"
-    t.integer  "branch_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "quantity"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
-
-  add_index "time_slots", ["branch_id"], name: "index_time_slots_on_branch_id", using: :btree
-  add_index "time_slots", ["slot"], name: "index_time_slots_on_slot", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

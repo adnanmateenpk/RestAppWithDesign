@@ -1,0 +1,65 @@
+<div class="container-fluid content">
+
+<div class="breadcrumb">restaurantes<% if user_signed_in? %>
+      <strong> | <%= current_user.name %></strong>
+      <% end %><strong> | <a  data-toggle="modal" data-target="#createForm" style="color:black;cursor:pointer;" > Add Tables </a>
+</strong></div>
+      <div class="row table-yellow">
+<table class="table table-striped" summary="Restaurant list">
+  <tr class="header">
+    <th>&nbsp;</th>
+    <th>No. Of Seats</th>
+    <th>Quantity</th>
+    <th>Actions</th>
+  </tr>
+  <% @tables.each_with_index do |d,i| %>
+  <tr class="">
+    <td class="position"><%= i+1 %></td>
+    <td><%= d.seats %></td>
+    <td><%= d.quantity %></td>
+    <td class="actions">
+       	<%= link_to 'Delete' , {:action => 'destroy' , :id => d.id}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %> 
+       
+    </td>
+  </tr>
+  <% end %>
+  
+</table>
+</div>
+</div>
+
+</div>
+<div class="modal fade" id="createForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Create Tables</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(@table , :url=>{:action => 'create'}, :html => {:class=>"form-horizontal"}) do |f| %>
+              
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:seats ,:class => "form-control",:placeholder =>"No. Of Seats") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:quantity ,:class => "form-control",:placeholder =>"No. Of Tables") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                <%= f.hidden_field(:restaurant_id ,:class => "form-control",:value=>@restaurant.id) %>
+                  <button type="submit" class="form-control">Create Tables</button>
+                </div>
+              </div>
+              
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>

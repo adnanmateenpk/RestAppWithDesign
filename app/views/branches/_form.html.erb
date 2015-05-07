@@ -3,8 +3,8 @@
             <div class="col-md-6 ">
               <%= f.email_field(:email,:class => 'form-control' , :placeholder =>"Email")%>
             </div>
-            <div class="col-md-6 ">
-              <%= f.text_field(:seating_capacity,:class => 'form-control' , :placeholder =>"Seating Capacity")%>
+             <div class="col-md-6 ">
+             <%= f.select(:night_club, options_for_select([['Night Club',1],['Restaurant',0]],(@branch.night_club ? 1 : 0)),{},{ :class=>"form-control"}) %>
             </div>
            
           </div>
@@ -46,9 +46,7 @@
               <% end %>
             </div>
             
-           <div class="col-md-6 ">
-             <%= f.select(:night_club, options_for_select([['Night Club',1],['Restaurant',0]],(@branch.night_club ? 1 : 0)),{},{ :class=>"form-control"}) %>
-            </div>
+          
           </div>
          
          

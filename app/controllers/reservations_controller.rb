@@ -8,20 +8,9 @@ class ReservationsController < ApplicationController
   end
   def create
     @reservation = Reservation.new(reservation_params)
-    TimeSlot.initialize_slots @reservation.booking.strftime("%Y-%m-%d"),@reservation.branch_id
-     
-    if check_repeat Reservation.availability_for_restaurant(Time.zone.parse(params[:date]+" "+params[:time]).utc.strftime("%Y-%m-%d %H:%M"),params[:reservation][:branch_id],0).sorted.where("user_id = ?", params[:reservation][:user_id]).first,Time.zone.parse(params[:date]+" "+params[:time]).utc
-       flash[:alert] = "Membership No. Conflict please select another time"
-       redirect_to :action => :index,:controller => :main
-    elsif @reservation.save 
-      TimeSlot.adjust_people @reservation.booking,@reservation.branch.expiry+1, @reservation.people
-      AdminMailer.create_customer_reservation(@reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
-      AdminMailer.create_restaurant_reservation(@reservation.branch.restaurant.user, @reservation.user,@reservation.reservation_code,@reservation.booking).deliver_now
-      flash[:notice] = "Reservation Created for '#{@reservation.user.name}' with Reservation Code #{@reservation.reservation_code}"
-      redirect_to :action => :index,:controller => :main
-    else 
-      redirect_to :controller=>:main , :action => :index
-    end
+    flash[:notice] = "Site Down For Maintainence"
+    redirect_to :action => :index,:controller => :main
+   
   end
   def edit
    
@@ -75,12 +64,5 @@ class ReservationsController < ApplicationController
     params.require(:reservation).permit(:reservation_name,:reservation_code,:booking,:expire_at, :people ,:user_id, :status, :branch_id,:created_by,:restaurant_owner)
   end
 
-  private 
-  def check_repeat value,time
-    return_value = false
-    if !value.blank?
-     return_value = value.expire_at > time
-    end  
-    return_value
-  end
+  
 end

@@ -14,6 +14,7 @@ class Ability
         can :manage , :reservation
         can [:index] , :admin
         can [:index,:filtered] , :user
+        can :manage, :table
       elsif user.role_id == 3
         can [:list] , :restaurant
         can [:list] , :branch
