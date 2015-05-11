@@ -13,6 +13,9 @@
 <%= yield %>
   <div class="footer container-fluid">
   <ul class="nav nav-pills nav-justified footer-nav">
+    <% if !current_page?(root_url) %>
+    <li><%= link_to "Make a Reservation", {:controller => :main ,:action => :index}, :class => 'navbar-link'  %></li>
+    <% end %>
     <% if user_signed_in? %>
     <li><%= link_to("Reservations",{:action=>'reservations',:controller=>'main'},:class=>'action index')%></li>
     <% end %>

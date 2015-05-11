@@ -12150,17 +12150,13 @@ $(document).ready(function(){
 	        })
 
 	}); 
-	$('.reservation_cancel').on('ajax:success', function() {  
-			console.log("deleted");
-	        location.reload();
+	$('.test_row').on('click', function() {  
+			alert(10);
 
 	}); 
 	$('.remove_image').on('ajax:success', function() {  
 		
-	        $("#featured_image").fadeOut("slow",function(){
-	        	$(this).remove();
-	        	
-	        })
+	        $("#featured_image").attr("src" , "/assets/dining-default.png")
 
 	});
 	$('#branch-form').submit(function(){

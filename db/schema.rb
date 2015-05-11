@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150507185430) do
+ActiveRecord::Schema.define(version: 20150511114023) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,17 @@ ActiveRecord::Schema.define(version: 20150507185430) do
   add_index "posts", ["slug"], name: "index_posts_on_slug", using: :btree
   add_index "posts", ["status"], name: "index_posts_on_status", using: :btree
 
+  create_table "reservation_tables", force: :cascade do |t|
+    t.integer  "table_id"
+    t.integer  "reservation_id"
+    t.datetime "booking"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "reservation_tables", ["reservation_id"], name: "index_reservation_tables_on_reservation_id", using: :btree
+  add_index "reservation_tables", ["table_id"], name: "index_reservation_tables_on_table_id", using: :btree
+
   create_table "reservations", force: :cascade do |t|
     t.string   "reservation_name"
     t.string   "reservation_code"
@@ -160,6 +171,9 @@ ActiveRecord::Schema.define(version: 20150507185430) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
+
+  add_index "tables", ["restaurant_id"], name: "index_tables_on_restaurant_id", using: :btree
+  add_index "tables", ["seats"], name: "index_tables_on_seats", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

@@ -3,13 +3,14 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
 $(document).ready(function(){
-	$("#submit-button").popover('destroy');
+	
 	$('#login-form').on('ajax:success', function(e,data) {  
-		$("#submit-button").popover({content: "Creating Reservation"}).popover("show");
+		showNotice("Creating Reservation");
+		 $('#loginFormRemote .message').html("");
 	    $("#reservation-form").submit();
 	}).on("ajax:error", function() {  
-	    
-	    $("#submit-button").popover({content: "Invalid Email or Password!!!"}).popover("show");
+	    $('#loginFormRemote .message').html("Invalid Username/Password");
+	    $('#loginFormRemote').modal('show');
 	});
 	$("#restaurant_id").val("");
 	$("#reservation_branch_id").val("");
@@ -18,8 +19,7 @@ $(document).ready(function(){
 function populateBranches(val,object){
 	$("img.selected").removeClass("selected").addClass("disabled");
 	$(object).addClass("selected");
-	$("img.disabled").popover("destroy");
-
+	
 	val = val.split("|");
 	$("#restaurant_id").val(val[0]);
 	if(val==0){
@@ -42,7 +42,7 @@ function populateBranches(val,object){
 		        	assignBranchValue(result[0].id +"|"+result[0].time_zone+"|"+result[0].seating_capacity);
 		        }
 	            
-        		$("img.selected").popover({content: html,html: true}).popover("show");
+        		
         }});
 	}
 	
@@ -88,7 +88,7 @@ function setTimeFromSlot(time,submission,object,signed_in){
 	$("#slots td").unbind( "click" );
 }
 function assignBranchValue(val){
-	$("img.selected").popover({content: html,html: true}).popover("show");
+	
 	val = val || "";
 	val = val.split("|");
 	$("#reservation_branch_id").val(val[0]);
@@ -102,10 +102,10 @@ function assignBranchValue(val){
 		html = html + "<option value='"+(i+1)+"'>"+(i+1)+"</option>";
 	}
 	$("#reservation_people").html(html);
-	$("img").popover("destroy");
+	
 }
 function checkAvailability(id){	
-	$("img").popover("destroy");
+	
 	id = id || 0 ;
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
@@ -116,99 +116,35 @@ function checkAvailability(id){
 	restaurant = $("#restaurant_id").val();
 	restaurant = restaurant.split("|");
 	restaurant = restaurant[0];
-	$("#submit-button").popover('destroy');
-	$(".datetime-group").removeClass("has-error");
-	$("#notice").html("").hide();
 	$("table#slots tbody").html("");
 	$.ajax({	
 			url: "/availability_customer",
 			type: "POST",
 			data:{"restaurant":restaurant ,"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id,"time_zone" : $("#time_zone").val()},
-			error: function(){
-				$btn.button('reset');
+			error: function(xhr, ajaxOptions, thrownError){
+				location.href = "/";
 			},
 			success: function(result){
 
 				if(result.available && result.user_signed_in){
-					
-		        	
-		        	$btn.button('reset');
+					$btn.button('reset');
+					showNotice(result.message);
+					$("#table_id").val(result.table);
 		        	$("#reservation-form").submit();
-		        	$("#submit-button").popover({content: result.message}).popover("show");
+		        	
 		        	
 				}
 				else if(result.available && !result.user_signed_in){
 					
 		        	$btn.button('reset');
+		        	$("#table_id").val(result.table);
 		        	$('#loginFormRemote').modal('show');
-		        	$("#submit-button").popover({content: "You Need To Log In"}).popover("show");
+		        	
 		        	
 				}
-				else if(!result.available && result.message == "Please Enter A Valid Date/Time"){
-						
-						$(".datetime-group").addClass("has-error");
-						$btn.button('reset');
-						$("#submit-button").popover({content: result.message}).popover("show");
-				}
-				else if(result.branch_slots){
-					
-					$btn.button('reset');
-	        		$("#submit-button").popover({content: result.message}).popover("show");
-	        		var html = "<tr><th>Select Branch</th></tr>";
-	        		for(i=0;i<result.time_slots.length;i++){
-	        			if(result.time_slots[i].available){
-	        				html= html + "<tr><td>"+result.time_slots[i].time_slot+"</td></tr>";
-	        			}
-	        		}
-	        		$("table#slots tbody").html(html);
-	        		$("#slots td").unbind( "click" ).click(function(){ setTimeFromSlot($(this).html(),0,this,result.user_signed_in)});
-	        		$('#time-slots').modal('show');
-				}
-				else if(result.restaurant_slots){
-					$btn.button('reset');
-					$("#submit-button").popover({content: result.message}).popover("show");
-	        		
-					var html="";
-	        		for(i=0;i<result.time_slots.length;i++){
-	        			html = html+"<tr class='branch' data-value = '"+result.time_slots[i].id+"'>";
-	        			html = html+"<th>"+result.time_slots[i].title+"</th>";
-	        			for(j=0;j<result.time_slots[i].time_slots.length;j++){
-		        			if(result.time_slots[i].time_slots[j].available){
-		        				html= html + "<td>"+result.time_slots[i].time_slots[j].time_slot+"</td>";
-		        			}
-		        		}
-		        		html = html + "</tr>";
-	        		}
-	        		$("table#slots tbody").html(html);
-	        		$("#slots td").unbind( "click" ).click(function(){ setTimeFromSlot($(this).html(),1,this,result.user_signed_in)});
-	        		$('#time-slots').modal('show');
-				}
-				else if(result.all_slots){
-					$btn.button('reset');
-					$("#submit-button").popover({content: result.message}).popover("show");
-	        		
-					var html="";
-					for(x=0;x<result.time_slots.length;x++){
-						html=html+"<tr class='restaurant' data-value='"+result.time_slots[x].id+"'><th>"+result.time_slots[x].title+"</th></tr>"
-		        		for(i=0;i<result.time_slots[x].time_slots.length;i++){
-		        			html = html+"<tr class='branch' data-value='"+result.time_slots[x].time_slots[i].id+"'>";
-		        			html = html+"<th>"+result.time_slots[x].time_slots[i].title+"</th>";
-		        			for(j=0;j<result.time_slots[x].time_slots[i].time_slots.length;j++){
-			        			if(result.time_slots[x].time_slots[i].time_slots[j].available){
-			        				html= html + "<td>"+result.time_slots[x].time_slots[i].time_slots[j].time_slot+"</td>";
-			        			}
-			        		}
-			        		html = html + "</tr>";
-		        		}
-		        	}
-	        		$("table#slots tbody").html(html);
-	        		$("#slots td").unbind( "click" ).click(function(){ setTimeFromSlot($(this).html(),2,this,result.user_signed_in)});
-	        		$('#time-slots').modal('show');
-				}
-	        	else {
-	        		
+				else {
+	        		showNotice(result.message);
 	        		$btn.button('reset');
-	        		$("#submit-button").popover({content: result.message}).popover("show");
 	        	}
 	        	
 	        }
@@ -216,5 +152,9 @@ function checkAvailability(id){
 	
 	
 	
+}
+function showNotice(message){
+	$("#reservationNotice .modal-body").html(message);
+	$("#reservationNotice").modal("show");
 }
 

@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     get "settings" => 'admin#settings'
     patch "settings/save" => 'admin#settings_save'
     patch "settings/logo" => 'admin#remove_logo'
+    patch '/reservations/success/:reservation_code' => 'reservations#success'
+    delete '/reservations/destroy_customer/:reservation_code' => 'reservations#destroy_customer'
     resources :pages,:param => :slug do
       member do
           patch 'remove_image'
@@ -50,6 +52,7 @@ Rails.application.routes.draw do
         get "list/:id" => 'reservations#list'
         post "filtered_list"
       end
+
     end
     resources :customers, :controller =>"users" , :param => :membership do
       collection do 

@@ -7,35 +7,67 @@ class ReservationsController < ApplicationController
     redirect_to :controller=>:main , :action => :index
   end
   def create
-    @reservation = Reservation.new(reservation_params)
-    flash[:notice] = "Site Down For Maintainence"
+    reservation = Reservation.new(reservation_params)
+    flash[:notice] = "Reservation Created"
+    reservation.save
+    r = Array.new
+    (-1...2).each do |i|
+      x = ReservationTable.new
+      x.table_id = params[:table_id]
+      x.booking = reservation.booking + 60*30*i
+      x.reservation_id = reservation.id
+      x.save
+    end
+    AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+      
     redirect_to :action => :index,:controller => :main
-   
   end
   def edit
-   
   end
+
   def destroy
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
     reservation.status = 0
-    TimeSlot.adjust_people reservation.booking,reservation.branch.expiry*2, -1*reservation.people
-    AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
+
+   # AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
     reservation.save
+    ReservationTable.where("reservation_id = ?", reservation.id).destroy_all
+    redirect_to :controller=>:reservations , :action => :list , :id => reservation.branch_id
+  end
+  def destroy_customer
+    reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
+    reservation.status = 0
+
+   # AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
+    reservation.save
+    ReservationTable.where("reservation_id = ?", reservation.id).destroy_all
     redirect_to :controller=>:main , :action => :reservations
+  end
+  def success
+    reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
+    reservation.status = 2
+
+   # AdminMailer.success_reservation(reservation.user,reservation.reservation_code).deliver_now
+    reservation.save
+    
+    redirect_to :controller=>:reservations , :action => :list , :id => reservation.branch_id
   end
   def update 
     
   end
+
   def index
   	redirect_to :controller=>:restaurants , :action => :index
   end
+
   def list
     
     @reservations  = Reservation.where("branch_id = ?" , params[:id])
-
     render 'index'
    # redirect_to  :action => :index
   end
+  
   def filtered_list
     Time.zone = Branch.find(params[:id]).time_zone
     date = params[:date].split('/')
@@ -45,6 +77,7 @@ class ReservationsController < ApplicationController
     @reservations  = Reservation.where("branch_id = ? AND booking < ? AND booking >= ? " , params[:id],endTime,startTime )
     render 'index'
   end
+  
   def show
   end
   

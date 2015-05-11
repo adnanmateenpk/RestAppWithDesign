@@ -66,7 +66,7 @@
                     <input type="hidden" id="address<%= r.id %>" value="<strong>DIRECCION | </strong><%= r.branch.address %>"/>
                     <input type="hidden" id="ppl<%= r.id %>" value="<%= r.people %>"/>
                     <input type="hidden" id="zone<%= r.id %>" value="<%= r.branch.time_zone %>"/>
-                    <input type="hidden" id="cancel<%= r.id %>" value ='<%= link_to 'Cancel Reservation' , {:controller=>"reservations",:action => 'destroy' , :reservation_code => r.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, "data-type" => :json , :class => 'reservation_cancel', :style =>"color:black;"  %>' />
+                    <input type="hidden" id="cancel<%= r.id %>" value ='<%= link_to 'Cancel Reservation' , {:controller=>"reservations",:action => 'destroy_customer' , :reservation_code => r.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, "data-type" => :json , :class => 'reservation_cancel', :style =>"color:black;"  %>' />
                 </div>
                 <% x=x+1 %>
               <% end %>

@@ -44,7 +44,7 @@ end
     @restaurant = Restaurant.new(restaurant_params("test"))
     
     if @restaurant.save
-      flash[:notice] = "Restaurant saved"
+      flash[:notice] = "Restaurant saved, Kindly Enter the details for the restaurant to appear on frontpage"
 
       redirect_to(new_restaurant_detail_path(@restaurant.slug))
     else

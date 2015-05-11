@@ -7,4 +7,4 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 	ActiveRecord::Base.connection.execute("TRUNCATE TABLE reservations RESTART IDENTITY;")
-	ActiveRecord::Base.connection.execute("TRUNCATE TABLE time_slots RESTART IDENTITY;")
+	ActiveRecord::Base.connection.execute("TRUNCATE TABLE reservation_tables RESTART IDENTITY;")

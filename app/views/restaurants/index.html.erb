@@ -26,7 +26,7 @@
         |
       	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit' , :style => "color:black") %> |
       	<%= link_to 'Delete' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %> |
-        <%= link_to 'Reservations' , {:controller => :reservations ,:action => 'list' , :id => d.branches[0].id}, :style => "color:black" %>
+        <%= link_to 'Reservations' , {:controller => :reservations ,:action => 'list' , :id => d.branches[0].id}, :style => "color:black" %> |
         <%= link_to 'Tables' , restaurant_tables_path(d.slug), :style => "color:black" %>
     </td>
   </tr>

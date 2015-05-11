@@ -23,12 +23,19 @@
     <td><%= d.user.name %></td>
     <td><%= d.booking.strftime("%m-%d-%Y") %></td>
     <td><%= d.booking.strftime("%I:%M %p")%></td>
-    <td><%= d.status ? "Active" : "Cancelled" %></td>
+    <% if d.status == 0 %>
+    <td>Cancelled</td>
+    <% elsif d.status == 1 %>
+    <td>Active</td>
+    <% elsif d.status == 2 %>
+    <td>Success</td>
+    <% end %>
     <td ><%= d.reservation_code %> </td>
     <td><%= d.people %></td>
     <td >
-    <% if d.status %>
-    <%= link_to 'Cancel' , {:action => 'destroy' , :reservation_code => d.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %>
+    <% if d.status == 1 %>
+    <%= link_to 'Cancel' , {:action => 'destroy' , :reservation_code => d.reservation_code}, method: :delete, :class => 'test_row' , :style => "color:black" %> | 
+    <%= link_to 'Success' , {:action => 'success' , :reservation_code => d.reservation_code}, method: :patch, :class => 'test_row' , :style => "color:black" %>
     <% end %>
     </td> 
   </tr>

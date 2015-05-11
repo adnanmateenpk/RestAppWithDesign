@@ -11,9 +11,8 @@ $(document).ready(function(){
 	        })
 
 	}); 
-	$('.reservation_cancel').on('ajax:success', function() {  
-			console.log("deleted");
-	        location.reload();
+	$('.test_row').on('ajax:success', function() {  
+			alert(10);
 
 	}); 
 	$('.remove_image').on('ajax:success', function() {  

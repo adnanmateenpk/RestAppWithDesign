@@ -49,7 +49,7 @@ class BranchesController < ApplicationController
     @branch.restaurant_id = restaurant.id
     @branch.user_id = restaurant.user_id
     if @branch.save
-      flash[:notice] = "Branch saved"
+      flash[:notice] = "Details saved"
       redirect_to(:action=>'index')
     else
       flash[:model] = @branch
@@ -97,7 +97,7 @@ class BranchesController < ApplicationController
       @branch = Branch.where(["slug = ? AND user_id = ?",params[:slug],current_user.id]).first 
     end
     if @branch.update_attributes(branch_params(@branch.featured_image,@branch.time_zone))
-      flash[:notice] = "Branch saved"
+      flash[:notice] = "Details saved"
       redirect_to(:action=>'index')
     else
       flash[:model] = @branch
@@ -112,21 +112,20 @@ class BranchesController < ApplicationController
       old_image = "test"
     end
     Time.zone = params[:branch][:time_zone]
-    if !zone.blank? and zone != params[:branch][:time_zone]
-      
-    end
+   
     if !params[:branch][:featured_image].blank?
       params[:branch][:featured_image]= upload_files_custom(params[:branch][:featured_image],"branches",old_image)
     end
     params[:branch][:slug] = (params[:restaurant_slug]+" details").parameterize
-    
-    params[:branch][:open] = Time.zone.parse("2001-01-01" + " " +params[:branch][:open])
-    params[:branch][:close] = Time.zone.parse("2001-01-01" + " " +params[:branch][:close])
+    date = Time.zone.now.strftime("%Y-%m-%d")
+    params[:branch][:open] = Time.zone.parse(date + " " +params[:branch][:open])
+    params[:branch][:close] = Time.zone.parse(date + " " +params[:branch][:close])
     if params[:branch][:close] < params[:branch][:open]
       params[:branch][:close] = params[:branch][:close] + 24*60*60
     end
-    puts params[:branch][:open]
     params[:branch][:expiry] = "1";
+    params[:branch][:night_club] = "0";
+    params[:branch][:seating_capacity] = "1";
     params[:branch][:status] = "1";
     params[:branch][:title] = "";
     params.require(:branch).permit(:night_club,:title,:slug,:status,:address,:email,:position,:phone,:fax,:featured_image,:open,:close,:expiry,:seating_capacity,:time_zone)
