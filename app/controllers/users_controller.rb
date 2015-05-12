@@ -32,4 +32,6 @@ class UsersController < ApplicationController
     user.destroy
     render json: { "gst" => "deleted" }
   end
+  def show
+  end
 end

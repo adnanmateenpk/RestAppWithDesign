@@ -78,7 +78,17 @@ class MainController < ApplicationController
   private
   def check_times branch
     Time.zone = params[:time_zone]
-    !(Time.zone.parse(branch.open.strftime("%Y-%m-%d") + " " + params[:time]) >= branch.open && Time.zone.parse(branch.close.strftime("%Y-%m-%d") + " " + params[:time]) < branch.close)
+    time = Time.zone.parse(params[:date] + " " + params[:time])
+    open_time = Time.zone.parse(params[:date] + " " + branch.open.strftime("%I:%M %p"))
+    
+    
+    if(branch.open.strftime("%d").to_i < branch.close.strftime("%d").to_i)
+      close_date = open_time + 24*60*60
+    else
+      close_date = open_time 
+    end
+    close_time = Time.zone.parse( close_date.strftime("%Y-%m-%d") + " " + branch.close.strftime("%I:%M %p"))  
+    !(time >= open_time && time < close_time )
   end
 
 end

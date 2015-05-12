@@ -117,7 +117,8 @@ class BranchesController < ApplicationController
       params[:branch][:featured_image]= upload_files_custom(params[:branch][:featured_image],"branches",old_image)
     end
     params[:branch][:slug] = (params[:restaurant_slug]+" details").parameterize
-    date = Time.zone.now.strftime("%Y-%m-%d")
+    date = Time.zone.now - 24*60*60*7
+    date = date.strftime("%Y-%m-%d")
     params[:branch][:open] = Time.zone.parse(date + " " +params[:branch][:open])
     params[:branch][:close] = Time.zone.parse(date + " " +params[:branch][:close])
     if params[:branch][:close] < params[:branch][:open]
