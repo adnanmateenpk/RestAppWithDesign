@@ -53,8 +53,8 @@ class MainController < ApplicationController
       elsif check_times branch
         render :json => {"available" => false, "message" => "Restaurant is closed at the selected time"}
       elsif check_tables  
-        render :json => {"available" => false, "message" => "There are no Tables available at the selected time"}
-      elsif
+        render :json => {"available" => false, "message" => "There are no Tables available at the selected time. Please Call on : "+branch.phone+" for further assitence"}
+      else
         render :json => {"user_signed_in" => user_signed_in? ,"available" => true, "message" => "Creating Resevation", "table" => @@table}
       end
     end
@@ -66,7 +66,7 @@ class MainController < ApplicationController
     tables = Table.reservation_tables_check params[:people].to_i, params[:people].to_i + 2,params[:restaurant]
     return_value = true
     tables.each do |t|
-      if !(ReservationTable.where("table_id = ? AND booking = ?",t.id,booking_time) >= t.quantity)
+      if !(ReservationTable.where("table_id = ? AND booking = ?",t.id,booking_time).length >= t.quantity)
         return_value = false
         @@table = t.id
         break

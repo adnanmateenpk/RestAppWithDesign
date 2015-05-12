@@ -11320,7 +11320,7 @@ $(document).ready(function(){
 	        })
 
 	}); 
-	$('.reservation_cancel').on('ajax:success', function() {  
+	$('.test_row').on('ajax:success', function() {  
 			alert(10);
 
 	}); 
@@ -11621,7 +11621,7 @@ function checkAvailability(id){
 			type: "POST",
 			data:{"restaurant":restaurant ,"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id,"time_zone" : $("#time_zone").val()},
 			error: function(xhr, ajaxOptions, thrownError){
-				location.href = "/";
+				// location.href = "/";
 			},
 			success: function(result){
 

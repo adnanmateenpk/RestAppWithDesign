@@ -122,6 +122,7 @@ function checkAvailability(id){
 			type: "POST",
 			data:{"restaurant":restaurant ,"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id,"time_zone" : $("#time_zone").val()},
 			error: function(xhr, ajaxOptions, thrownError){
+				$btn.button('reset');
 				location.href = "/";
 			},
 			success: function(result){
