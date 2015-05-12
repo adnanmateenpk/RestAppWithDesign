@@ -53,7 +53,7 @@ class MainController < ApplicationController
       elsif check_times branch
         render :json => {"available" => false, "message" => "Restaurant is closed at the selected time"}
       elsif check_tables  
-        render :json => {"available" => false, "message" => "There are no Tables available at the selected time. Please Call on : "+branch.phone+" for further assitence"}
+        render :json => {"available" => false, "message" => "There are no Tables available at the selected time. Please Call on : "+branch.phone+" for further assistance"}
       else
         render :json => {"user_signed_in" => user_signed_in? ,"available" => true, "message" => "Creating Resevation", "table" => @@table}
       end

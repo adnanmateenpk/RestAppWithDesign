@@ -25,13 +25,13 @@
     <li> <a  data-toggle="modal" data-target="#contactForm"> contacto</a></li>
     <li><a>terminos y condiciones</a></li>
     <% if user_signed_in? %>
-    <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+    <li><%= link_to "Logout", destroy_user_session_path, :class => 'navbar-link'  %></li>
 
     <% else %>
     <li><a data-toggle="modal" data-target="#loginForm">Inicia Sesion</a></li>
     <% end %>
     <% if user_signed_in? && current_user.role_id == 3   %>
-    <li><%= link_to "Upgrade Membership", {:controller => :main ,:action => :convert_user}, method: :patch, :class => 'navbar-link'  %></li>
+    <!-- <li><%= link_to "Upgrade Membership", {:controller => :main ,:action => :convert_user}, method: :patch, :class => 'navbar-link'  %></li> -->
     <% end %>
     <li><a>copyright &copy; webideaco.com</a></li>
   </ul>
