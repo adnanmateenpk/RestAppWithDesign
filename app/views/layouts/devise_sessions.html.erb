@@ -2,14 +2,287 @@
 <html>
 <head>
   <title>RestApp</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <meta name="google-site-verification" content="HP8IyDRmdDtqq9eh2W0-jFiQmBKqznbFz1V48inza3Y" />
   <%= csrf_meta_tags %>
 </head>
 <body>
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
+<!-- <p class="notice"><%= notice %></p>
+<p class="alert"><%= alert %></p> -->
 
 <%= yield %>
+  <div class="footer container-fluid">
+  <ul class="nav nav-pills nav-justified footer-nav">
+   
+    
+    <li> <a  data-toggle="modal" data-target="#contactForm"> contacto</a></li>
+    <li><a>terminos y condiciones</a></li>
+    <% if user_signed_in? %>
+    <li><%= link_to "Logout", destroy_user_session_path, :class => 'navbar-link'  %></li>
+
+    <% else %>
+    <li><a data-toggle="modal" data-target="#loginForm">Inicia Sesion</a></li>
+    <% end %>
+    
+    <li><a>copyright &copy; webideaco.com</a></li>
+  </ul>
+    
+  </div>
+ <div class="modal fade" id="loginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Inicia Sesion</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user , url: session_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+            <% if !flash[:invalid_user].blank? %>
+            <div style="text-align:center;width:100%;">
+             <%= flash[:invalid_user] %>
+             </div>
+              <% end %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Email") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Password" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">iniciar sesión</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <input type="button" class="form-control" value="Registarse" data-dismiss="modal" data-toggle="modal" data-target="#registrationForm" >
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <input type="button" class="form-control" value="Olvidaste tu contraseña?" data-dismiss="modal" data-toggle="modal" data-target="#passwordForm" >
+                </div>
+              </div>
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+      <div class="modal fade" id="contactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Contacto</h2>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+            
+              <div class="form-group">
+                <div class="col-xs-6">
+                  <input type="text" class="form-control"  placeholder="Nombre">
+                </div>
+                <div class="col-xs-6">
+                  <input type="email" class="form-control"  placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-12 ">
+                  <textarea type="password" class="form-control"  placeholder="Comentario"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">iniciar sesión</button>
+                </div>
+              </div>
+             
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="registrationForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Registrarse</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user , url: registration_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:name ,:class => "form-control",:placeholder =>"Nombre") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:phone ,:class => "form-control",:placeholder =>"Telf") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Correo electrónico") %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Contraseña" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password_confirmation, autocomplete: "off",:class => "form-control",:placeholder =>"confirmar Contraseña" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Registrarse</button>
+                </div>
+              </div>
+              
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+     <div class="modal fade" id="passwordForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Restablecer La Contraseña</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user , url: password_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
+              
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Correo electrónico") %>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Restablecer La Contraseña</button>
+                </div>
+              </div>
+              
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Submission Errors</h2>
+          </div>
+          <div class="modal-body">
+          <% if !flash[:error_model].blank? %>
+           <%= error_messages_for(flash[:error_model]) %>
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="FlashNotice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Notice</h2>
+          </div>
+          <div class="modal-body">
+          <div style="width:100%; text-align:center;">
+          <% if !flash[:notice].blank? %>
+           <%= flash[:notice] %>
+           <% end %>
+           <% if !flash[:alert].blank? %>
+           <%= flash[:alert] %>
+           <% end %>
+           </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+<!--
+Google Analytics
+-->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-47849197-4', 'auto');
+  ga('send', 'pageview');
+
+</script>
 <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  
-</body>
+<% if !flash[:invalid_user].blank? %>
+<script>
+  $(document).ready(function(){
+    $("#loginForm").modal("show");
+  });
+
+</script>
+<% end %>
+<% if !flash[:register].blank? %>
+<script>
+  $(document).ready(function(){
+    $("#registrationForm").modal("show");
+  });
+
+</script>
+<% end %>
+<% if !flash[:error_model].blank? %>
+<script>
+  $(document).ready(function(){
+    $("#ErrorModal").modal("show");
+  });
+
+</script>
+<% end %>
+<% if !flash[:notice].blank? or !flash[:alert].blank?  %>
+<script>
+  $(document).ready(function(){
+    $("#FlashNotice").modal("show");
+  });
+
+</script>
+<% end %>
+ <script>
+ $(document).ready(function(){
+    $(".form-control.register-button").click(function(){
+      $(".modal").modal("hide");
+      $("#registrationForm").modal("show");
+    });
+    $(".form-control.forgot-password").click(function(){
+      $(".modal").modal("hide");
+      $("#passwordForm").modal("show");
+    });
+ });
+ </script>
+  </body>
 </html>

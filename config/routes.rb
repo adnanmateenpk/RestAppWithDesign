@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions" }, :path => "members" do
+  devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions", passwords: "users/passwords" }, :path => "members" do
     get '/members/sign_out' => 'users/sessions#destroy'
   end
   root to: 'main#index'
