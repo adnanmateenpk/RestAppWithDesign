@@ -25,6 +25,7 @@
     <li> <a  data-toggle="modal" data-target="#contactForm"> contacto</a></li>
     <li><a>terminos y condiciones</a></li>
     <% if user_signed_in? %>
+    <li><a data-toggle="modal" data-target="#editDetailsForm">Update User Details</a></li>
     <li><%= link_to "Logout", destroy_user_session_path, :class => 'navbar-link'  %></li>
 
     <% else %>
@@ -167,7 +168,66 @@
         </div>
       </div>
     </div>
-     <div class="modal fade" id="passwordForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <% if user_signed_in? %>
+    <div class="modal fade" id="editDetailsForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Edit Details</h2>
+          </div>
+          <div class="modal-body">
+          <% if !flash[:edit_detail_errors].blank? %>
+           <%= error_messages_for(flash[:edit_detail_errors]) %>
+           <% end %>
+           <%= form_for(:user, url: registration_path(:user), html: { method: :put, :class => "form-horizontal" }) do |f| %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:name ,:class => "form-control",:placeholder =>"Nombre" , :value=>current_user.name) %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.text_field(:phone ,:class => "form-control",:placeholder =>"Telf" , :value=>current_user.phone) %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Correo electrónico", :value=>current_user.email) %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Contraseña" %>
+                  <i>(leave blank if you don't want to change it)</i>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password_confirmation, autocomplete: "off",:class => "form-control",:placeholder =>"confirmar Contraseña" %>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :current_password, autocomplete: "off",:class => "form-control",:placeholder =>"Current Password" %>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Update</button>
+                </div>
+              </div>
+              
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <% end %>
+    <div class="modal fade" id="passwordForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -196,7 +256,41 @@
         </div>
       </div>
     </div>
-
+    <div class="modal fade" id="passwordRenewForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <img src="/assets/header-image.png" class="img-responsive" style="margin:0 auto;">
+            <h2>Enter New Password</h2>
+          </div>
+          <div class="modal-body">
+           <%= form_for(:user, url: password_path(:user), html: { method: :put , :class=>"form-horizontal"}) do |f| %>
+              <%= f.hidden_field :reset_password_token , :value =>flash[:reset_token] %>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password, autocomplete: "off",:class => "form-control",:placeholder =>"Contraseña" %>
+                  
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-1">
+                  <%= f.password_field :password_confirmation, autocomplete: "off",:class => "form-control",:placeholder =>"confirmar Contraseña" %>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-8">
+                  <button type="submit" class="form-control">Update Password</button>
+                </div>
+              </div>
+              
+           <% end %>
+          </div>
+          
+        </div>
+      </div>
+    </div>
     <div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -224,8 +318,8 @@
           </div>
           <div class="modal-body">
           <div style="width:100%; text-align:center;">
-          <% if !flash[:notice].blank? %>
-           <%= flash[:notice] %>
+          <% if !@notice.blank? %>
+           <%= @notice %>
            <% end %>
            <% if !flash[:alert].blank? %>
            <%= flash[:alert] %>
@@ -274,10 +368,26 @@ Google Analytics
 
 </script>
 <% end %>
-<% if !flash[:notice].blank? or !flash[:alert].blank?  %>
+<% if !@notice.blank? or !flash[:alert].blank?  %>
 <script>
   $(document).ready(function(){
     $("#FlashNotice").modal("show");
+  });
+
+</script>
+<% end %>
+<% if !flash[:edit_detail_errors].blank?   %>
+<script>
+  $(document).ready(function(){
+    $("#editDetailsForm").modal("show");
+  });
+
+</script>
+<% end %>
+<% if !flash[:reset_token].blank?   %>
+<script>
+  $(document).ready(function(){
+    $("#passwordRenewForm").modal("show");
   });
 
 </script>

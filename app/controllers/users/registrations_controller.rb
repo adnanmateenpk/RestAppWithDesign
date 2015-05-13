@@ -20,9 +20,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{:user}").to_key)
+    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
+
+    resource_updated = update_resource(resource, account_update_params)
+    yield resource if block_given?
+    if resource_updated
+      if is_flashing_format?
+        flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
+          :update_needs_confirmation : :updated
+        set_flash_message :notice, flash_key
+      end
+      sign_in resource_name, resource, bypass: true
+      respond_with resource, location: after_update_path_for(resource)
+    else
+      flash[:edit_detail_errors] = resource.errors.full_messages
+      redirect_to :root
+    end
+  end
 
   # DELETE /resource
   # def destroy
@@ -49,10 +65,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # You can put the params you want to permit in the empty array.
   def account_update_params
-    params[:user][:role_id] = "3"
-    params.require(:user).permit(:name,:role_id , :email, :password, :password_confirmation)
+   
+    params.require(:user).permit(:name , :email, :password, :password_confirmation,:current_password)
   end
-
+  
   # The path used after sign up.
   # def after_sign_up_path_for(resource)
   #   super(resource)

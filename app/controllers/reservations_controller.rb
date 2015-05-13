@@ -7,6 +7,7 @@ class ReservationsController < ApplicationController
     redirect_to :controller=>:main , :action => :index
   end
   def create
+    session[:reservation_params] = nil
     reservation = Reservation.new(reservation_params)
     flash[:notice] = "Reservation Created"
     reservation.save

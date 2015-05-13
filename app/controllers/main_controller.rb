@@ -3,6 +3,18 @@ class MainController < ApplicationController
    before_action :auth_user, :only => [:reservations]
   @@table
   def index
+    @notice = ""
+
+    if !session[:reservation_params].blank?
+      if user_signed_in?
+        create_reservation(session[:reservation_params])
+        @notice  = @notice + "Reservation Created"
+        session[:reservation_params] = nil
+     else 
+        # session[:reservation_params] = nil
+     end
+    end
+
     @reservation = Reservation.new(:booking=>"7:30 PM")
 
     @restaurants = Restaurant.published
@@ -55,7 +67,9 @@ class MainController < ApplicationController
       elsif check_tables  
         render :json => {"available" => false, "message" => "There are no Tables available at the selected time. Please Call on : "+branch.phone+" for further assistance"}
       else
-        render :json => {"user_signed_in" => user_signed_in? ,"available" => true, "message" => "Creating Resevation", "table" => @@table}
+        params[:table_id] = @@table
+        session[:reservation_params] = params
+        render :json => {"user_signed_in" => user_signed_in? ,"available" => true, "message" => "Creating Resevation", "table" => @@table }
       end
     end
   end
@@ -90,5 +104,38 @@ class MainController < ApplicationController
     close_time = Time.zone.parse( close_date.strftime("%Y-%m-%d") + " " + branch.close.strftime("%I:%M %p"))  
     !(time >= open_time && time < close_time )
   end
-
+  private 
+  def create_reservation params
+    reservation = Reservation.new
+    Time.zone = params[:time_zone]
+    reservation.people = params["people"]
+    reservation.branch_id = params["branch"]
+    reservation.status = 1
+    reservation.booking = Time.zone.parse(params["date"]+ " " + params["time"])
+    reservation.expire_at =reservation.booking + Branch.find(reservation.branch_id).expiry*60*60
+    reservation.reservation_code = Digest::SHA1.hexdigest(Time.zone.now.to_s)[0,6]
+    reservation.created_by = current_user.id;
+    reservation.user_id = Digest::SHA1.hexdigest(current_user.email)[0,6]
+    reservation.reservation_name = current_user.name
+    reservation.restaurant_owner = Branch.find(reservation.branch_id).user_id;
+    
+    reservation.save
+    r = Array.new
+    (-1...2).each do |i|
+      x = ReservationTable.new
+      x.table_id = params["table_id"]
+      x.booking = reservation.booking + 60*30*i
+      x.reservation_id = reservation.id
+      x.save
+    end
+    AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    
+  end
+  private
+  def reservation_params params
+    
+    
+    params.require(:reservation).permit(:reservation_name,:reservation_code,:booking,:expire_at, :people ,:user_id, :status, :branch_id,:created_by,:restaurant_owner)
+  end
 end

@@ -11503,14 +11503,14 @@ function resetReservationData(){
 // All this logic will automatically be available in application.js.
 $(document).ready(function(){
 	
-	$('#login-form').on('ajax:success', function(e,data) {  
-		showNotice("Creating Reservation");
-		 $('#loginFormRemote .message').html("");
-	    $("#reservation-form").submit();
-	}).on("ajax:error", function() {  
-	    $('#loginFormRemote .message').html("Invalid Username/Password");
-	    $('#loginFormRemote').modal('show');
-	});
+	// $('#login-form').on('ajax:success', function(e,data) {  
+	// 	showNotice("Creating Reservation");
+	// 	$('#loginFormRemote .message').html("");
+	//     $("#reservation-form").submit();
+	// }).on("ajax:error", function() {  
+	//     $('#loginFormRemote .message').html("Invalid Username/Password");
+	//     $('#loginFormRemote').modal('show');
+	// });
 	$("#restaurant_id").val("");
 	$("#reservation_branch_id").val("");
 	
@@ -11621,6 +11621,7 @@ function checkAvailability(id){
 			type: "POST",
 			data:{"restaurant":restaurant ,"customer":user,"branch" : val,"time":time,"date":date,"people" : people,"id":id,"time_zone" : $("#time_zone").val()},
 			error: function(xhr, ajaxOptions, thrownError){
+				$btn.button('reset');
 				location.href = "/";
 			},
 			success: function(result){
@@ -11637,7 +11638,7 @@ function checkAvailability(id){
 					
 		        	$btn.button('reset');
 		        	$("#table_id").val(result.table);
-		        	$('#loginFormRemote').modal('show');
+		        	$('#loginForm').modal('show');
 		        	
 		        	
 				}
