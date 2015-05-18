@@ -528,6 +528,10 @@ strong{
 	
 	overflow: auto;
 }
+.reservation-wrapper .tab-controls > li > a{
+	
+	font-size: 25px;
+}
 .reservations img{
 	margin: 0 auto;
 	  width: 160px;
@@ -595,7 +599,7 @@ strong{
 	.table-yellow{
 		
 		
-		height:80%;
+		height:83%;
 	}
 	.logo-container-profile{
 		margin-top: 40px;

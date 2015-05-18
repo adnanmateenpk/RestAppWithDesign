@@ -29,8 +29,11 @@
             <div class="col-xs-6">
               <input class="form-control" value="HORA" readonly id="time">
             </div>
-            <div class="col-xs-12">
+            <div class="col-xs-6">
               <input class="form-control" value="Numero de Personas" readonly id="ppl">
+            </div>
+            <div class="col-xs-6">
+              <input class="form-control" value="Status" readonly id="status">
             </div>
             <div class="col-md-8 col-md-offset-2 address" id="address">
               
@@ -42,13 +45,20 @@
           <div class="row height100">
             <h2 class="col-xs-12"><strong>Reservaciones</strong></h2>
             <h1 class="col-xs-12">Anteriores</h1>
+
             <div class="col-md-11 col-md-offset-1  reservation-wrapper">
-              <div class="row ">
-              <% x= 0 %>
+              <ul class="tab-controls nav nav-pills" role="tablist">
+                <li role="presentation" class="col-xs-4 tab-button active"><a href="#active" aria-controls="active" role="tab" data-toggle="tab">Active</a></li>
+                <li role="presentation" class="col-xs-4 tab-button"><a href="#cancelled" aria-controls="cancelled" role="tab" data-toggle="tab">Cancelled</a></li>
+                <li role="presentation" class="col-xs-4 tab-button"><a href="#completed" aria-controls="completed" role="tab" data-toggle="tab">Completed</a></li>
+              </ul>
+              <div class="row tab-pane fade in active" id="active">
+              
               <% @reservations.each_with_index do |r,i| %>
+              <% if r.status == 1 %>
               <% Time.zone = r.branch.time_zone %>
               <% u = r.branch.restaurant %>
-                <div class= "col-xs-8 col-xs-offset-2 reservations">
+                <div class= " col-xs-6 col-xs-offset-3 reservations" >
                 <% if !(u.featured_image.blank?) %>
 
                      <img src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle reservation" id="<%= r.id %>" >
@@ -63,11 +73,65 @@
                     <input type="hidden" id="address<%= r.id %>" value="<strong>DIRECCION | </strong><%= r.branch.address %>"/>
                     <input type="hidden" id="ppl<%= r.id %>" value="<%= r.people %> People"/>
                     <input type="hidden" id="zone<%= r.id %>" value="<%= r.branch.time_zone %>"/>
+                    <input type="hidden" id="status<%= r.id %>" value="Active"/>
                     <input type="hidden" id="cancel<%= r.id %>" value ='<%= link_to 'Cancel Reservation' , {:controller=>"reservations",:action => 'destroy_customer' , :reservation_code => r.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, "data-type" => :json , :class => 'reservation_cancel', :style =>"color:black;"  %>' />
+                   
                 </div>
-                <% x=x+1 %>
+              <% end %>
               <% end %>
                 
+              </div>
+              <div class="row tab-pane fade" id="cancelled">
+              
+                <% @reservations.each_with_index do |r,i| %>
+                  <% if r.status == 0 %>
+                    <% Time.zone = r.branch.time_zone %>
+                    <% u = r.branch.restaurant %>
+                    <div class= " col-xs-6 col-xs-offset-3 reservations" >
+                      <% if !(u.featured_image.blank?) %>
+                        <img src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle reservation" id="<%= r.id %>" >
+                      <% else %>
+                        <img src="/assets/dining-default.png" class="img-responsive img-circle reservation" id="<%= r.id %>">
+                      <% end %>
+                      <h4 style="text-align:center;font-weight:bold;" id="title<%= r.id %>" ><%= u.title %></h4>
+                      <input type="hidden" id="date<%= r.id %>" value="<%= r.booking.strftime("%m-%d-%Y") %>"/>
+                      <input type="hidden" id="time<%= r.id %>" value="<%= r.booking.strftime("%I:%M %p ") %>"/>
+                      <input type="hidden" id="address<%= r.id %>" value="<strong>DIRECCION | </strong><%= r.branch.address %>"/>
+                      <input type="hidden" id="ppl<%= r.id %>" value="<%= r.people %> People"/>
+                      <input type="hidden" id="zone<%= r.id %>" value="<%= r.branch.time_zone %>"/>
+                      <input type="hidden" id="status<%= r.id %>" value="Cancelled"/>
+                      <input type="hidden" id="cancel<%= r.id %>" value ='' />
+                     
+                    </div>
+                  <% end %>
+                <% end %>
+                  
+              </div>
+              <div class="row tab-pane fade" id="completed">
+              
+                <% @reservations.each_with_index do |r,i| %>
+                  <% if r.status == 2 %>
+                    <% Time.zone = r.branch.time_zone %>
+                    <% u = r.branch.restaurant %>
+                    <div class= " col-xs-6 col-xs-offset-3 reservations" >
+                      <% if !(u.featured_image.blank?) %>
+                        <img src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle reservation" id="<%= r.id %>" >
+                      <% else %>
+                        <img src="/assets/dining-default.png" class="img-responsive img-circle reservation" id="<%= r.id %>">
+                      <% end %>
+                      <h4 style="text-align:center;font-weight:bold;" id="title<%= r.id %>" ><%= u.title %></h4>
+                      <input type="hidden" id="date<%= r.id %>" value="<%= r.booking.strftime("%m-%d-%Y") %>"/>
+                      <input type="hidden" id="time<%= r.id %>" value="<%= r.booking.strftime("%I:%M %p ") %>"/>
+                      <input type="hidden" id="address<%= r.id %>" value="<strong>DIRECCION | </strong><%= r.branch.address %>"/>
+                      <input type="hidden" id="ppl<%= r.id %>" value="<%= r.people %> People"/>
+                      <input type="hidden" id="zone<%= r.id %>" value="<%= r.branch.time_zone %>"/>
+                      <input type="hidden" id="status<%= r.id %>" value="Completed"/>
+                      <input type="hidden" id="cancel<%= r.id %>" value ='' />
+                     
+                    </div>
+                  <% end %>
+                <% end %>
+                  
               </div>
             </div>
           </div>

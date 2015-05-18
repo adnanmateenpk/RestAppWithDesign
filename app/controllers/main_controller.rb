@@ -29,6 +29,7 @@ class MainController < ApplicationController
     
   end
   def register
+
     flash[:register] = true
     redirect_to :action => :index
   end
@@ -50,8 +51,8 @@ class MainController < ApplicationController
 
   end
   def reservations
-
-    @reservations = Reservation.where("status = ? AND user_id = ? ",1 ,current_user.membership)
+    @user = User.new
+    @reservations = Reservation.where("user_id = ? ",current_user.membership)
     
   end
   def customer

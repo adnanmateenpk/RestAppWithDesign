@@ -28,14 +28,14 @@
     <% elsif d.status == 1 %>
     <td>Active</td>
     <% elsif d.status == 2 %>
-    <td>Success</td>
+    <td>Completed</td>
     <% end %>
     <td ><%= d.reservation_code %> </td>
     <td><%= d.people %></td>
     <td >
     <% if d.status == 1 %>
     <%= link_to 'Cancel' , {:action => 'destroy' , :reservation_code => d.reservation_code}, method: :delete, :class => 'test_row' , :style => "color:black" %> | 
-    <%= link_to 'Success' , {:action => 'success' , :reservation_code => d.reservation_code}, method: :patch, :class => 'test_row' , :style => "color:black" %>
+    <%= link_to 'Complete' , {:action => 'success' , :reservation_code => d.reservation_code}, method: :patch, :class => 'test_row' , :style => "color:black" %>
     <% end %>
     </td> 
   </tr>

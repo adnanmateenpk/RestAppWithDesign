@@ -114,7 +114,7 @@ function populateReservationData(object){
   date=$("#date"+id).val();
   time=$("#time"+id).val();
   address=$("#address"+id).val();
-  zone = $("#zone"+id).val();
+  status = $("#status"+id).val();
   ppl = $("#ppl"+id).val();
   img = $(object).attr("src");
   url = $("#cancel"+id).val();
@@ -123,17 +123,16 @@ function populateReservationData(object){
   $("#date").val(date);
   $("#time").val(time);
   $("#address").html(address);
-  $("#zone").val(zone);
   $("#ppl").val(ppl);
+  $("#status").val(status);
   $("#cancel-data").html(url);
 }
 function resetReservationData(){
   
   
-  date="";
-  time="";
-  
-  zone = "zona horaria";
+  date="Fecha";
+  time="Hora";
+  status = "Status";
   ppl = "Numero de Personas";
   
   
@@ -141,7 +140,7 @@ function resetReservationData(){
   $("#date").val(date);
   $("#time").val(time);
  
-  $("#zone").val(zone);
+  $("#status").val(status);
   $("#ppl").val(ppl);
   
 }

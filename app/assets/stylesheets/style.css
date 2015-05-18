@@ -48,7 +48,6 @@ a,a:hover,a:focus{
 	
 	
 	margin-left: 5px; 
-	margin-right:0px;
 	
 }
 .tab-controls > li > a{
@@ -327,6 +326,10 @@ strong{
 .reservation-wrapper{
 	
 	overflow: auto;
+}
+.reservation-wrapper .tab-controls > li > a{
+	
+	font-size: 25px;
 }
 .reservations img{
 	margin: 0 auto;
