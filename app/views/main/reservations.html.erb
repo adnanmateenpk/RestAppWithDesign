@@ -29,10 +29,7 @@
             <div class="col-xs-6">
               <input class="form-control" value="HORA" readonly id="time">
             </div>
-            <div class="col-xs-6">
-              <input class="form-control" value="zona horaria" readonly id="zone">
-            </div>
-            <div class="col-xs-6">
+            <div class="col-xs-12">
               <input class="form-control" value="Numero de Personas" readonly id="ppl">
             </div>
             <div class="col-md-8 col-md-offset-2 address" id="address">
@@ -64,7 +61,7 @@
                     <input type="hidden" id="date<%= r.id %>" value="<%= r.booking.strftime("%m-%d-%Y") %>"/>
                     <input type="hidden" id="time<%= r.id %>" value="<%= r.booking.strftime("%I:%M %p ") %>"/>
                     <input type="hidden" id="address<%= r.id %>" value="<strong>DIRECCION | </strong><%= r.branch.address %>"/>
-                    <input type="hidden" id="ppl<%= r.id %>" value="<%= r.people %>"/>
+                    <input type="hidden" id="ppl<%= r.id %>" value="<%= r.people %> People"/>
                     <input type="hidden" id="zone<%= r.id %>" value="<%= r.branch.time_zone %>"/>
                     <input type="hidden" id="cancel<%= r.id %>" value ='<%= link_to 'Cancel Reservation' , {:controller=>"reservations",:action => 'destroy_customer' , :reservation_code => r.reservation_code}, method: :delete, data: { confirm: 'Are you sure?' }, "data-type" => :json , :class => 'reservation_cancel', :style =>"color:black;"  %>' />
                 </div>

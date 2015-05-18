@@ -85,7 +85,7 @@ $(document).ready(function(){
 	// 	}
 	// });
 	$('.datepicker').datepicker();
-	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: false});
+	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: "1:00 PM"});
    $(document).ready(function() {
 
       $('.custom-scroll,.table-yellow,.reservation-wrapper').enscroll({

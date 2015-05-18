@@ -165,6 +165,7 @@ textarea.form-control{
 	background-color: transparent;
 	font-size: 25px;
 	text-align: center;
+	z-index: 100;
 }
 .modal-content{
 	background-color: #eaeaef;
