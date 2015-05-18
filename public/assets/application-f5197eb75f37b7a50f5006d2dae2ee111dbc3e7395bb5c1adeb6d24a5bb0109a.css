@@ -365,6 +365,7 @@ textarea.form-control{
 	background-color: transparent;
 	font-size: 25px;
 	text-align: center;
+	z-index: 100;
 }
 .modal-content{
 	background-color: #eaeaef;
@@ -588,13 +589,13 @@ strong{
 		right:20px;
 	}
 	.form-yellow{
-		margin-top: 100px;
-		height:88%;
+		margin-top: 3%;
+		height:80%;
 	}
 	.table-yellow{
-		margin-top: 100px;
+		margin-top: 3%;
 		
-		height:88%;
+		height:80%;
 	}
 	.logo-container-profile{
 		margin-top: 40px;
