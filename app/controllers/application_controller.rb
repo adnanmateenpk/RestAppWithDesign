@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
     # Redirect to the appropriate domain i.e. example.com
     def redirect_to_example
       domain_to_redirect_to = 'reservados.co'
-      domain_exceptions = ['reservados.co', 'reservados.co']
+      domain_exceptions = ['reservados.co', 'www.reservados.co']
       should_redirect = !(domain_exceptions.include? request.host)
       new_url = "#{request.protocol}#{domain_to_redirect_to}#{request.fullpath}"
       redirect_to new_url, status: :moved_permanently if should_redirect
