@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+	before_filter :redirect_to_example if Rails.env.production?
+
   	# Prevent CSRF attacks by raising an exception.
  	 # For APIs, you may want to use :null_session instead.
  	 
@@ -36,6 +38,18 @@ class ApplicationController < ActionController::Base
   	def auth_user
     	redirect_to :root unless user_signed_in?
   	end
+  	
+	
 
+	private
+
+    # Redirect to the appropriate domain i.e. example.com
+    def redirect_to_example
+      domain_to_redirect_to = 'reservados.co'
+      domain_exceptions = ['reservados.co', 'reservados.co']
+      should_redirect = !(domain_exceptions.include? request.host)
+      new_url = "#{request.protocol}#{domain_to_redirect_to}#{request.fullpath}"
+      redirect_to new_url, status: :moved_permanently if should_redirect
+    end
 	  
 end

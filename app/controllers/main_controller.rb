@@ -3,6 +3,14 @@ class MainController < ApplicationController
    before_action :auth_user, :only => [:reservations]
   @@table
   def index
+    @user = User.new
+    if !flash[:registration_model].blank?
+      @user.name = flash[:registration_model]["name"]
+      @user.phone = flash[:registration_model]["phone"]
+      @user.email = flash[:registration_model]["email"]
+      
+    end 
+
     @notice = ""
 
     if !session[:reservation_params].blank?

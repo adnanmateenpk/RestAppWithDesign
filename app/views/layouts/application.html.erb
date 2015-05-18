@@ -30,6 +30,7 @@
 
     <% else %>
     <li><a data-toggle="modal" data-target="#loginForm">Inicia Sesion</a></li>
+    <li><a data-toggle="modal" data-target="#registrationForm">Registrarse</a></li>
     <% end %>
     <% if user_signed_in? && current_user.role_id == 3   %>
     <!-- <li><%= link_to "Upgrade Membership", {:controller => :main ,:action => :convert_user}, method: :patch, :class => 'navbar-link'  %></li> -->
@@ -111,7 +112,7 @@
               </div>
               <div class="form-group">
                 <div class="col-xs-offset-2 col-xs-8">
-                  <button type="submit" class="form-control">iniciar sesión</button>
+                  <button type="submit" class="form-control">Send Message</button>
                 </div>
               </div>
              
@@ -130,20 +131,23 @@
             <h2>Registrarse</h2>
           </div>
           <div class="modal-body">
+          <% if !flash[:registration_errors].blank? %>
+           <%= error_messages_for(flash[:registration_errors]) %>
+           <% end %>
            <%= form_for(:user , url: registration_path(:user) , :html => {:class=>"form-horizontal"}) do |f| %>
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-1">
-                  <%= f.text_field(:name ,:class => "form-control",:placeholder =>"Nombre") %>
+                  <%= f.text_field(:name ,:class => "form-control",:placeholder =>"Nombre",:value=> @user.name) %>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-1">
-                  <%= f.text_field(:phone ,:class => "form-control",:placeholder =>"Telf") %>
+                  <%= f.text_field(:phone ,:class => "form-control",:placeholder =>"Telf",:value=> @user.phone) %>
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-xs-10 col-xs-offset-1">
-                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Correo electrónico") %>
+                  <%= f.email_field(:email ,:class => "form-control",:placeholder =>"Correo electrónico",:value=> @user.email) %>
                 </div>
               </div>
               <div class="form-group">
@@ -352,7 +356,7 @@ Google Analytics
 
 </script>
 <% end %>
-<% if !flash[:register].blank? %>
+<% if !flash[:register].blank? or !flash[:registration_errors].blank? %>
 <script>
   $(document).ready(function(){
     $("#registrationForm").modal("show");
