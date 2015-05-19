@@ -19,6 +19,10 @@ class ReservationsController < ApplicationController
       x.reservation_id = reservation.id
       x.save
     end
+    customer = RestaurantCustomer.new
+    customer.restaurant_owner_id = reservation.branch.restaurant.user.id
+    customer.user_id = reservation.user.id 
+    customer.save
     AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
     AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
       

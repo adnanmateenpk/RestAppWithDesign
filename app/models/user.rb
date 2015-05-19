@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   has_many :restaurants , dependent: :destroy
   has_many :reservations , dependent: :destroy , :primary_key => :membership
   has_many :creations, dependent: :destroy, :foreign_key => :created_by , :class_name => "Reservation"
+  has_many :restaurant_customer
+  has_many :restaurants_ids , :through => :restaurant_customer , :source => :restaurant_owner
+  has_many :customer_ids, :foreign_key => :restaurant_owner_id , :class_name => "RestaurantCustomer"
+  has_many :customers , :through => :customer_ids , :source => :user
   #scopes
   scope :without_current , lambda {|id| where("users.id != ?",id) }
   scope :search, lambda { |data| where("users.membership LIKE ? OR users.name LIKE ?" , "%"+data+"%", "%"+data+"%" ) }

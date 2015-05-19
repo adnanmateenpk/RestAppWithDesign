@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   	if current_user.role_id == 1
   		@users = User.without_current(current_user.id)
   	else 
-  		@users = User.without_current(current_user.id).limited_users
+  		@users = current_user.customers
   	end
   end
   def filtered
