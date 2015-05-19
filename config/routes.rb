@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root to: 'main#index'
   patch "update-subscription" => 'main#convert_user'
   get "register" => 'main#register'
+  post "contact-us" => 'main#contact_us'
   get "dashboard" => 'admin#index'
   post "availability_restaurant" => 'main#restaurant'
   post "availability_customer" => 'main#customer'

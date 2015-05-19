@@ -33,8 +33,10 @@ class MainController < ApplicationController
     flash[:register] = true
     redirect_to :action => :index
   end
-  def subscription
-
+  def contact_us
+    AdminMailer.contact_us(params["message"],params["subject"],params["email"],params["name"]).deliver_now
+    flash[:notice]="Your Email has been sent"
+    redirect_to root_url
   end
   def get_token
 

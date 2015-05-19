@@ -95,19 +95,25 @@
             <h2>Contacto</h2>
           </div>
           <div class="modal-body">
-            <form class="form-horizontal">
             
+           <%= form_tag('/contact-us', multipart: true , :class=>"form-horizontal") %>
               <div class="form-group">
                 <div class="col-xs-6">
-                  <input type="text" class="form-control"  placeholder="Nombre">
+                  <input type="text" class="form-control"  placeholder="Nombre" name="name">
                 </div>
                 <div class="col-xs-6">
-                  <input type="email" class="form-control"  placeholder="Email">
+                  <input type="email" class="form-control"  placeholder="Email" name="email">
+                </div>
+              </div>
+              <div class="form-group">
+                
+                <div class="col-xs-12">
+                  <input type="text" class="form-control"  placeholder="Subject" name="subject">
                 </div>
               </div>
               <div class="form-group">
                 <div class="col-xs-12 ">
-                  <textarea type="password" class="form-control"  placeholder="Comentario"></textarea>
+                  <textarea type="password" class="form-control"  placeholder="Comentario" name="message"></textarea>
                 </div>
               </div>
               <div class="form-group">
@@ -116,7 +122,7 @@
                 </div>
               </div>
              
-            </form>
+            
           </div>
           
         </div>
@@ -342,10 +348,8 @@ Google Analytics
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-47849197-4', 'auto');
+  ga('create', 'UA-47849197-5', 'auto');
   ga('send', 'pageview');
-
 </script>
 <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 <% if !flash[:invalid_user].blank? %>

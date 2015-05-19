@@ -1,5 +1,5 @@
 class AdminMailer < ApplicationMailer
-	default from: "admin@restapp.com"
+	default from: "reservados2015@gmail.com"
 
 	def welcome_email(user)
 	    @user = user
@@ -8,6 +8,11 @@ class AdminMailer < ApplicationMailer
   	def membership_change_request(user)
 	    @user = user
 	    mail(to: Setting.first.email, subject: 'Membership Change Request')
+  	end
+  	def contact_us(message,subject, from, name)
+	    @message = message
+	    @name = name
+	    mail(to: Setting.first.email, subject: subject , from: name + "<" +from+">"  )
   	end
   	def cancel_reservation(user,code)
 	    @reservation_code = code
