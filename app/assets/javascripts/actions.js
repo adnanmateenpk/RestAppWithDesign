@@ -85,7 +85,7 @@ $(document).ready(function(){
 	// 	}
 	// });
 	$('.datepicker').datepicker();
-	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: "1:00 PM"});
+	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: "1:00 PM", disableFocus: true});
    $(document).ready(function() {
 
       $('.custom-scroll,.table-yellow,.reservation-wrapper').enscroll({
@@ -131,7 +131,7 @@ function resetReservationData(){
   
   
   date="Fecha";
-  time="Hora";
+  time="1:00 PM";
   status = "Status";
   ppl = "Numero de Personas";
   

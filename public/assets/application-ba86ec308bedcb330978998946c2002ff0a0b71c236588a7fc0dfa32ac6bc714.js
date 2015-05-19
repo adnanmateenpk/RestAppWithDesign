@@ -11435,7 +11435,7 @@ $(document).ready(function(){
 	// 	}
 	// });
 	$('.datepicker').datepicker();
-	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: "1:00 PM"});
+	 $('.timepicker').timepicker({minuteStep: 30,defaultTime: false, disableFocus: true});
    $(document).ready(function() {
 
       $('.custom-scroll,.table-yellow,.reservation-wrapper').enscroll({
