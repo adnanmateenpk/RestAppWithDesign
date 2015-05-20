@@ -22,7 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       else
         set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
         expire_data_after_sign_in!
-        AdminMailer.welcome_email(@user).deliver_now unless @user.invalid?
+        
         respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
     else
@@ -33,7 +33,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
       redirect_to :root
     end
-      
+      AdminMailer.welcome_email(@user).deliver_now unless @user.invalid?
   end
 
   # GET /resource/edit
