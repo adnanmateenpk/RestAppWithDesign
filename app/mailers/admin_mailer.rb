@@ -1,9 +1,9 @@
 class AdminMailer < ApplicationMailer
-	default from: "reservados2015@gmail.com"
+	default from: Setting.first.title + "<" + Setting.first.email +">"
 
 	def welcome_email(user)
 	    @user = user
-	    mail(to: @user.email, subject: 'Welcome to the Resturant App')
+	    mail(to: @user.email, subject: 'Welcome to the '+Setting.first.title)
   	end
   	def membership_change_request(user)
 	    @user = user
@@ -16,7 +16,7 @@ class AdminMailer < ApplicationMailer
   	end
   	def cancel_reservation(user,code)
 	    @reservation_code = code
-	    mail(to: user.email, subject: 'Reservation Cancelled')
+	    mail(to: user.email, subject: 'Reservation Cancelled', from:  + "<" +from+">")
   	end
   	def success_reservation(user,code)
 	    @reservation_code = code
