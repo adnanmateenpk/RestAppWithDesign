@@ -4,7 +4,11 @@ class UsersController < ApplicationController
   authorize_resource :class => false
   def index
   	if current_user.role_id == 1
-  		@users = User.without_current(current_user.id)
+      if params[:role].blank?
+  		  @users = User.without_current(current_user.id)
+      else
+        @users = User.without_current(current_user.id).where("role_id = ?", params[:role])
+      end
   	else 
   		@users = current_user.customers
   	end

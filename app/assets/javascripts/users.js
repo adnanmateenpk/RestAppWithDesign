@@ -3,8 +3,8 @@
 $(document).ready(function(){
 
 		$('.ajax-form').on('ajax:success', function() {  
-	        $(this).closest("tr").find(".ajax-button").attr("disabled",false)
-	        $(this).find(".ajax-button").attr("disabled",true)
-
+	        // $(this).closest("tr").find(".ajax-button").attr("disabled",false)
+	        // $(this).find(".ajax-button").attr("disabled",true)
+	        location.reload();
 		}); 
 })
