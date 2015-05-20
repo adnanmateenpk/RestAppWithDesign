@@ -1,7 +1,7 @@
 
-    <h1>Welcome to Restaurant App, <%= @user.name %></h1>
+    <h1>Welcome to <%= Setting.first.title %>, <%= @user.name %></h1>
     <p>
-      You have successfully signed up to Restaurant App ,
+      You have successfully signed up to <%= Setting.first.title %> ,
       your username is: <%= @user.email %>.<br>
     </p>
     
