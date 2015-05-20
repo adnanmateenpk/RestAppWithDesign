@@ -1,5 +1,5 @@
 class AdminMailer < ApplicationMailer
-	default from: Setting.first.title + "<" + Setting.first.email +">"
+	default from: "reservados2015@gmail.com"
 
 	def welcome_email(user)
 	    @user = user
