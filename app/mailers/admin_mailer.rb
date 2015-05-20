@@ -16,7 +16,7 @@ class AdminMailer < ApplicationMailer
   	end
   	def cancel_reservation(user,code)
 	    @reservation_code = code
-	    mail(to: user.email, subject: 'Reservation Cancelled', from:  + "<" +from+">")
+	    mail(to: user.email, subject: 'Reservation Cancelled')
   	end
   	def success_reservation(user,code)
 	    @reservation_code = code
