@@ -131,7 +131,6 @@ class MainController < ApplicationController
     reservation.user_id = Digest::SHA1.hexdigest(current_user.email)[0,6]
     reservation.reservation_name = current_user.name
     reservation.restaurant_owner = Restaurant.find(params["restaurant"]).user_id;
-    
     reservation.save
     r = Array.new
     (-1...2).each do |i|
