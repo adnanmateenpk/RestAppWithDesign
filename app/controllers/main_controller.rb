@@ -141,15 +141,15 @@ class MainController < ApplicationController
       x.reservation_id = reservation.id
       x.save
     end
-    customer = RestaurantCustomer.where("user_id = ? AND restaurant_owner_id = ?",reservation.user.id , reservation.branch.restaurant.user.id)
+    customer = RestaurantCustomer.where("user_id = ? AND restaurant_owner_id = ?",reservation.created_by , reservation.restaurant_owner)
     if customer.blank?
       customer = RestaurantCustomer.new
-      customer.restaurant_owner_id = reservation.branch.restaurant.user.id
-      customer.user_id = reservation.user.id 
+      customer.restaurant_owner_id = reservation.restaurant_owner
+      customer.user_id = reservation.created_by
       customer.save
     end
     AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
-    AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    AdminMailer.create_restaurant_reservation(reservation.owner, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
     
   end
   private

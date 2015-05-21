@@ -20,6 +20,7 @@ class Reservation < ActiveRecord::Base
 	
 	belongs_to :user , :primary_key => :membership
 	belongs_to :creator , :foreign_key => :created_by , :class_name => "User"
+	belongs_to :owner , :foreign_key => :restaurant_owner , :class_name => "User"
 	has_many :reservation_tables , dependent: :destroy
 	def self.expire_reservations
 		Time.zone = "UTC"
