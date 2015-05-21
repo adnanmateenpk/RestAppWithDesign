@@ -8,26 +8,26 @@ class ReservationsController < ApplicationController
   end
   def create
     session.delete(:reservation_params)
-    reservation = Reservation.new(reservation_params)
-    flash[:notice] = "Reservation Created"
-    reservation.save
-    r = Array.new
-    (-1...2).each do |i|
-      x = ReservationTable.new
-      x.table_id = params[:table_id]
-      x.booking = reservation.booking + 60*30*i
-      x.reservation_id = reservation.id
-      x.save
-    end
-    customer = RestaurantCustomer.where("user_id = ? AND restaurant_owner_id = ?",reservation.user.id , reservation.branch.restaurant.user.id)
-    if customer.blank?
-      customer = RestaurantCustomer.new
-      customer.restaurant_owner_id = reservation.branch.restaurant.user.id
-      customer.user_id = reservation.user.id 
-      customer.save
-    end
-    AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
-    AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    # reservation = Reservation.new(reservation_params)
+    # flash[:notice] = "Reservation Created"
+    # reservation.save
+    # r = Array.new
+    # (-1...2).each do |i|
+    #   x = ReservationTable.new
+    #   x.table_id = params[:table_id]
+    #   x.booking = reservation.booking + 60*30*i
+    #   x.reservation_id = reservation.id
+    #   x.save
+    # end
+    # customer = RestaurantCustomer.where("user_id = ? AND restaurant_owner_id = ?",reservation.user.id , reservation.branch.restaurant.user.id)
+    # if customer.blank?
+    #   customer = RestaurantCustomer.new
+    #   customer.restaurant_owner_id = reservation.branch.restaurant.user.id
+    #   customer.user_id = reservation.user.id 
+    #   customer.save
+    # end
+    # AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    # AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
       
     redirect_to :action => :index,:controller => :main
   end
