@@ -10,9 +10,7 @@ class MainController < ApplicationController
       @user.email = flash[:registration_model]["email"]
       
     end 
-    if !flash[:delete_session].blank?
-      session.delete(:reservation_params)
-    end
+    
     @notice = ""
 
     if !session[:reservation_params].blank? and flash[:delete_session].blank?
@@ -24,7 +22,7 @@ class MainController < ApplicationController
         # session[:reservation_params] = nil
       end
     end
-
+    session.delete(:reservation_params)
       @reservation = Reservation.new(:booking=>"7:30 PM")
 
       @restaurants = Restaurant.published
@@ -148,7 +146,7 @@ class MainController < ApplicationController
       customer.save
     end
     AdminMailer.create_customer_reservation(current_user,reservation.reservation_code,reservation.booking).deliver_now
-    AdminMailer.create_restaurant_reservation(User.find(reservation.restaurant_owner), reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    AdminMailer.create_restaurant_reservation(User.find(reservation.restaurant_owner), current_user,reservation.reservation_code,reservation.booking).deliver_now
     
   end
   private
