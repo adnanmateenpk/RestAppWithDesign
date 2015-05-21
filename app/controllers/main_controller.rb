@@ -14,6 +14,7 @@ class MainController < ApplicationController
     @notice = ""
 
     if !session[:reservation_params].blank?
+      render :json => session[:reservation_params]
       if user_signed_in?
         create_reservation(session[:reservation_params])
         @notice  = @notice + "Reservation Created"
