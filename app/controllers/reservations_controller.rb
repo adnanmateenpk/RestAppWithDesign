@@ -100,7 +100,7 @@ class ReservationsController < ApplicationController
     params[:reservation][:expire_at] = params[:reservation][:booking] + Branch.find(params[:reservation][:branch_id]).expiry*60*60
     params[:reservation][:reservation_code] = Digest::SHA1.hexdigest(Time.zone.now.to_s)[0,6]
     params[:reservation][:created_by] = current_user.id;
-    params[:reservation][:user_id] = Digest::SHA1.hexdigest(current_user.email)[0,6]
+    params[:reservation][:user_id] = current_user.membership
     params[:reservation][:reservation_name] = current_user.name
     params[:reservation][:restaurant_owner] = Restaurant.find(params[:restaurant_id]).user_id;
     params.require(:reservation).permit(:reservation_name,:reservation_code,:booking,:expire_at, :people ,:user_id, :status, :branch_id,:created_by,:restaurant_owner)

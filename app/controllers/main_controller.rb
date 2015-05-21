@@ -11,7 +11,7 @@ class MainController < ApplicationController
       
     end 
     
-    @notice = ""
+    @notice = flash[:notice]
 
     if !session[:reservation_params].blank? and flash[:delete_session].blank?
       if user_signed_in?
@@ -126,7 +126,7 @@ class MainController < ApplicationController
     reservation.expire_at =reservation.booking + Branch.find(reservation.branch_id).expiry*60*60
     reservation.reservation_code = Digest::SHA1.hexdigest(Time.zone.now.to_s)[0,6]
     reservation.created_by = current_user.id;
-    reservation.user_id = Digest::SHA1.hexdigest(current_user.email)[0,6]
+    reservation.user_id = current_user.membership
     reservation.reservation_name = current_user.name
     reservation.restaurant_owner = Restaurant.find(params["restaurant"]).user_id;
     reservation.save
