@@ -10,25 +10,25 @@ class MainController < ApplicationController
       @user.email = flash[:registration_model]["email"]
       
     end 
-
+    if !flash[:delete_session].blank?
+      session.delete(:reservation_params)
+    end
     @notice = ""
 
-    if !session[:reservation_params].blank?
-      render :json => session[:reservation_params]
-       session.delete(:reservation_params)
-     #  if user_signed_in?
-     #    create_reservation(session[:reservation_params])
-     #    @notice  = @notice + "Reservation Created"
-     #    session.delete(:reservation_params)
-     # else 
-     #    # session[:reservation_params] = nil
-     # end
-    else
+    if !session[:reservation_params].blank? and flash[:delete_session].blank?
+      if user_signed_in?
+        create_reservation(session[:reservation_params])
+        @notice  = @notice + "Reservation Created"
+        session.delete(:reservation_params)
+      else 
+        # session[:reservation_params] = nil
+      end
+    end
 
       @reservation = Reservation.new(:booking=>"7:30 PM")
 
       @restaurants = Restaurant.published
-    end
+    
   end
   def register
 
