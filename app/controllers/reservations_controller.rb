@@ -7,7 +7,7 @@ class ReservationsController < ApplicationController
     redirect_to :controller=>:main , :action => :index
   end
   def create
-    session.delete(:reservation_params)
+    
     reservation = Reservation.new(reservation_params)
     flash[:notice] = "Reservation Created"
     reservation.save
@@ -28,6 +28,7 @@ class ReservationsController < ApplicationController
     end
     AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
     AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    session.delete(:reservation_params)
     flash[:delete_session] = true
     redirect_to :action => :index,:controller => :main
   end
