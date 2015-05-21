@@ -15,19 +15,19 @@ class MainController < ApplicationController
 
     if !session[:reservation_params].blank?
       render :json => session[:reservation_params]
-      if user_signed_in?
-        create_reservation(session[:reservation_params])
-        @notice  = @notice + "Reservation Created"
-        session.delete(:reservation_params)
-     else 
-        # session[:reservation_params] = nil
-     end
+     #  if user_signed_in?
+     #    create_reservation(session[:reservation_params])
+     #    @notice  = @notice + "Reservation Created"
+     #    session.delete(:reservation_params)
+     # else 
+     #    # session[:reservation_params] = nil
+     # end
+    else
+
+      @reservation = Reservation.new(:booking=>"7:30 PM")
+
+      @restaurants = Restaurant.published
     end
-
-    @reservation = Reservation.new(:booking=>"7:30 PM")
-
-    @restaurants = Restaurant.published
-    
   end
   def register
 
