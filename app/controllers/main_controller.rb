@@ -130,7 +130,7 @@ class MainController < ApplicationController
     reservation.created_by = current_user.id;
     reservation.user_id = Digest::SHA1.hexdigest(current_user.email)[0,6]
     reservation.reservation_name = current_user.name
-    reservation.restaurant_owner = Branch.find(reservation.branch_id).user_id;
+    reservation.restaurant_owner = Restaurant.find(params["restaurant"]).user_id;
     
     reservation.save
     r = Array.new
