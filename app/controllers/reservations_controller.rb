@@ -26,8 +26,8 @@ class ReservationsController < ApplicationController
       customer.user_id = reservation.created_by
       customer.save
     end
-    AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
-    AdminMailer.create_restaurant_reservation(reservation.owner, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
+    AdminMailer.create_customer_reservation(current_user,reservation.reservation_code,reservation.booking).deliver_now
+    AdminMailer.create_restaurant_reservation(User.find(reservation.restaurant_owner), reservation.user,reservation.reservation_code,reservation.booking).deliver_now
     session.delete(:reservation_params)
     flash[:delete_session] = true
     redirect_to :action => :index,:controller => :main
