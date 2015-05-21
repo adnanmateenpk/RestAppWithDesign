@@ -8,3 +8,4 @@
 
 	ActiveRecord::Base.connection.execute("TRUNCATE TABLE reservations RESTART IDENTITY;")
 	ActiveRecord::Base.connection.execute("TRUNCATE TABLE reservation_tables RESTART IDENTITY;")
+	ActiveRecord::Base.connection.execute("TRUNCATE TABLE restaurant_customers RESTART IDENTITY;")

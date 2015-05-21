@@ -7,7 +7,7 @@ class ReservationsController < ApplicationController
     redirect_to :controller=>:main , :action => :index
   end
   def create
-    session[:reservation_params] = nil
+    session.delete(:reservation_params)
     reservation = Reservation.new(reservation_params)
     flash[:notice] = "Reservation Created"
     reservation.save
@@ -19,10 +19,13 @@ class ReservationsController < ApplicationController
       x.reservation_id = reservation.id
       x.save
     end
-    customer = RestaurantCustomer.new
-    customer.restaurant_owner_id = reservation.branch.restaurant.user.id
-    customer.user_id = reservation.user.id 
-    customer.save
+    customer = RestaurantCustomer.where("user_id = ? AND restaurant_owner_id = ?",reservation.user.id , reservation.branch.restaurant.user.id)
+    if customer.blank?
+      customer = RestaurantCustomer.new
+      customer.restaurant_owner_id = reservation.branch.restaurant.user.id
+      customer.user_id = reservation.user.id 
+      customer.save
+    end
     AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
     AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
       
@@ -35,7 +38,7 @@ class ReservationsController < ApplicationController
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
     reservation.status = 0
 
-   # AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
+    AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
     reservation.save
     ReservationTable.where("reservation_id = ?", reservation.id).destroy_all
     redirect_to :controller=>:reservations , :action => :list , :id => reservation.branch_id
@@ -44,7 +47,7 @@ class ReservationsController < ApplicationController
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
     reservation.status = 0
 
-   # AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
+    AdminMailer.cancel_reservation(reservation.user,reservation.reservation_code).deliver_now
     reservation.save
     ReservationTable.where("reservation_id = ?", reservation.id).destroy_all
     redirect_to :controller=>:main , :action => :reservations
@@ -53,7 +56,7 @@ class ReservationsController < ApplicationController
     reservation = Reservation.where("reservation_code = ?",params[:reservation_code]).first
     reservation.status = 2
 
-   # AdminMailer.success_reservation(reservation.user,reservation.reservation_code).deliver_now
+    AdminMailer.success_reservation(reservation.user,reservation.reservation_code).deliver_now
     reservation.save
     
     redirect_to :controller=>:reservations , :action => :list , :id => reservation.branch_id

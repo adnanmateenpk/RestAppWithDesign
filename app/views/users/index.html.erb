@@ -5,6 +5,7 @@
       <strong> | <%= current_user.name %></strong>
       <% end %></div>
 <div class="row table-yellow">
+ <% if current_user.role_id == 1 %>
 <div class="col-md-8 col-md-offset-2 col-xs-12" style="margin-bottom:10px;">
   <ul class="tab-controls nav nav-pills" role="tablist">
     <li  class="col-xs-3 tab-button " style="font-size:20px;">Filter by: </li>
@@ -13,6 +14,7 @@
     <li role="presentation" class="col-xs-3 tab-button <%= (!params[:role].blank? and params[:role] == "3") ? "active" : "" %>"><a href="/dashboard/customers?role=3" style="font-size:20px;">Customers</a></li>
   </ul>
 </div>
+<% end %>
 <table class="table table-striped" summary="Restaurant list">
   <tr class="header">
     <th>&nbsp;</th>

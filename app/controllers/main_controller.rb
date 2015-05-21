@@ -17,7 +17,7 @@ class MainController < ApplicationController
       if user_signed_in?
         create_reservation(session[:reservation_params])
         @notice  = @notice + "Reservation Created"
-        session[:reservation_params] = nil
+        session.delete(:reservation_params)
      else 
         # session[:reservation_params] = nil
      end
@@ -139,10 +139,13 @@ class MainController < ApplicationController
       x.reservation_id = reservation.id
       x.save
     end
-    customer = RestaurantCustomer.new
-    customer.restaurant_owner_id = reservation.branch.restaurant.user.id
-    customer.user_id = reservation.user.id 
-    customer.save
+    customer = RestaurantCustomer.where("user_id = ? AND restaurant_owner_id = ?",reservation.user.id , reservation.branch.restaurant.user.id)
+    if customer.blank?
+      customer = RestaurantCustomer.new
+      customer.restaurant_owner_id = reservation.branch.restaurant.user.id
+      customer.user_id = reservation.user.id 
+      customer.save
+    end
     AdminMailer.create_customer_reservation(reservation.user,reservation.reservation_code,reservation.booking).deliver_now
     AdminMailer.create_restaurant_reservation(reservation.branch.restaurant.user, reservation.user,reservation.reservation_code,reservation.booking).deliver_now
     
