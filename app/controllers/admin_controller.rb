@@ -15,6 +15,7 @@ class AdminController < ApplicationController
       flash[:notice]="Settings Saved successfully"
       redirect_to(:action=>'index')
     else
+      flash[:error_model] =@restaurant.errors.full_messages
       render('settings')
     end 
   	
