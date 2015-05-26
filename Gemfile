@@ -29,6 +29,7 @@ gem 'acts_as_list'
 gem 'devise'
 gem "cancan"
 gem 'whenever', '~> 0.9.4'
+gem 'newrelic_rpm'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
