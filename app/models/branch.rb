@@ -25,5 +25,6 @@ class Branch < ActiveRecord::Base
 	validates :seating_capacity, 		:presence => true,:numericality => { :only_integer => true , :greater_than => 0 }
 	validates :expiry, 		:presence => true,:numericality => { :only_integer => true , :greater_than => 0 }
 	validates :time_zone, 	:presence => true
+	validates :phone,    :presence => true , :phone_number => {:ten_digits => true}
 	
 end

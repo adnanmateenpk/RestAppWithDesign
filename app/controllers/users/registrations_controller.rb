@@ -89,7 +89,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # You can put the params you want to permit in the empty array.
   def account_update_params
    params[:user][:membership] =  Digest::SHA1.hexdigest(params[:user][:email])[0,6]
-    params.require(:user).permit(:name , :email, :password, :password_confirmation,:current_password,:membership)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation,:phone,:current_password)
   end
   
   # The path used after sign up.

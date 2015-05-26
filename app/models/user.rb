@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  REGEX = /\A[0-9]{8}\Z/
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -20,7 +21,7 @@ class User < ActiveRecord::Base
   #validations
   validates :name,		:presence => true,
 							:length => { :maximum => 25 }
-  validates :phone,    :presence => true  , :format => {:with => /^[0-9]*$/ , :message => "Not a Valid Number"}
+  validates :phone,    :presence => true , :phone_number => {:ten_digits => true}
   validates :membership,:uniqueness => true, 
                         :length => { :maximum => 6 },
                         :presence => true
