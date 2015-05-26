@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   #validations
   validates :name,		:presence => true,
 							:length => { :maximum => 25 }
-  validates :phone,    :presence => true , :phone_number => {:ten_digits => true ,:message => "is invalid (valid formats 111-111-1111,111.111.1111,1234567890)"}
+  validates :phone,    :presence => true , :phone_number => {:ten_digits => true ,:message => "is invalid (valid formats are 111-111-1111,111.111.1111,1234567890)"}
   validates :membership,:uniqueness => true, 
                         :length => { :maximum => 6 },
                         :presence => true
