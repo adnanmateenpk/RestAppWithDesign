@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   validates :name,		:presence => true,
 							:length => { :maximum => 25 }
   validates :phone,    :presence => true  ,:numericality => { :only_integer => true , :greater_than => 0 }
-  validates :membership,:uniqueness => true,
+  validates :membership,:uniqueness => true, :format => {:with => "^[0-9]*$" , :message => "Not a Valid Number"}
                         :length => { :maximum => 6 },
                         :presence => true
 end
