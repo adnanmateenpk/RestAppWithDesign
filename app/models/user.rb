@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   #validations
   validates :name,		:presence => true,
 							:length => { :maximum => 25 }
-  validates :phone,    :presence => true  
+  validates :phone,    :presence => true  ,:numericality => { :only_integer => true , :greater_than => 0 }
   validates :membership,:uniqueness => true,
                         :length => { :maximum => 6 },
                         :presence => true
