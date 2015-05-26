@@ -12,6 +12,7 @@ class Ability
         can :manage, :restaurant
         can :manage, :branch
         can :manage , :reservation
+        can :manage , :restrictions
         can [:index] , :admin
         can [:index,:filtered] , :user
         can :manage, :table

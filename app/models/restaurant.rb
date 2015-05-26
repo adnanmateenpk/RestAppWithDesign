@@ -3,6 +3,7 @@ class Restaurant < ActiveRecord::Base
 	#relations
 	has_many :branches , dependent: :destroy
 	has_many :tables , dependent: :destroy
+	has_many :date_restrictions , dependent: :destroy
 	belongs_to :user 
 	#scopes
 	scope :by_user, lambda { |user| where("restaurants.user_id = ?",user) }

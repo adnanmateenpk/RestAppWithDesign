@@ -101,7 +101,7 @@ $(document).ready(function(){
        populateReservationData(this);
         $('html, body').animate({scrollTop: $("#reservation-data").position().top}, 300);
         return false;
-    })
+    });
    resetReservationData();
    $('.reservation-button').on('click', function () {
       $("#rest-id").val($(this).data("id"));
@@ -126,6 +126,7 @@ function populateReservationData(object){
   $("#ppl").val(ppl);
   $("#status").val(status);
   $("#cancel-data").html(url);
+
 }
 function resetReservationData(){
   

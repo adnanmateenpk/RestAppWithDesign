@@ -33,6 +33,11 @@ class MainController < ApplicationController
     flash[:register] = true
     redirect_to :action => :index
   end
+  def restaurant
+    @user = User.new
+    @restaurant = Restaurant.where("slug = ?",params[:slug]).first
+    
+  end
   def contact_us
     AdminMailer.contact_us(params["message"],params["subject"],params["email"],params["name"]).deliver_now
     flash[:notice]="Your Email has been sent"
@@ -48,10 +53,7 @@ class MainController < ApplicationController
   	redirect_to root_url
   end
   
-  def restaurant
-   
-
-  end
+  
   def reservations
     @user = User.new
     @reservations = Reservation.where("user_id = ? ",current_user.membership)
@@ -60,8 +62,10 @@ class MainController < ApplicationController
   def customer
     if params[:restaurant].blank? or params[:branch].blank?
       render :json => {"available" => false, "message" => "Please Select a Restaurant"}
-    elsif params[:date].blank?
+    elsif params[:date].blank? or params[:date] == "Fecha"
       render :json => {"available" => false, "message" => "Please Enter a Valid Date"}
+    elsif check_date_restriction
+      render :json => {"available" => false, "message" => "Reservations are closed for the selected date"}
     elsif params[:time].blank?
       render :json => {"available" => false, "message" => "Please Enter a Valid Time"}
     elsif params[:people].blank?
@@ -99,6 +103,13 @@ class MainController < ApplicationController
 
     end
     return_value
+  end
+  private
+  def check_date_restriction
+    date = params[:date].split('/')
+    date = date[2]+"-"+date[0]+"-"+date[1] 
+    restrict = DateRestriction.where("restricted_date = ? AND restaurant_id = ?",date , params[:restaurant]).first
+    !restrict.blank?
   end
   private
   def check_times branch

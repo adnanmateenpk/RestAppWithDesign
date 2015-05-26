@@ -11342,9 +11342,9 @@ $(document).ready(function(){
 $(document).ready(function(){
 
 		$('.ajax-form').on('ajax:success', function() {  
-	        $(this).closest("tr").find(".ajax-button").attr("disabled",false)
-	        $(this).find(".ajax-button").attr("disabled",true)
-
+	        // $(this).closest("tr").find(".ajax-button").attr("disabled",false)
+	        // $(this).find(".ajax-button").attr("disabled",true)
+	        location.reload();
 		}); 
 })
 ;
@@ -11476,6 +11476,7 @@ function populateReservationData(object){
   $("#ppl").val(ppl);
   $("#status").val(status);
   $("#cancel-data").html(url);
+
 }
 function resetReservationData(){
   
@@ -11608,7 +11609,7 @@ function checkAvailability(id){
 	val = $("#reservation_branch_id").val();
 	people = $("#reservation_people").val();
 	date = $("#date").val();
-	time = $("#time").val();
+	time = $("#time-select").val();
 	user = $("#reservation_user_id").val();
 	var $btn = $("#submit-button").button('loading');
 	restaurant = $("#restaurant_id").val();

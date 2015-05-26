@@ -8,7 +8,33 @@
 <div class="form-group">
   <div class="col-xs-10 col-xs-offset-1">
 
-    <%= text_field_tag(:time, @time ,:class => "timepicker form-control" , :placeholder=>"Hora") %>
+    <select class="form-control" id="time-select" name = "time">
+      <option value="">Hora</option>
+      <option value="12:00 AM">12:00 AM</option>
+      <option value="1:00 AM">1:00 AM</option>
+      <option value="2:00 AM">2:00 AM</option>
+      <option value="3:00 AM">3:00 AM</option>
+      <option value="4:00 AM">4:00 AM</option>    
+      <option value="5:00 AM">5:00 AM</option>
+      <option value="6:00 AM">6:00 AM</option>
+      <option value="7:00 AM">7:00 AM</option>
+      <option value="8:00 AM">8:00 AM</option>
+      <option value="9:00 AM">9:00 AM</option>
+      <option value="10:00 AM">10:00 AM</option>
+      <option value="11:00 AM">11:00 AM</option>
+      <option value="12:00 PM">12:00 PM</option>
+      <option value="1:00 PM">1:00 PM</option>
+      <option value="2:00 PM">2:00 PM</option>
+      <option value="3:00 PM">3:00 PM</option>
+      <option value="4:00 PM">4:00 PM</option>
+      <option value="5:00 PM">5:00 PM</option>
+      <option value="6:00 PM">6:00 PM</option>
+      <option value="7:00 PM">7:00 PM</option>
+      <option value="8:00 PM">8:00 PM</option>
+      <option value="9:00 PM">9:00 PM</option>
+      <option value="10:00 PM">10:00 PM</option>
+      <option value="11:00 PM">11:00 PM</option>
+    </select>
   </div>
 </div>
 
@@ -23,6 +49,6 @@
     <%= hidden_field_tag(:restaurant_id) %>
      <%= hidden_field_tag(:table_id) %>
      <%= hidden_field_tag :time_zone,"UTC", :readonly =>true,:class => "form-control" %>
-    <button id="submit-button" type="submit" class="form-control" data-trigger="focus" data-loading-text="Loading..." onclick="checkAvailability(0); return false;"><strong>3 | </strong>Reserva</button>
+    <button id="submit-button" type="submit" class="form-control" data-trigger="focus" data-loading-text="Loading..." onclick="checkAvailability(0); return false;"><strong><%= @step %> | </strong>Reserva</button>
   </div>
 </div>

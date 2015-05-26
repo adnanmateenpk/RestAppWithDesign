@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  
   devise_for :users, :controllers => { registrations: 'users/registrations', sessions: "users/sessions", passwords: "users/passwords" }, :path => "members" do
     get '/members/sign_out' => 'users/sessions#destroy'
   end
@@ -11,13 +12,16 @@ Rails.application.routes.draw do
   post "availability_customer" => 'main#customer'
   post "get_authenticity_token" => 'main#get_token'
   get "reservations" => 'main#reservations'
-
+  get "restaurant/:slug" => 'main#restaurant'
   scope :dashboard do
     get "settings" => 'admin#settings'
     patch "settings/save" => 'admin#settings_save'
     patch "settings/logo" => 'admin#remove_logo'
     patch '/reservations/success/:reservation_code' => 'reservations#success'
     delete '/reservations/destroy_customer/:reservation_code' => 'reservations#destroy_customer'
+    get 'restrictions/:id' => 'restrictions#index'
+    post 'restrictions/create'
+    delete 'restrictions/destroy/:id' => 'restrictions#destroy'
     resources :pages,:param => :slug do
       member do
           patch 'remove_image'

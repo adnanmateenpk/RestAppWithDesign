@@ -8,15 +8,16 @@ class BranchesController < ApplicationController
 
   def list
     @branches = Branch.where(["restaurant_id = ?",Restaurant.where(["slug = ?",params[:restaurant_slug]]).first.id]).published
+    @seating = Array.new
     @branches.each do |b|
-      if(b.restaurant.tables.count > 0 )
-        b.seating_capacity = b.restaurant.tables.largest_capacity.first.seats
-      else
-        b.seating_capacity = 0;
+      b.restaurant.tables.each do |t|
+        @seating << t.seats
+        @seating << t.seats - 1 unless t.seats - 1 <= 0
+        @seating << t.seats - 2 unless t.seats - 2 <= 0
       end
-
     end
-    render json: @branches
+
+    render json: {"branches" => @branches, "seating" => @seating.sort.uniq }
   end
 
   def edit

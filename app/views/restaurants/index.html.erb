@@ -19,17 +19,18 @@
     <td><%= d.status ? "Published" : "Unpublished" %></td>
     <td class="actions">
         <% if d.branches.count > 0 %>
-     	  <%= link_to("Details", edit_restaurant_detail_path(d.slug,d.branches[0].slug), :class => 'action branches', :style => "color:black") %> 
+     	  <%= link_to("Informacion", edit_restaurant_detail_path(d.slug,d.branches[0].slug), :class => 'action branches', :style => "color:black") %> 
         <% else %>
-         <%= link_to("Details", new_restaurant_detail_path(d.slug), :class => 'action branches', :style => "color:black") %> 
+         <%= link_to("Informacion", new_restaurant_detail_path(d.slug), :class => 'action branches', :style => "color:black") %> 
          <% end %>
         |
-      	<%= link_to("Edit", {:action => 'edit', :slug => d.slug}, :class => 'action edit' , :style => "color:black") %> |
-      	<%= link_to 'Delete' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %> |
+      	<%= link_to("Editar", {:action => 'edit', :slug => d.slug}, :class => 'action edit' , :style => "color:black") %> |
+      	<%= link_to 'Borrar' , {:action => 'destroy' , :slug => d.slug}, method: :delete, data: { confirm: 'Are you sure?' }, :remote => true, "data-type" => :json , :class => 'delete_row' , :style => "color:black" %> |
         <% if !d.branches[0].blank? %>
-        <%= link_to 'Reservations' , {:controller => :reservations ,:action => 'list' , :id => d.branches[0].id}, :style => "color:black" %> |
+        <%= link_to 'Reservaciones' , {:controller => :reservations ,:action => 'list' , :id => d.branches[0].id}, :style => "color:black" %> |
         <% end %>
-        <%= link_to 'Tables' , restaurant_tables_path(d.slug), :style => "color:black" %>
+        <%= link_to 'Mesas' , restaurant_tables_path(d.slug), :style => "color:black" %> | 
+        <%= link_to 'Restricciones De Fecha' , {:action=> :index,:controller=>:restrictions,:id=>d.id}, :style => "color:black" %>
     </td>
   </tr>
   <% end %>

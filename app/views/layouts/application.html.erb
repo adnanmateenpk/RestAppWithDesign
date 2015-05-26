@@ -401,6 +401,14 @@ Google Analytics
 
 </script>
 <% end %>
+<% if !@restaurant.blank?   %>
+<script>
+  $(document).ready(function(){
+    populateBranches('<%= @restaurant.id.to_s+"|"+@restaurant.slug %>',$(".restaurant.single"));
+  });
+
+</script>
+<% end %>
  <script>
  $(document).ready(function(){
     $(".form-control.register-button").click(function(){
