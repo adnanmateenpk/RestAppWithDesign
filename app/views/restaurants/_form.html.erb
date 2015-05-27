@@ -13,7 +13,7 @@
               <%= f.select(:status, options_for_select([['Published',1],['Unpublished',0]],(@restaurant.status ? 1 : 0)),{},{ :class=>"form-control"}) %>
             </div>
             <div class="col-md-6 ">
-              <%= f.file_field(:featured_image , :class => 'form-control' , :placeholder =>"Featured Image") %>
+              <%= f.file_field(:logo , :class => 'form-control' , :placeholder =>"Logo") %>
             </div> 
           </div>
           <% if current_user.role.role == "admin" %>

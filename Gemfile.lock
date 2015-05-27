@@ -39,6 +39,9 @@ GEM
     acts_as_list (0.6.0)
       activerecord (>= 3.0)
     arel (6.0.0)
+    aws-sdk (1.39.0)
+      json (~> 1.4)
+      nokogiri (>= 1.4.4)
     bcrypt (3.1.10)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -47,6 +50,10 @@ GEM
       columnize (= 0.9.0)
     cancan (1.6.10)
     chronic (0.10.2)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.7)
+      climate_control (>= 0.0.3, < 1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -71,6 +78,10 @@ GEM
     jbuilder (2.2.13)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
+    jquery-fileupload-rails (0.4.5)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
+      sass (>= 3.2)
     jquery-rails (4.0.3)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -92,6 +103,11 @@ GEM
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
+    paperclip (4.2.1)
+      activemodel (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      cocaine (~> 0.5.3)
+      mime-types
     pg (0.18.1)
     rack (1.6.0)
     rack-test (0.6.3)
@@ -130,6 +146,19 @@ GEM
     ref (1.0.5)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rmagick (2.15.0)
+    s3_direct_upload (0.1.7)
+      coffee-rails (>= 3.1)
+      jquery-fileupload-rails (~> 0.4.1)
+      rails (>= 3.1)
+      sass-rails (>= 3.1)
+    sass (3.4.14)
+    sass-rails (5.0.3)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.1)
+      sprockets (>= 2.8, < 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
+      tilt (~> 1.1)
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
@@ -145,6 +174,7 @@ GEM
       ref
     thor (0.19.1)
     thread_safe (0.3.5)
+    tilt (1.4.1)
     turbolinks (2.5.3)
       coffee-rails
     tzinfo (1.2.2)
@@ -168,6 +198,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
+  aws-sdk
   byebug
   cancan
   devise
@@ -176,9 +207,12 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   newrelic_rpm
+  paperclip
   pg
   rails (= 4.2.0)
   rails_12factor
+  rmagick (~> 2.15.0)
+  s3_direct_upload
   sdoc (~> 0.4.0)
   spring
   therubyracer

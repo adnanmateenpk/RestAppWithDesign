@@ -122,6 +122,6 @@ end
     if current_user.role_id == 2
       params[:restaurant][:user_id] = current_user.id 
     end
-    params.require(:restaurant).permit(:title,:slug,:status,:description,:featured_image,:user_id)
+    params.require(:restaurant).permit(:title,:slug,:status,:description,:featured_image,:user_id,:logo)
   end
 end
