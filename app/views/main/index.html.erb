@@ -36,14 +36,7 @@
               <% @restaurants.each_with_index do |u,i| %>
                 <% if u.branches.count > 0 and !u.branches[0].night_club %>
                   <div class= "col-xs-3 col-xs-offset-2" id="<%= u.slug %>">
-                    <% if !(u.featured_image.blank?) %>
-
-                     <img src="/assets/uploads/restaurants/<%= u.featured_image%>" class="img-responsive img-circle" style="width:303px" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);">
-                     
-                   <% else %>
-                      <img src="/assets/dining-default.png" class="img-responsive img-circle" style="width:303px" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);">
-                      
-                    <% end %>
+                    <img src="<%= u.logo.url %>" class="img-responsive img-circle" style="width:303px" onclick="populateBranches('<%= u.id.to_s+"|"+u.slug %>',this);">
                     <h4 style="text-align:center;font-weight:bold;"><%= u.title %></h4>
                   </div>
                   <% x=x+1 %>
