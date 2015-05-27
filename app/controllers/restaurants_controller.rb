@@ -63,13 +63,9 @@ end
     else
       restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
     end
-    directory = File.join("vendor","assets","images","uploads","restaurants")
-    if restaurant.featured_image.blank?
-      restaurant.featured_image = "test"
-    end
-    old_path = File.join(directory,restaurant.featured_image)
+   
     
-    File.delete(old_path) if File.exist?(old_path)
+    
     restaurant.destroy
     render json: { "gst" => "deleted" }
   end
@@ -80,11 +76,9 @@ end
     else
       restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
     end
-    directory = File.join("vendor","assets","images","uploads","restaurants")
-    old_path = File.join(directory,restaurant.featured_image)
-    File.delete(old_path) if File.exist?(old_path)
-    restaurant.featured_image = ""
-    restaurant.save
+   
+    restaurant.logo.destroy
+    
     render json: { "gst" => "deleted" } 
   end
 
