@@ -78,7 +78,7 @@ end
     end
    
     restaurant.logo.destroy
-    
+    restaurant.logo.clear
     render json: { "gst" => "deleted" } 
   end
 
