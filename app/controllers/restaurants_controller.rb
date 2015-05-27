@@ -76,10 +76,11 @@ end
     else
       restaurant = Restaurant.where(["slug = ?",params[:slug]]).first
     end
-    restaurant.logo = nil
-    restaurant.save
+    
     restaurant.logo.destroy
     restaurant.logo.clear
+    restaurant.logo = nil
+    restaurant.save
     render json: { "gst" => "deleted" } 
   end
 
