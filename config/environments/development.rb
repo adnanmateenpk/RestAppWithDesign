@@ -49,15 +49,7 @@ Rails.application.configure do
     :authentication => :plain,
     :enable_starttls_auto => true
   }
-  config.paperclip_defaults = {
-    :storage => :s3,
-    :s3_host_name => "s3-website-us-east-1.amazonaws.com",
-    :s3_credentials => {
-      :bucket => ENV['S3_BUCKET_NAME'],
-      :access_key_id => "AKIAJ6V65YQUBJ3EYNWA",
-      :secret_access_key => "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"
-    }
-  }
+  
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 end

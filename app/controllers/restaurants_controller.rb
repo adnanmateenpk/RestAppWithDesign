@@ -111,9 +111,7 @@ end
     if old_image.blank?
       old_image = "test"
     end
-    if !params[:restaurant][:featured_image].blank?
-      params[:restaurant][:featured_image]= upload_files_custom(params[:restaurant][:featured_image],"restaurants",old_image)
-    end
+    
     if params[:restaurant][:slug].blank?
        params[:restaurant][:slug] = (current_user.membership+" "+params[:restaurant][:title]).parameterize
     else
