@@ -5,7 +5,7 @@
       <% end %></div>
       <div class="row form-yellow">
         <div class="col-md-2 col-md-push-10">
-          <img src="/assets/logo-default.png" class="img-responsive img-circle">
+          <img src="<%= @branch.restaurant.logo.url %>" class="img-responsive img-circle" id="featured_image" >
         </div>
         <%= form_for(:branch, :url=>{:action => 'update', :slug => @branch.slug},:method=>"patch",:multipart=>true ,:html => {:class=>"form-horizontal col-md-10  col-md-pull-2"}) do |f| %>
         <%= render(:partial => "form",:locals=>{:f=>f})%>
