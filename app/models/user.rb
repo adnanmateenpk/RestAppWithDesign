@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
                         :length => { :maximum => 6 },
                         :presence => true
   validate :phone_number
+  before_create :phone_conversion
+  before_update :phone_conversion
+  def phone_conversion
+    phone = phone.sub!(/\D/, "") 
+  end
   def phone_number
     if !(phone =~ /[1-9]{1}[0-9]{9}/) or !(phone =~ /[0]{1}[1-9]{1}[0-9]{9}/)
       errors.add(:phone, " is invalid")
