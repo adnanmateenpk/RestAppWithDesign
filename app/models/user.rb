@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
                         :presence => true
   validate :phone_number
   def phone_number
-    if !(phone =~ /[1-9]{1}[0-9]{9}/) 
+    if !(phone =~ /[1-9]{1}[0-9]{9}/) or !(phone =~ /[0]{1}[1-9]{1}[0-9]{9}/)
       errors.add(:phone, " is invalid")
     end
   end
