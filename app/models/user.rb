@@ -21,7 +21,6 @@ class User < ActiveRecord::Base
   #validations
   validates :name,		:presence => true,
 							:length => { :maximum => 25 }
-  validates :phone,    :presence => true 
   validates :membership,:uniqueness => true, 
                         :length => { :maximum => 6 },
                         :presence => true
@@ -32,8 +31,10 @@ class User < ActiveRecord::Base
     phone = phone.sub!(/\D/, "") 
   end
   def phone_number
-    if !(phone =~ /[1-9]{1}[0-9]{9}/) or !(phone =~ /[0]{1}[1-9]{1}[0-9]{9}/)
-      errors.add(:phone, " is invalid")
+    if !phone.blank?
+      if !(phone =~ /[1-9]{1}[0-9]{9}/) or !(phone =~ /[0]{1}[1-9]{1}[0-9]{9}/) 
+        errors.add(:phone, " is invalid")
+      end
     end
   end
 end
