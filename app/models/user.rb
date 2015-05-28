@@ -27,8 +27,8 @@ class User < ActiveRecord::Base
   validate :phone_number
   before_validation :phone_conversion
   def phone_conversion
-    if !phone.blank?
-      phone = phone.sub!(/\D/, "") 
+    if !self.phone.blank?
+      self.phone = phone.sub!(/\D/, "") 
     end
   end
   def phone_number
