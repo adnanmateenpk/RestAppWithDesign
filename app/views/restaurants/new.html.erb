@@ -4,7 +4,7 @@
       <div class="breadcrumb">nueva reserva<% if user_signed_in? %>
       <strong> | <%= current_user.name %></strong>
       <% end %></div>
-      <div class="row table-yellow">
+      <div class="row table-yellow form-yellow">
         
         <%= form_for(:restaurant, :url=>{:action=>'create'},:multipart=>true, :html => {:class=>"form-horizontal col-md-10 "}) do |f| %>
        		<%= render(:partial => "form",:locals=>{:f=>f})%>
