@@ -25,8 +25,7 @@ class User < ActiveRecord::Base
                         :length => { :maximum => 6 },
                         :presence => true
   validate :phone_number
-  before_create :phone_conversion
-  before_update :phone_conversion
+  before_validation :phone_conversion
   def phone_conversion
     if !phone.blank?
       phone = phone.sub!(/\D/, "") 
