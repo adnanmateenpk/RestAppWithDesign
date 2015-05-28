@@ -28,7 +28,9 @@ class User < ActiveRecord::Base
   before_create :phone_conversion
   before_update :phone_conversion
   def phone_conversion
-    phone = phone.sub!(/\D/, "") 
+    if !phone.blank?
+      phone = phone.sub!(/\D/, "") 
+    end
   end
   def phone_number
     if !phone.blank?
