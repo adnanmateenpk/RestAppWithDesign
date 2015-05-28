@@ -29,7 +29,7 @@ class UsersController < ApplicationController
   	user= User.where("membership = ?",params[:membership]).first
   	user.role_id = params[:role_id]
   	user.save
-  	render json: ["complete"]
+  	redirect_to ({:action=>:index}) 
   end
   def destroy
     user = User.where("membership = ?",params[:membership]).first
