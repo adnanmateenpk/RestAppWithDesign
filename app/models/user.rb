@@ -21,8 +21,14 @@ class User < ActiveRecord::Base
   #validations
   validates :name,		:presence => true,
 							:length => { :maximum => 25 }
-  validates :phone,    :presence => true , :phone_number => {:ten_digits => true ,:message => "is invalid (valid formats are 111-111-1111,111.111.1111,1234567890)"}
+  validates :phone,    :presence => true 
   validates :membership,:uniqueness => true, 
                         :length => { :maximum => 6 },
                         :presence => true
+  validate :phone_number
+  def phone_number
+    if phone =~ /[1-9]{1}[0-9]{9}/ 
+      errors.add(:phone, " is invalid")
+    end
+  end
 end
