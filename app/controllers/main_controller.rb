@@ -129,7 +129,7 @@ class MainController < ApplicationController
   private 
   def create_reservation params
     reservation = Reservation.new
-    Time.zone = params[:time_zone]
+    Time.zone = params["time_zone"]
     reservation.people = params["people"]
     reservation.branch_id = params["branch"]
     reservation.status = 1
