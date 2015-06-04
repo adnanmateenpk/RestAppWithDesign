@@ -13,16 +13,16 @@ class MainController < ApplicationController
     
     @notice = flash[:notice]
 
-    if !session[:reservation_params].blank? and flash[:delete_session].blank?
+    if !cookies[:reservation_params].blank? and flash[:delete_session].blank?
       if user_signed_in?
-        create_reservation(session[:reservation_params])
+        create_reservation(cookies[:reservation_params])
         @notice  = @notice + "Reservation Created"
-        session.delete(:reservation_params)
+        cookies.delete(:reservation_params)
       else 
-        # session[:reservation_params] = nil
+        # cookies[:reservation_params] = nil
       end
     end
-    session.delete(:reservation_params)
+    cookies.delete(:reservation_params)
       @reservation = Reservation.new(:booking=>"7:30 PM")
 
       @restaurants = Restaurant.published
@@ -83,7 +83,7 @@ class MainController < ApplicationController
         render :json => {"available" => false, "message" => "There are no Tables available at the selected time. Please Call on : "+branch.phone+" for further assistance"}
       else
         params[:table_id] = @@table
-        session[:reservation_params] = params
+        cookies[:reservation_params] = {:value => params , :expires => Time.now + 3600}
         render :json => {"user_signed_in" => user_signed_in? ,"available" => true, "message" => "Creating Resevation", "table" => @@table }
       end
     end
