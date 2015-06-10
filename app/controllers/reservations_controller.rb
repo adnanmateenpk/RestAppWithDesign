@@ -28,7 +28,7 @@ class ReservationsController < ApplicationController
     end
     AdminMailer.create_customer_reservation(current_user,reservation.reservation_code,reservation.booking).deliver_now
     AdminMailer.create_restaurant_reservation(User.find(reservation.restaurant_owner), current_user,reservation.reservation_code,reservation.booking).deliver_now
-    cookies.delete(:reservation_params)
+    session.delete(:reservation_params)
     flash[:delete_session] = true
     redirect_to :action => :index,:controller => :main
   end
